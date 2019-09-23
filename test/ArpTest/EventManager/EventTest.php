@@ -177,7 +177,16 @@ class EventTest extends TestCase
                     'hello' => 'world',
                 ],
                 'hello'
-            ]
+            ],
+
+            [
+                [
+                    'foo' => 'bar',
+                    'hello' => 'world',
+                ],
+                'bar'
+            ],
+
         ];
     }
 
