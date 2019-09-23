@@ -306,4 +306,90 @@ class EventManagerTest extends TestCase
         ];
     }
 
+    /**
+     * testTriggerEventWillThrowInvalidArgumentExceptionIfNoNameIsSet
+     *
+     * Ensure that a InvalidArgumentException is thrown if passing an $event instance without a name to triggerEvent().
+     *
+     * @test
+     */
+    public function testTriggerEventWillThrowInvalidArgumentExceptionIfNoNameIsSet()
+    {
+        $eventManager = new EventManager();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Unable to trigger event for instance that has no name in %s::%s',
+            EventManager::class,
+            'triggerEvent'
+        ));
+
+        /** @var EventInterface|MockObject $event */
+        $event = $this->getMockForAbstractClass(EventInterface::class);
+
+        $event->expects($this->once())
+            ->method('getName')
+            ->willReturn('');
+
+        $eventManager->triggerEvent($event);
+    }
+    
+    /**
+     * testTriggerEvent
+     *
+     * Ensure that calls to triggerEvent are correctly executed.
+     *
+     * @param string $name
+     * @param array  $listeners
+     *
+     * @dataProvider getTriggerEventData
+     * @test
+     */
+    public function testTriggerEvent($name, array $listeners = [])
+    {
+        $eventManager = new EventManager();
+
+        /** @var EventInterface|MockObject $event */
+        $event = $this->getMockForAbstractClass(EventInterface::class);
+
+        $event->expects($this->once())
+            ->method('getName')
+            ->willReturn($name);
+
+        $event->expects($this->exactly(count($listeners)))
+            ->method('propagate')
+            ->willReturn(true);
+
+        foreach($listeners as $listener) {
+            $eventManager->attachListener($name, $listener);
+        }
+
+        $eventManager->triggerEvent($event);
+    }
+
+    /**
+     * getTriggerEventData
+     *
+     * @return array
+     */
+    public function getTriggerEventData()
+    {
+        return [
+            [
+                'foo.event',
+                [
+                    function($e) {
+                        $test = 1;
+                    },
+                    function($e) {
+                        $test = 2;
+                    },
+                    function($e) {
+                        $test = 3;
+                    },
+                ]
+            ]
+        ];
+    }
+
 }

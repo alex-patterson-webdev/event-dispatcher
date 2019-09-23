@@ -101,6 +101,7 @@ class EventManager implements EventManagerInterface
      * @param EventInterface $event
      *
      * @throws InvalidArgumentException
+     * @throws \Exception
      */
     public function triggerEvent(EventInterface $event)
     {
@@ -109,12 +110,25 @@ class EventManager implements EventManagerInterface
         if (empty($name)) {
 
             throw new InvalidArgumentException(sprintf(
-                'The event must contain a \'name\' value in \'%s\'.',
+                'Unable to trigger event for instance that has no name in %s',
                 __METHOD__
             ));
         }
 
-        foreach($this->getQueue($name) as $listener) {
+        $this->triggerQueue($this->getQueue($name), $event);
+    }
+
+    /**
+     * triggerQueue
+     *
+     * Trigger the listeners using the provided queue.
+     *
+     * @param \SplPriorityQueue $queue  The queue that should be triggered.
+     * @param EventInterface    $event  The event instance to pass to the listeners.
+     */
+    protected function triggerQueue(\SplPriorityQueue $queue, EventInterface $event)
+    {
+        foreach($queue as $listener) {
 
             $result = $listener($event);
 
