@@ -10,6 +10,7 @@ use Arp\EventManager\EventSubscriberInterface;
 use Arp\EventManager\Exception\InvalidArgumentException;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit\Framework\TestCase;
+use function foo\func;
 
 /**
  * EventManagerTest
@@ -333,7 +334,7 @@ class EventManagerTest extends TestCase
 
         $eventManager->triggerEvent($event);
     }
-    
+
     /**
      * testTriggerEvent
      *
@@ -390,6 +391,53 @@ class EventManagerTest extends TestCase
                 ]
             ]
         ];
+    }
+
+    /**
+     * testTriggerEventWillPreventPropagation
+     *
+     * Ensure that if we disable propagation of events we will not continue to trigger the remaining event listeners.
+     *
+     * @test
+     */
+    public function testTriggerEventWillPreventPropagation()
+    {
+        $eventManager = new EventManager;
+
+        /** @var EventInterface|MockObject $event */
+        $event = $this->getMockForAbstractClass(EventInterface::class);
+
+        $eventName = 'event.foo';
+
+        $event->expects($this->once())
+            ->method('getName')
+            ->willReturn($eventName);
+
+        $listeners = [
+            function (EventInterface $e) {
+
+            },
+            function (EventInterface $e) {
+                // We will expect the listeners triggers to be disabled from here
+                $e->setPropagate(false);
+            },
+            function (EventInterface $e) {
+
+            },
+            function (EventInterface $e) {
+
+            }
+        ];
+
+        foreach($listeners as $listener) {
+            $eventManager->attachListener($eventName, $listener);
+        }
+
+        $event->expects($this->exactly(2))
+            ->method('propagate')
+            ->willReturnOnConsecutiveCalls(true, false);
+
+        $eventManager->triggerEvent($event);
     }
 
 }
