@@ -4,9 +4,7 @@ namespace ArpTest\EventManager;
 
 use Arp\EventManager\Event;
 use Arp\EventManager\EventInterface;
-use Arp\EventManager\EventManager;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
 /**
  * EventTest
