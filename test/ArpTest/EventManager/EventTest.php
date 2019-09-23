@@ -190,4 +190,25 @@ class EventTest extends TestCase
         ];
     }
 
+    /**
+     * testPropagation
+     *
+     * Ensure that the propagation methods can be updated.
+     *
+     * @test
+     */
+    public function testPropagation()
+    {
+        $event = new Event('event.foo');
+
+        $this->assertTrue($event->propagate());
+
+        $event->setPropagate(false);
+        $this->assertFalse($event->propagate());
+
+        $event->setPropagate(true);
+        $this->assertTrue($event->propagate());
+    }
+
+
 }
