@@ -4,6 +4,7 @@ namespace ArpTest\EventManager;
 
 use Arp\EventManager\Event;
 use Arp\EventManager\EventInterface;
+use Arp\EventManager\EventManager;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 
@@ -103,6 +104,41 @@ class EventTest extends TestCase
                     'foo' => 123,
                     'bar' => 'hello',
                 ]
+            ],
+        ];
+    }
+
+    /**
+     * testGetData
+     *
+     * @param array  $data
+     * @param string $name
+     * @param mixed  $expected
+     *
+     * @dataProvider getGetDataData
+     * @test
+     */
+    public function testGetData(array $data, $name, $expected = null)
+    {
+        $event = new Event('foo.event', $data);
+
+        $this->assertSame($expected, $event->getData($name));
+    }
+
+    /**
+     * getGetDataData
+     *
+     * @return array
+     */
+    public function getGetDataData()
+    {
+        return [
+            [
+                [
+                    'foo' => 'bar',
+                ],
+                'foo',
+                'bar'
             ],
         ];
     }
