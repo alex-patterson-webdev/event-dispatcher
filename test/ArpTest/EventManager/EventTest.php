@@ -143,4 +143,42 @@ class EventTest extends TestCase
         ];
     }
 
+    /**
+     * testRemoveData
+     *
+     * Ensure that a data value can be removed from the collection.
+     *
+     * @param array   $data
+     * @param string  $name
+     *
+     * @dataProvider getRemoveDataData
+     * @test
+     */
+    public function testRemoveData(array $data, $name)
+    {
+        $event = new Event('foo.event', $data);
+
+        $expected = array_key_exists($name, $data);
+
+        $this->assertSame($expected, $event->removeData($name));
+    }
+
+    /**
+     * getRemoveDataData
+     *
+     * @return array
+     */
+    public function getRemoveDataData()
+    {
+        return [
+            [
+                [
+                    'foo' => 'bar',
+                    'hello' => 'world',
+                ],
+                'hello'
+            ]
+        ];
+    }
+
 }
