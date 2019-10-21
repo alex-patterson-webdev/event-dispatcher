@@ -7,7 +7,7 @@ namespace Arp\EventManager;
  *
  * Class that adds new event listeners to the provided event manager.
  *
- * @package Arp\EventManager
+ * @package Arp\EventDispatcher
  */
 interface EventSubscriberInterface
 {

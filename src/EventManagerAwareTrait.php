@@ -5,7 +5,7 @@ namespace Arp\EventManager;
 /**
  * EventManagerAwareTrait
  *
- * @package Arp\EventManager
+ * @package Arp\EventDispatcher
  */
 trait EventManagerAwareTrait
 {
@@ -24,7 +24,7 @@ trait EventManagerAwareTrait
     public function getEventManager()
     {
         if (null === $this->eventManager) {
-            $this->eventManager = new EventManager();
+            $this->eventManager = new EventDispatcher();
         }
 
         return $this->eventManager;

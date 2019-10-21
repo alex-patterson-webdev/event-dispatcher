@@ -5,7 +5,7 @@ namespace Arp\EventManager;
 /**
  * EventManagerAwareInterface
  *
- * @package Arp\EventManager
+ * @package Arp\EventDispatcher
  */
 interface EventManagerAwareInterface
 {

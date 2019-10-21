@@ -5,9 +5,9 @@ namespace Arp\EventManager;
 /**
  * Event
  *
- * @package Arp\EventManager
+ * @package Arp\EventDispatcher
  */
-class Event implements EventInterface
+class Event implements EventInterface, StoppableEventInterface
 {
     /**
      * $name
@@ -31,11 +31,11 @@ class Event implements EventInterface
     protected $context;
 
     /**
-     * $propagate
+     * $propagationStopped
      *
      * @var bool
      */
-    protected $propagate = true;
+    protected $propagationStopped = false;
 
     /**
      * __construct
@@ -184,15 +184,13 @@ class Event implements EventInterface
     }
 
     /**
-     * propagate
-     *
-     * Return the propagation event value.
+     * isPropagationStopped
      *
      * @return boolean
      */
-    public function propagate()
+    public function isPropagationStopped()
     {
-        return $this->propagate;
+        return $this->propagationStopped;
     }
 
     /**
@@ -200,11 +198,11 @@ class Event implements EventInterface
      *
      * Set the event propagation value.
      *
-     * @param boolean $propagate
+     * @param boolean $propagationStopped
      */
-    public function setPropagate($propagate)
+    public function setPropagationStopped($propagationStopped)
     {
-        $this->propagate = $propagate ? true : false;
+        $this->propagationStopped = $propagationStopped ? true : false;
     }
 
 }

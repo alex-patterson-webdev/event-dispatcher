@@ -2,15 +2,15 @@
 
 namespace Arp\EventManager;
 
-use Arp\EventManager\Exception\EventManagerException;
+use Arp\EventManager\Exception\EventDispatcherException;
 use Arp\EventManager\Exception\InvalidArgumentException;
 
 /**
  * EventManagerInterface
  *
- * @package Arp\EventManager
+ * @package Arp\EventDispatcher
  */
-interface EventManagerInterface
+interface EventManagerInterface extends EventDispatcherInterface
 {
     /**
      * attachListener
@@ -33,17 +33,6 @@ interface EventManagerInterface
     public function attachSubscriber(EventSubscriberInterface $subscriber);
 
     /**
-     * triggerEvent
-     *
-     * Trigger the registered collection of events.
-     *
-     * @param EventInterface $event
-     *
-     * @throws EventManagerException
-     */
-    public function triggerEvent(EventInterface $event);
-
-    /**
      * trigger
      *
      * Create and trigger an event by it's name.
@@ -52,7 +41,7 @@ interface EventManagerInterface
      * @param array   $params   The optional event parameters.
      * @param mixed   $context  The context of the event.
      *
-     * @throws EventManagerException
+     * @throws EventDispatcherException
      */
     public function trigger($name, array $params = [], $context = null);
 

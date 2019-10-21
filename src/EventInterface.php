@@ -5,7 +5,7 @@ namespace Arp\EventManager;
 /**
  * EventInterface
  *
- * @package Arp\EventManager
+ * @package Arp\EventDispatcher
  */
 interface EventInterface
 {
@@ -97,23 +97,5 @@ interface EventInterface
      * @param mixed $context
      */
     public function setContext($context = null);
-
-    /**
-     * propagate
-     *
-     * Check if the event should continue to propagate.
-     *
-     * @return boolean
-     */
-    public function propagate();
-
-    /**
-     * setPropagate
-     *
-     * Set the event propagation value.
-     *
-     * @param boolean $propagate
-     */
-    public function setPropagate($propagate);
 
 }

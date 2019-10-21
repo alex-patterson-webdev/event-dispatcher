@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * EventTest
  *
- * @package ArpTest\EventManager
+ * @package ArpTest\EventDispatcher
  */
 class EventTest extends TestCase
 {

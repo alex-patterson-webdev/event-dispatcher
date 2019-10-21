@@ -5,9 +5,9 @@ namespace Arp\EventManager\Exception;
 /**
  * InvalidArgumentException
  *
- * @package Arp\EventManager\Exception
+ * @package Arp\EventDispatcher\Exception
  */
-class InvalidArgumentException extends EventManagerException
+class InvalidArgumentException extends EventDispatcherException
 {
 
 }

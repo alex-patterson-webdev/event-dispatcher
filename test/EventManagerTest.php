@@ -4,18 +4,17 @@ namespace ArpTest\EventManager;
 
 use Arp\EventManager\Event;
 use Arp\EventManager\EventInterface;
-use Arp\EventManager\EventManager;
+use Arp\EventManager\EventDispatcher;
 use Arp\EventManager\EventManagerInterface;
 use Arp\EventManager\EventSubscriberInterface;
 use Arp\EventManager\Exception\InvalidArgumentException;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit\Framework\TestCase;
-use function foo\func;
 
 /**
  * EventManagerTest
  *
- * @package ArpTest\EventManager
+ * @package ArpTest\EventDispatcher
  */
 class EventManagerTest extends TestCase
 {
@@ -28,7 +27,7 @@ class EventManagerTest extends TestCase
      */
     public function testImplementsEventManagerInterface()
     {
-        $eventManager = new EventManager();
+        $eventManager = new EventDispatcher();
 
         $this->assertInstanceOf(EventManagerInterface::class, $eventManager);
     }
@@ -48,7 +47,7 @@ class EventManagerTest extends TestCase
      */
     public function testCreateEvent($name, array $data = [], $context = null, $eventClassName = null)
     {
-        $eventManager = new EventManager();
+        $eventManager = new EventDispatcher();
 
         if (null === $eventClassName) {
             $eventClassName = Event::class;
@@ -103,7 +102,7 @@ class EventManagerTest extends TestCase
      */
     public function testAttachSubscriber()
     {
-        $eventManager = new EventManager();
+        $eventManager = new EventDispatcher();
 
         /** @var EventSubscriberInterface|MockObject $subscriber */
         $subscriber = $this->getMockForAbstractClass(EventSubscriberInterface::class);
@@ -129,8 +128,8 @@ class EventManagerTest extends TestCase
      */
     public function testAttachListener($name, callable $listener, $priority = 1)
     {
-        /** @var EventManager|MockObject $eventManager */
-        $eventManager = $this->getMockBuilder(EventManager::class)
+        /** @var EventDispatcher|MockObject $eventManager */
+        $eventManager = $this->getMockBuilder(EventDispatcher::class)
             ->setMethods(['getQueue'])
             ->getMock();
 
@@ -178,8 +177,8 @@ class EventManagerTest extends TestCase
      */
     public function testTriggerWillCreateEventAndProxyToTriggerEvent($name, array $params = [], $context = null)
     {
-        /** @var EventManager|MockObject $eventManager */
-        $eventManager = $this->getMockBuilder(EventManager::class)
+        /** @var EventDispatcher|MockObject $eventManager */
+        $eventManager = $this->getMockBuilder(EventDispatcher::class)
             ->setMethods(['createEvent', 'triggerEvent'])
             ->getMock();
 
@@ -242,14 +241,14 @@ class EventManagerTest extends TestCase
      */
     public function testSetEventClassNameWillThrowInvalidArgumentException($eventClassName)
     {
-        $eventManager = new EventManager();
+        $eventManager = new EventDispatcher();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
             'The \'eventClassName\' argument must be an object of type \'%s\'; \'%s\' provided in \'%s::%s\'.',
             EventInterface::class,
             (is_string($eventClassName) ? $eventClassName : gettype($eventClassName)),
-            EventManager::class,
+            EventDispatcher::class,
             'setEventClassName'
         ));
 
@@ -286,7 +285,7 @@ class EventManagerTest extends TestCase
      */
     public function testSetEventClassName($eventClassName)
     {
-        $eventManager = new EventManager();
+        $eventManager = new EventDispatcher();
 
         $eventManager->setEventClassName($eventClassName);
 
@@ -316,12 +315,12 @@ class EventManagerTest extends TestCase
      */
     public function testTriggerEventWillThrowInvalidArgumentExceptionIfNoNameIsSet()
     {
-        $eventManager = new EventManager();
+        $eventManager = new EventDispatcher();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
             'Unable to trigger event for instance that has no name in %s::%s',
-            EventManager::class,
+            EventDispatcher::class,
             'triggerEvent'
         ));
 
@@ -348,7 +347,7 @@ class EventManagerTest extends TestCase
      */
     public function testTriggerEvent($name, array $listeners = [])
     {
-        $eventManager = new EventManager();
+        $eventManager = new EventDispatcher();
 
         /** @var EventInterface|MockObject $event */
         $event = $this->getMockForAbstractClass(EventInterface::class);
@@ -402,7 +401,7 @@ class EventManagerTest extends TestCase
      */
     public function testTriggerEventWillPreventPropagation()
     {
-        $eventManager = new EventManager;
+        $eventManager = new EventDispatcher;
 
         /** @var EventInterface|MockObject $event */
         $event = $this->getMockForAbstractClass(EventInterface::class);
