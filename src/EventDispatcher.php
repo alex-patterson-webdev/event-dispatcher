@@ -1,56 +1,40 @@
 <?php
 
-namespace Arp\EventManager;
+namespace Arp\EventDispatcher;
 
-use Arp\EventManager\Exception\InvalidArgumentException;
+use Psr\EventDispatcher\ListenerProviderInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * EventDispatcher
  *
  * @package Arp\EventDispatcher
  */
-class EventDispatcher
+class EventDispatcher implements EventDispatcherInterface
 {
     /**
-     * $provider
-     *
      * @var ListenerProviderInterface
      */
-    protected $provider;
+    protected $listenerProvider;
 
     /**
-     * __construct
-     *
-     * @param ListenerCollectionInterface $listeners
+     * @param ListenerProviderInterface $listenerProvider
      */
-    public function __construct(ListenerProviderInterface $provider)
+    public function __construct(ListenerProviderInterface $listenerProvider)
     {
-        $this->listeners = $listeners;
+        $this->listenerProvider  = $listenerProvider;
     }
 
     /**
-     * triggerEvent
-     *
      * Trigger the registered collection of events.
      *
-     * @param object $event
+     * @param object $event  The event that should be triggered.
      *
-     * @throws InvalidArgumentException
-     * @throws \Exception
+     * @return object
      */
-    public function dispatch($event)
+    public function dispatch(object $event)
     {
-        $name = $event->getName();
-
-        if (empty($name)) {
-
-            throw new InvalidArgumentException(sprintf(
-                'Unable to trigger event for instance that has no name in %s',
-                __METHOD__
-            ));
-        }
-
-        foreach($this->listeners->getListenersForEvent($event) as $listener) {
+        foreach($this->listenerProvider->getListenersForEvent($event) as $listener) {
 
             $result = $listener($event);
 
@@ -58,7 +42,7 @@ class EventDispatcher
                 break;
             }
         }
+
+        return $event;
     }
-
-
 }

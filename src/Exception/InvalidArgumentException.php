@@ -1,6 +1,6 @@
 <?php
 
-namespace Arp\EventManager\Exception;
+namespace Arp\EventDispatcher\Exception;
 
 /**
  * InvalidArgumentException
