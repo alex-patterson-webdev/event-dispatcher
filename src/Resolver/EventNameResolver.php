@@ -3,7 +3,6 @@
 namespace Arp\EventDispatcher\Resolver;
 
 use Arp\EventDispatcher\Exception\InvalidArgumentException;
-use Arp\EventManager\EventNameAwareInterface;
 
 /**
  * EventNameResolver

@@ -1,11 +1,11 @@
 <?php
 
-namespace Arp\EventManager;
+namespace Arp\EventDispatcher\Resolver;
 
 /**
  * EventNameAwareInterface
  *
- * @package Arp\EventManager
+ * @package Arp\EventDispatcher\Resolver
  */
 interface EventNameAwareInterface
 {
