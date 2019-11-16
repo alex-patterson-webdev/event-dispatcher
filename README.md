@@ -1,66 +1,81 @@
 
-# About
+## About
 
-A simple implementation of the PSR-14 event dispatcher.
+A simple implementation of the [PSR-14 Event Dispatcher](https://www.php-fig.org/psr/psr-14/).
 
-# Installation
+## Installation
 
 Installation via [composer](https://getcomposer.org).
 
-    require alex-patterson-webdev/event-manager ^1
-    
-# Usage
+    require alex-patterson-webdev/event-dispatcher ^1
+        
+## Usage
 
-## The Event Manager
+The `Arp\EventDispatcher\EventDispatcher` class is responsible for the event orchestration. When creating a new event dispatcher
+you must provide it with a listener provider implementing `Psr\EventDispatcher\ListenerProviderInterface`. This
+ module provides a default implementation of this interface, `Arp\EventDispatcher\Listener\ListenerProvider`.
 
-The `Arp\EventManager\EventManager` class is responsible for the event orchestration. You can create a new instance without and dependencies.
+    use \Arp\EventDispatcher\EventDispatcher;
+    use \Arp\EventDispatcher\Listener\ListenerProvider;
 
-    $eventManager = new EventManager();
+    $listenerProvider = new ListenerProvider();
+    $eventDispatcher = new EventDispatcher($listenerProvider);
  
-To execute event listeners, we ask the event manager to 'trigger' an event with a given name. Any event listeners that have been attached 
-to the event manager with a matching name will be execute in priority order.
-
-    $eventManager->trigger('foo'); // Trigger the event foo.
+In order to actually be useful, you will need to register some events on your listener provider. 
+We can register these directly using the `ListenerProvider::addListenerForEvent()` method.
     
-Alternatively, we can provide a already created event instance to the `triggerEvent()` method.
-     
-     $event = new Event('foo');
-     $eventManager->triggerEvent($event);
-     
-### The Event object        
+    use \My\Event\Foo;
+    use \Arp\EventDispatcher\Listener\ListenerProvider;
 
-The event object represents the context of the triggered event; it can be any class that implements `Arp\EventManager\EventInterface`. When triggering events,
-the event manager will pass the event instance to each of the event listeners that are executed.  
+    $listenerProvider = new ListenerProvider();
     
-### Event Listeners
+    $event = Foo::class;
 
-We can attach one or more listeners to the event manager using `EventManager::attachListener()` method. Event listeners can be any type of PHP `callable`
-and optionally provide a 'priority' to the event manager to modify the order in which the listeners will be triggered. The event manager will trigger events 
-from the highest to the lowest priority. Any event listeners that share priorities will be executed in the order that they were attached.
-
-    $listener = function($event) {
-        //... do something...
+    $listener = function (Foo $event) {
+        echo 'Event foo was dispatched';
     };
     
-    $eventManager->attachListener('foo.name', $listener);
+    $listenerProvider->addListenerForEvent($event, $listener);
     
-The `EventSubscriberInterface` can be used if you have a number of listeners or wish to encapsulate the calls to `attachListener()` in one place.
+Internally the listener provider will keep an iterable priority queue of all the listeners for each event you provide.
 
-    class MyEventSubscriber implements EventSubscriberInterface
-    {
-        public function subscribe(EventManagerInterface $eventManager)
-        {
-            $eventManager->attachListener('foo', [$this, 'doSomething'], 1);
-            $eventManager->attachListener('bar', [$this, 'doSomethingOnBar], 999);
-        }
-        
-        public function doSomething(EventInterface $event)
-        {
-            // executed when triggering 'foo'
-        }
-        
-        public function doSomethingElse(EventInterface $event)
-        {
-            // executed when triggering 'bar'
-        }
-    }    
+The `$priority` argument allow the ordering of each listener. Higher priority listeners will execute before lower priority listeners. 
+If two or more listeners share the same priority, they will respect the order in which they where added.
+    
+    use \My\Event\Foo;
+    use \Arp\EventDispatcher\Listener\ListenerProvider;
+    use \Arp\EventDispatcher\EventDispatcher;
+    
+    $listenerProvider = new ListenerProvider();
+    
+    $event = new Foo();
+    
+    $listener1 = function(\My\Event\Foo $event) {
+        echo 'Listener 1' . PHP_EOL;
+    };
+    
+    $listener2 = function(\My\Event\Foo $event) {
+        echo 'Listener 2' . PHP_EOL;
+    };
+    
+    $listenerProvider->addListenerForEvent($event, $listener1, -100);
+    $listenerProvider->addListenerForEvent($event, $listener2, 100);
+    
+    $eventDispatcher = new EventDispatcher($listenerProvider);
+    
+    $eventDispatcher->dispatch($event);
+
+Will output
+    
+    Listener 2
+    Listener 1
+    
+Any object can be used as an event; by default the fully qualified class name of the object will be used as the event name.
+There may however be times where you would like to provide the name of the event as a property of the event object. This can be achieved
+by implementing `Arp\EventDispacther\Resolver\EventNameAwareInterface` or using the default `Arp\EventDispacther\NamedEvent`.
+
+## Unit Tests
+
+PHP Unit test using PHPUnit 8.
+
+    php vendor/bin/phpunit
