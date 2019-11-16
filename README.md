@@ -1,15 +1,17 @@
 
-## About
+# About
 
 A simple implementation of the [PSR-14 Event Dispatcher](https://www.php-fig.org/psr/psr-14/).
 
-## Installation
+# Installation
 
 Installation via [composer](https://getcomposer.org).
 
     require alex-patterson-webdev/event-dispatcher ^1
         
-## Usage
+# Usage
+
+# Event Dispatcher
 
 The `Arp\EventDispatcher\EventDispatcher` class is responsible for the event orchestration. When creating a new event dispatcher
 you must provide it with a listener provider implementing `Psr\EventDispatcher\ListenerProviderInterface`. This
@@ -20,6 +22,18 @@ you must provide it with a listener provider implementing `Psr\EventDispatcher\L
 
     $listenerProvider = new ListenerProvider();
     $eventDispatcher = new EventDispatcher($listenerProvider);
+    
+We can then *dispatch* the event
+
+    $event = new \My\Event\Foo;
+
+    $eventDispatcher->dispatch($event);    
+
+Any object can be used as an event; by default the fully qualified class name of the object will be used as the event name.
+There may however be times where you would like to provide the name of the event as a property of the event object. This can be achieved
+by implementing `Arp\EventDispacther\Resolver\EventNameAwareInterface` or using the default `Arp\EventDispacther\NamedEvent`.
+
+## Event Listeners
  
 In order to actually be useful, you will need to register some events on your listener provider. 
 We can register these directly using the `ListenerProvider::addListenerForEvent()` method.
@@ -36,6 +50,8 @@ We can register these directly using the `ListenerProvider::addListenerForEvent(
     };
     
     $listenerProvider->addListenerForEvent($event, $listener);
+
+## Listener Priority
     
 Internally the listener provider will keep an iterable priority queue of all the listeners for each event you provide.
 
@@ -50,11 +66,11 @@ If two or more listeners share the same priority, they will respect the order in
     
     $event = new Foo();
     
-    $listener1 = function(\My\Event\Foo $event) {
+    $listener1 = function(Foo $event) {
         echo 'Listener 1' . PHP_EOL;
     };
     
-    $listener2 = function(\My\Event\Foo $event) {
+    $listener2 = function(Foo $event) {
         echo 'Listener 2' . PHP_EOL;
     };
     
@@ -70,11 +86,7 @@ Will output
     Listener 2
     Listener 1
     
-Any object can be used as an event; by default the fully qualified class name of the object will be used as the event name.
-There may however be times where you would like to provide the name of the event as a property of the event object. This can be achieved
-by implementing `Arp\EventDispacther\Resolver\EventNameAwareInterface` or using the default `Arp\EventDispacther\NamedEvent`.
-
-## Unit Tests
+# Unit Tests
 
 PHP Unit test using PHPUnit 8.
 
