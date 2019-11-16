@@ -35,6 +35,8 @@ class ListenerProvider implements ListenerProviderInterface
         $this->eventNameResolver = $eventNameResolver;
     }
 
+
+
     /**
      * Return a iterator with a collection of listeners for the provided event.
      *
@@ -69,13 +71,41 @@ class ListenerProvider implements ListenerProviderInterface
      */
     public function addListenerForEvent($event, callable $listener, int $priority = 1) : void
     {
+        $this->getListenerCollection($event)->addListener($listener, $priority);
+    }
+
+    /**
+     * Add a collection of event listeners for a single event.
+     *
+     * @param object|string  $event      The event name or instance to attach to.
+     * @param callable[]     $listeners  Collection of listeners to attach.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function addListenersForEvent($event, $listeners) : void
+    {
+        $this->getListenerCollection($event)->addListeners($listeners);
+    }
+
+    /**
+     * Return the event collection for a given event instance or name. If the collection doesn't exist a new
+     * empty one will be created.
+     *
+     * @param object|string  $event  The event object or name.
+     *
+     * @return ListenerCollectionInterface
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getListenerCollection($event) : ListenerCollectionInterface
+    {
         $eventName = $this->eventNameResolver->resolveEventName($event);
 
         if (empty($this->collections[$eventName])) {
             $this->collections[$eventName] = $this->createListenerCollection();
         }
 
-        $this->collections[$eventName]->addListener($listener, $priority);
+        return $this->collections[$eventName];
     }
 
     /**

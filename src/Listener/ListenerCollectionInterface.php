@@ -22,5 +22,5 @@ interface ListenerCollectionInterface extends \IteratorAggregate, \Countable
      *
      * @param callable[] $listeners
      */
-    public function addListeners(array $listeners) : void;
+    public function addListeners($listeners) : void;
 }

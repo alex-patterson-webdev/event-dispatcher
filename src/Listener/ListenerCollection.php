@@ -2,6 +2,8 @@
 
 namespace Arp\EventDispatcher\Listener;
 
+use Arp\EventDispatcher\Exception\InvalidArgumentException;
+
 /**
  * ListenerCollection
  *
@@ -24,9 +26,13 @@ class ListenerCollection implements ListenerCollectionInterface
     private $queueOrder = PHP_INT_MAX;
 
     /**
-     * @param callable[] $listeners
+     * __construct
+     *
+     * @param mixed $listeners
+     *
+     * @throws InvalidArgumentException
      */
-    public function __construct(array $listeners = [])
+    public function __construct($listeners = [])
     {
         $this->listeners = new \SplPriorityQueue;
 
@@ -43,6 +49,7 @@ class ListenerCollection implements ListenerCollectionInterface
     public function getIterator() : \Traversable
     {
         $clone = clone $this->listeners;
+
         $clone->rewind();
 
         return $clone;
@@ -62,10 +69,22 @@ class ListenerCollection implements ListenerCollectionInterface
     /**
      * Add a collection of listeners to the collection.
      *
-     * @param callable[] $listeners
+     * @param callable[] $listeners  The collection of event listeners to add.
+     *
+     * @throws InvalidArgumentException  If the $listeners argument is of an invalid type.
      */
-    public function addListeners(array $listeners) : void
+    public function addListeners($listeners) : void
     {
+        if (! is_array($listeners) && ! $listeners instanceof \Traversable) {
+
+            throw new InvalidArgumentException(sprintf(
+                'The \'listeners\' argument must be an \'array\' or object of type \'%s\'; \'%s\' provided in \'%s\'.',
+                \Traversable::class,
+                gettype($listeners),
+                __METHOD__
+            ));
+        }
+
         foreach($listeners as $listener) {
             $this->addListener($listener);
         }
