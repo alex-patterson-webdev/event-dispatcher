@@ -42,7 +42,10 @@ class ListenerCollection implements ListenerCollectionInterface
      */
     public function getIterator() : \Traversable
     {
-        return clone $this->listeners;
+        $clone = clone $this->listeners;
+        $clone->rewind();
+
+        return $clone;
     }
 
     /**

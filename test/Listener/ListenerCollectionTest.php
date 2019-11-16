@@ -24,4 +24,35 @@ class ListenerCollectionTest extends TestCase
 
         $this->assertInstanceOf(ListenerCollectionInterface::class, $collection);
     }
+
+    /**
+     * Assert that
+     *
+     * @test
+     */
+    public function testGetIteratorWillReturnCloneOfListenerQueue() : void
+    {
+        $collection = new ListenerCollection();
+
+        $listeners = [
+            static function () { return 'Foo'; },
+            static function () { return 'Bar'; },
+            static function () { return 'Baz'; },
+        ];
+
+        foreach ($listeners as $index => $listener) {
+            $collection->addListener($listener, ++$index);
+        }
+
+        $cloneOfQueue = $collection->getIterator();
+
+        foreach ($cloneOfQueue as $index => $item) {
+            $expected = $listeners[$index]();
+            $value = $item();
+        }
+
+        $this->assertSame(1,1);
+
+        $test = 'hello';
+    }
 }
