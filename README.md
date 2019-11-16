@@ -11,7 +11,7 @@ Installation via [composer](https://getcomposer.org).
         
 # Usage
 
-# Event Dispatcher
+## Event Dispatcher
 
 The `Arp\EventDispatcher\EventDispatcher` class is responsible for the event orchestration. When creating a new event dispatcher
 you must provide it with a listener provider implementing `Psr\EventDispatcher\ListenerProviderInterface`. This
