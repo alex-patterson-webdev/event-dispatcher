@@ -3,6 +3,7 @@
 namespace Arp\EventDispatcher\Listener;
 
 use Arp\EventDispatcher\Exception\InvalidArgumentException;
+use ArpTest\EventDispatcher\Listener\TestQueue;
 
 /**
  * ListenerCollection
@@ -23,7 +24,7 @@ class ListenerCollection implements ListenerCollectionInterface
      *
      * @var int
      */
-    private $queueOrder = PHP_INT_MAX;
+    private $queueOrder = PHP_INT_MIN;
 
     /**
      * __construct
@@ -63,7 +64,7 @@ class ListenerCollection implements ListenerCollectionInterface
      */
     public function addListener(callable $listener, int $priority = 1) : void
     {
-        $this->listeners->insert($listener, [$priority, $this->queueOrder--]);
+        $this->listeners->insert($listener, [$priority, $this->queueOrder++]);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace ArpTest\EventDispatcher\Listener;
 
+use Arp\EventDispatcher\Exception\InvalidArgumentException;
 use Arp\EventDispatcher\Listener\ListenerCollection;
 use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
 use PHPUnit\Framework\TestCase;
@@ -35,13 +36,16 @@ class ListenerCollectionTest extends TestCase
         $collection = new ListenerCollection();
 
         $listeners = [
-            static function () { return 'Foo'; },
-            static function () { return 'Bar'; },
-            static function () { return 'Baz'; },
+            static function () { return '0'; },
+            static function () { return '1'; },
+            static function () { return '2'; },
+            static function () { return '3'; },
+            static function () { return '4'; },
+            static function () { return '5'; },
         ];
 
         foreach ($listeners as $index => $listener) {
-            $collection->addListener($listener, ++$index);
+            $collection->addListener($listener, 10);
         }
 
         $cloneOfQueue = $collection->getIterator();
@@ -49,10 +53,36 @@ class ListenerCollectionTest extends TestCase
         foreach ($cloneOfQueue as $index => $item) {
             $expected = $listeners[$index]();
             $value = $item();
+
+            $this->assertSame(
+                $expected,
+                $value, sprintf('Index \'%d\' is invalid', $index)
+            );
         }
-
-        $this->assertSame(1,1);
-
-        $test = 'hello';
     }
+
+    /**
+     * Assert that an InvalidArgumentException is thrown if the $listeners provided to addListeners() are
+     * of an invalid type.
+     *
+     * @test
+     */
+    public function testAddListenerWillThrowInvalidArgumentExceptionWhenPassedInvalidListeners() : void
+    {
+        $collection = new ListenerCollection();
+
+        $listeners = \stdClass::class;
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The \'listeners\' argument must be an \'array\' or object of type \'%s\'; \'%s\' provided in \'%s::%s\'.',
+            \Traversable::class,
+            gettype($listeners),
+            ListenerCollection::class,
+            'addListeners'
+        ));
+
+        $collection->addListeners($listeners);
+    }
+
 }
