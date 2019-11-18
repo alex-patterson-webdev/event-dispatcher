@@ -36,7 +36,7 @@ class EventDispatcherTest extends TestCase
      *
      * @test
      */
-    public function testImplementsEventDispatcherInterface()
+    public function testImplementsEventDispatcherInterface() : void
     {
         $eventManager = new EventDispatcher($this->listenerProvider);
 
@@ -44,11 +44,12 @@ class EventDispatcherTest extends TestCase
     }
 
     /**
-     * Assert that a StoppableEventInterface event is excluded from event propagation if already set to true.
+     * If we call dispatch with a StoppableEventInterface that already has propagation stopped, no event listeners
+     * should be triggered.
      *
      * @test
      */
-    public function testDispatchWillRespectStopPropagationEventIfTrue()
+    public function testDispatchWillPreventEventPropagationIfProvidedEventHasPropagationStopped() : void
     {
         $eventDispatcher = new EventDispatcher($this->listenerProvider);
 
@@ -65,6 +66,68 @@ class EventDispatcherTest extends TestCase
         $this->assertSame($event, $eventDispatcher->dispatch($event));
     }
 
+    /**
+     * Assert that the event propagation is stopped if we modify the StoppableEventInterface within an event.
+     *
+     * @param integer  $listenerCount  The number of event listeners attached to the dispatched event.
+     * @param integer  $stopIndex      The index that the event listener should stop propagation.
+     *
+     * @dataProvider getDispatchWillPreventEventPropagationIfItIsStoppedWithinAListenerData
+     * @test
+     */
+    public function testDispatchWillNotPropagationEventIfItIsStoppedWithinAListener(
+        int $listenerCount,
+        int $stopIndex
+    ) : void
+    {
+        if ($stopIndex >= $listenerCount) {
+            $this->fail(sprintf(
+                'The stop index \'%d\' must be less than the number of event listeners \'%d\'.',
+                $listenerCount,
+                $stopIndex
+            ));
+        }
+
+        $eventDispatcher = new EventDispatcher($this->listenerProvider);
+
+        /** @var StoppableEventInterface|MockObject $event */
+        $event = $this->getMockForAbstractClass(StoppableEventInterface::class);
+
+        $eventListeners = [];
+        $isStopped = [];
+
+        for ($x = 0; $x < $listenerCount; $x++) {
+            $eventListeners[] = static function (StoppableEventInterface $event) use ($x, $stopIndex) {};
+
+            if ($x < ($stopIndex+1)) {
+                $isStopped[] = ($x === $stopIndex);
+            }
+        }
+
+        $this->listenerProvider->expects($this->once())
+            ->method('getListenersForEvent')
+            ->willReturn($eventListeners);
+
+        $event->expects($this->exactly(1 + count($isStopped)))
+            ->method('isPropagationStopped')
+            ->willReturn(false, ...$isStopped);
+
+        $this->assertSame($event, $eventDispatcher->dispatch($event));
+    }
+
+    /**
+     * @return array
+     */
+    public function getDispatchWillPreventEventPropagationIfItIsStoppedWithinAListenerData() : array
+    {
+        return [
+            [1, 0],
+            [7, 2],
+            [23, 20],
+            [10, 4],
+            [100, 40],
+        ];
+    }
 
     /**
      * Assert that dispatch() will invoke the require event listeners returned from the listener provider.
@@ -75,15 +138,15 @@ class EventDispatcherTest extends TestCase
      * @dataProvider getDispatchWillInvokeEventListenersForProvidedEventData
      * @test
      */
-    public function testDispatchWillInvokeEventListenersForProvidedEvent($event, $numberOfListeners = 0)
+    public function testDispatchWillInvokeEventListenersForProvidedEvent($event, $numberOfListeners = 0) : void
     {
         $eventDispatcher = new EventDispatcher($this->listenerProvider);
 
         $listeners = [];
 
         for($x = 0; $x < $numberOfListeners; $x++) {
-            $listeners[] = function ($event) {
-
+            $listeners[] = static function ($event) use ($x) {
+                return 'Foo' . $x;
             };
         }
 
@@ -93,14 +156,14 @@ class EventDispatcherTest extends TestCase
 
         $result = $eventDispatcher->dispatch($event);
 
-        $this->assertTrue(is_object($result));
+        $this->assertIsObject($result);
         $this->assertSame($result, $event);
     }
 
     /**
      * @return array
      */
-    public function getDispatchWillInvokeEventListenersForProvidedEventData()
+    public function getDispatchWillInvokeEventListenersForProvidedEventData() : array
     {
         return [
             [
