@@ -85,4 +85,25 @@ class ListenerCollectionTest extends TestCase
         $collection->addListeners($listeners);
     }
 
+    /**
+     * Assert that the count() method will return an integer matching the number of listeners added to the collection.
+     *
+     * @test
+     */
+    public function testCountWillReturnIntegerMatchingTheNumberOfEventListeners() : void
+    {
+        $collection = new ListenerCollection;
+
+        /** @var callable[] $listeners */
+        $listeners = [
+            static function () {},
+            static function () {},
+            static function () {},
+            static function () {},
+        ];
+
+        $collection->addListeners($listeners);
+
+        $this->assertSame(count($listeners), $collection->count());
+    }
 }
