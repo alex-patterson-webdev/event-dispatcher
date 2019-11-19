@@ -3,7 +3,6 @@
 namespace Arp\EventDispatcher\Listener;
 
 use Arp\EventDispatcher\Exception\InvalidArgumentException;
-use ArpTest\EventDispatcher\Listener\TestQueue;
 
 /**
  * ListenerCollection
@@ -20,7 +19,7 @@ class ListenerCollection implements ListenerCollectionInterface
     private $listeners;
 
     /**
-     * Internal pointer to the queue order.
+     * Internal count for the queue priority order.
      *
      * @var int
      */
@@ -29,9 +28,7 @@ class ListenerCollection implements ListenerCollectionInterface
     /**
      * __construct
      *
-     * @param mixed $listeners
-     *
-     * @throws InvalidArgumentException
+     * @param callable[] $listeners
      */
     public function __construct($listeners = [])
     {
@@ -71,24 +68,22 @@ class ListenerCollection implements ListenerCollectionInterface
      * Add a collection of listeners to the collection.
      *
      * @param callable[] $listeners  The collection of event listeners to add.
-     *
-     * @throws InvalidArgumentException  If the $listeners argument is of an invalid type.
      */
-    public function addListeners($listeners) : void
+    public function addListeners(array $listeners) : void
     {
-        if (! is_array($listeners) && ! $listeners instanceof \Traversable) {
-
-            throw new InvalidArgumentException(sprintf(
-                'The \'listeners\' argument must be an \'array\' or object of type \'%s\'; \'%s\' provided in \'%s\'.',
-                \Traversable::class,
-                gettype($listeners),
-                __METHOD__
-            ));
-        }
-
         foreach($listeners as $listener) {
             $this->addListener($listener);
         }
+    }
+
+    /**
+     * Merge the provided collection into the current one.
+     *
+     * @param \Traversable $collection The collection that should be merged.
+     */
+    public function merge(\Traversable $collection) : void
+    {
+        $this->addListeners(iterator_to_array($collection, false));
     }
 
     /**

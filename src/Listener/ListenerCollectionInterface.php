@@ -2,6 +2,8 @@
 
 namespace Arp\EventDispatcher\Listener;
 
+use Arp\EventDispatcher\Exception\InvalidArgumentException;
+
 /**
  * ListenerCollectionInterface
  *
@@ -20,7 +22,14 @@ interface ListenerCollectionInterface extends \IteratorAggregate, \Countable
     /**
      * Add a collection of listeners to the collection.
      *
-     * @param callable[] $listeners
+     * @param callable[] $listeners  The collection of event listeners to add.
      */
-    public function addListeners($listeners) : void;
+    public function addListeners(array $listeners) : void;
+
+    /**
+     * Merge the provided collection into the current one.
+     *
+     * @param \Traversable $collection The collection that should be merged.
+     */
+    public function merge(\Traversable $collection) : void;
 }

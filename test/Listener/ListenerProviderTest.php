@@ -2,6 +2,7 @@
 
 namespace ArpTest\EventDispatcher\Listener;
 
+use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
 use Arp\EventDispatcher\Listener\ListenerProvider;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
@@ -41,4 +42,28 @@ class ListenerProviderTest extends TestCase
 
         $this->assertInstanceOf(ListenerProviderInterface::class, $provider);
     }
+
+    /**
+     * Assert that the listener provider will return a clone of the internal listener collection.
+     *
+     * @
+     */
+    public function testGetListenerForEventWillReturnListenerCollection() : void
+    {
+        $provider = new ListenerProvider($this->eventNameResolver);
+
+        /** @var ListenerCollectionInterface|MockObject $collection */
+        $collection = $this->getMockForAbstractClass(ListenerCollectionInterface::class);
+
+        $event = new \stdClass;
+
+        $collection = $provider->getListenersForEvent($event);
+
+        $this->assertInstanceOf(ListenerCollectionInterface::class, $collection);
+
+        foreach($collection as $item) {
+
+        }
+    }
+
 }

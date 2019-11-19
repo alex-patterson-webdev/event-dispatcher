@@ -35,8 +35,6 @@ class ListenerProvider implements ListenerProviderInterface
         $this->eventNameResolver = $eventNameResolver;
     }
 
-
-
     /**
      * Return a iterator with a collection of listeners for the provided event.
      *
@@ -47,17 +45,11 @@ class ListenerProvider implements ListenerProviderInterface
     public function getListenersForEvent(object $event) : iterable
     {
         try {
-            $eventName = $this->eventNameResolver->resolveEventName($event);
-        }
-        catch (InvalidArgumentException $e) {
-        }
-
-        if (empty($eventName) || ! isset($this->listeners[$eventName])) {
-            // Return an empty collection
-            return $this->createListenerCollection();
+            return $this->getOrCreateListenerCollection($event);
+        } catch (InvalidArgumentException $e) {
         }
 
-        return $this->collections[$eventName];
+        return $this->createListenerCollection();
     }
 
     /**
@@ -67,11 +59,11 @@ class ListenerProvider implements ListenerProviderInterface
      * @param callable       $listener  The event listener to attach.
      * @param int            $priority  The event priority.
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException  If the $event argument is of an invalid type.
      */
     public function addListenerForEvent($event, callable $listener, int $priority = 1) : void
     {
-        $this->getListenerCollection($event)->addListener($listener, $priority);
+        $this->getOrCreateListenerCollection($event)->addListener($listener, $priority);
     }
 
     /**
@@ -80,28 +72,34 @@ class ListenerProvider implements ListenerProviderInterface
      * @param object|string  $event      The event name or instance to attach to.
      * @param callable[]     $listeners  Collection of listeners to attach.
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException  If the $event argument is of an invalid type.
      */
     public function addListenersForEvent($event, $listeners) : void
     {
-        $this->getListenerCollection($event)->addListeners($listeners);
+        $collection = $this->getOrCreateListenerCollection($event);
+
+        if ($listeners instanceof \Traversable) {
+            $collection->merge($listeners);
+        } else {
+            $collection->addListeners($listeners);
+        }
     }
 
     /**
-     * Return the event collection for a given event instance or name. If the collection doesn't exist a new
-     * empty one will be created.
+     * Return a listener collection matching the provided $eventName. If no collection can be found a new
+     * empty one will be created and assigned to the $collections array using the $eventName as the key.
      *
-     * @param object|string  $event  The event object or name.
+     * @param string|object $event  The name or instance of the event.
      *
      * @return ListenerCollectionInterface
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException  If the $event argument is of an invalid type.
      */
-    private function getListenerCollection($event) : ListenerCollectionInterface
+    private function getOrCreateListenerCollection($event) : ListenerCollectionInterface
     {
         $eventName = $this->eventNameResolver->resolveEventName($event);
 
-        if (empty($this->collections[$eventName])) {
+        if (! isset($this->collections[$eventName])) {
             $this->collections[$eventName] = $this->createListenerCollection();
         }
 
@@ -109,11 +107,11 @@ class ListenerProvider implements ListenerProviderInterface
     }
 
     /**
-     * Create a new listener collection.
+     * Create a new listener collection with optional $listeners.
      *
-     * @param array $listeners  Optional collection of listeners to add to the collection.
+     * @param callable[] $listeners  The optional event listeners that should be added.
      *
-     * @return ListenerCollectionInterface
+     * @return ListenerCollection
      */
     protected function createListenerCollection(array $listeners = []) : ListenerCollectionInterface
     {
