@@ -69,12 +69,12 @@ class ListenerProvider implements ListenerProviderInterface
     /**
      * Add a collection of event listeners for a single event.
      *
-     * @param object|string  $event      The event name or instance to attach to.
-     * @param callable[]     $listeners  Collection of listeners to attach.
+     * @param object|string       $event      The event name or instance to attach to.
+     * @param iterable|callable[] $listeners  Collection of listeners to attach.
      *
      * @throws InvalidArgumentException  If the $event argument is of an invalid type.
      */
-    public function addListenersForEvent($event, $listeners) : void
+    public function addListenersForEvent($event, iterable $listeners) : void
     {
         $collection = $this->getOrCreateListenerCollection($event);
 
