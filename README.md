@@ -11,6 +11,8 @@ Installation via [composer](https://getcomposer.org).
         
 # Usage
 
+This module conforms with the [PSR-14 Event Dispatcher](https://www.php-fig.org/psr/psr-14/) specification.
+
 ## Event Dispatcher
 
 The `Arp\EventDispatcher\EventDispatcher` class is responsible for the event orchestration. When creating a new event dispatcher
