@@ -1,7 +1,7 @@
 <phpunit bootstrap="./vendor/autoload.php" colors="true">
     <testsuites>
 
-        <testsuite name="EventManager">
+        <testsuite name="EventDispatcher">
             <directory>./test</directory>
         </testsuite>
 
@@ -14,3 +14,4 @@
     </filter>
 
 </phpunit>
+
