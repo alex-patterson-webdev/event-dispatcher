@@ -64,6 +64,10 @@ class ListenerProviderTest extends TestCase
 
         $this->assertInstanceOf(ListenerCollectionInterface::class, $collection);
 
+        $listeners = ($listeners instanceof \Traversable)
+            ? iterator_to_array($listeners)
+            : $listeners;
+
         foreach($collection as $index => $item) {
             $this->assertSame($listeners[$index], $item);
         }
@@ -81,7 +85,7 @@ class ListenerProviderTest extends TestCase
         ]);
 
         $collection = $this->getMockForAbstractClass(ListenerCollectionInterface::class);
-        $collection->expects($this->once())
+        $collection->expects($this->exactly(2))
             ->method('getIterator')
             ->willReturn($collectionIterator);
 
