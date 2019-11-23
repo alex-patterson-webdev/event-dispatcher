@@ -2,8 +2,6 @@
 
 namespace Arp\EventDispatcher\Listener;
 
-use Arp\EventDispatcher\Exception\InvalidArgumentException;
-
 /**
  * ListenerCollection
  *
