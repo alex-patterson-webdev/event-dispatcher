@@ -2,6 +2,7 @@
 
 namespace ArpTest\EventDispatcher\Listener;
 
+use Arp\EventDispatcher\Exception\InvalidArgumentException;
 use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
 use Arp\EventDispatcher\Listener\ListenerProvider;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
@@ -125,6 +126,29 @@ class ListenerProviderTest extends TestCase
                 $collection,
             ]
         ];
+    }
+
+    /**
+     * Assert that when providing an invalid $event argument calls to getListenersForEvent() will return a
+     * empty listener collection instance.
+     *
+     * @test
+     */
+    public function testGetListenerForEventWillReturnEmptyCollectionIfProvidedEventIsInvalid()
+    {
+        $provider = new ListenerProvider($this->eventNameResolver);
+
+        $event = new \stdClass;
+
+        $exceptionMessage = 'Test exception message';
+        $exception = new InvalidArgumentException($exceptionMessage);
+
+        $this->eventNameResolver->expects($this->once())
+            ->method('resolveEventName')
+            ->with($event)
+            ->willThrowException($exception);
+
+        $this->assertInstanceOf(ListenerCollectionInterface::class, $provider->getListenersForEvent($event));
     }
 
 }
