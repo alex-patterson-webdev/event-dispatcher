@@ -74,7 +74,7 @@ class ListenerProvider implements ListenerProviderInterface
      *
      * @throws InvalidArgumentException  If the $event argument is of an invalid type.
      */
-    public function addListenersForEvent($event, iterable $listeners) : void
+    public function addListenersForEvent($event, iterable $listeners, int $priority = 1) : void
     {
         $collection = $this->getOrCreateListenerCollection($event);
 

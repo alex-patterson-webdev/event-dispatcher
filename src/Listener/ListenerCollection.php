@@ -66,11 +66,12 @@ class ListenerCollection implements ListenerCollectionInterface
      * Add a collection of listeners to the collection.
      *
      * @param callable[] $listeners  The collection of event listeners to add.
+     * @param int        $priority   Optional priority for the listener.
      */
-    public function addListeners(array $listeners) : void
+    public function addListeners(array $listeners, int $priority = 1) : void
     {
         foreach($listeners as $listener) {
-            $this->addListener($listener);
+            $this->addListener($listener, $priority);
         }
     }
 
@@ -78,10 +79,11 @@ class ListenerCollection implements ListenerCollectionInterface
      * Merge the provided collection into the current one.
      *
      * @param \Traversable $collection The collection that should be merged.
+     * @param int          $priority   Optional priority for the listener.
      */
-    public function merge(\Traversable $collection) : void
+    public function merge(\Traversable $collection, int $priority = 1) : void
     {
-        $this->addListeners(iterator_to_array($collection, false));
+        $this->addListeners(iterator_to_array($collection, false), $priority = 1);
     }
 
     /**
