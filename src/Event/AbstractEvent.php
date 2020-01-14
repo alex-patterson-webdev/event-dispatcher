@@ -20,7 +20,7 @@ abstract class AbstractEvent
      */
     public function __construct(array $params = [])
     {
-        $this->params = new Parameters($params);
+        $this->setParameters(new Parameters($params));
     }
 
     /**
@@ -38,7 +38,7 @@ abstract class AbstractEvent
      *
      * @param ParametersInterface $params
      */
-    public function setParameters(ParametersInterface $params)
+    public function setParameters(ParametersInterface $params) : void
     {
         $this->params = $params;
     }

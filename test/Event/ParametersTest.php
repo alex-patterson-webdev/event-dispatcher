@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ArpTest\EventDispatcher\Event;
 
 use Arp\EventDispatcher\Event\Parameters;
@@ -13,14 +12,14 @@ use PHPUnit\Framework\TestCase;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\EventDispatcher\Event
  */
-class ParametersTest extends TestCase
+final class ParametersTest extends TestCase
 {
     /**
      * Assert that the class implements the ParametersInterface.
      *
      * @test
      */
-    public function testImplementsParametersInterface()
+    public function testImplementsParametersInterface() : void
     {
         $params = new Parameters([]);
 
@@ -33,7 +32,7 @@ class ParametersTest extends TestCase
      * @dataProvider getGetSetParametersData
      * @test
      */
-    public function testGetSetParameters(array $data)
+    public function testGetSetParameters(array $data) : void
     {
         $params = new Parameters();
 
@@ -47,7 +46,7 @@ class ParametersTest extends TestCase
     /**
      * @return array
      */
-    public function getGetSetParametersData()
+    public function getGetSetParametersData() : array
     {
         return [
             // Simple

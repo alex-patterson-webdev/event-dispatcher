@@ -31,7 +31,7 @@ class NamedEvent extends AbstractEvent implements EventNameAwareInterface
     }
 
     /**
-     * getEventName
+     * Return the event name.
      *
      * @return string
      */

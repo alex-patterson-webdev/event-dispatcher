@@ -9,9 +9,10 @@ use Psr\EventDispatcher\StoppableEventInterface;
 /**
  * EventDispatcher
  *
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher
  */
-class EventDispatcher implements EventDispatcherInterface
+final class EventDispatcher implements EventDispatcherInterface
 {
     /**
      * @var ListenerProviderInterface
@@ -58,10 +59,6 @@ class EventDispatcher implements EventDispatcherInterface
      */
     private function isPropagationStopped(object $event) : bool
     {
-        if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {
-            return true;
-        }
-
-        return false;
+        return ($event instanceof StoppableEventInterface && $event->isPropagationStopped());
     }
 }

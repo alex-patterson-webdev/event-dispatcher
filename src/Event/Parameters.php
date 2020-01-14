@@ -8,7 +8,7 @@ namespace Arp\EventDispatcher\Event;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Event
  */
-class Parameters implements ParametersInterface
+final class Parameters implements ParametersInterface
 {
     /**
      * @var array $params
@@ -152,7 +152,7 @@ class Parameters implements ParametersInterface
      *
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset) : bool
     {
         return $this->hasParam($offset);
     }
@@ -171,7 +171,7 @@ class Parameters implements ParametersInterface
      * @param mixed $offset
      * @param mixed $value
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value) : void
     {
         $this->setParam($offset, $value);
     }
@@ -179,7 +179,7 @@ class Parameters implements ParametersInterface
     /**
      * @param mixed $offset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset) : void
     {
         $this->removeParam($offset);
     }
