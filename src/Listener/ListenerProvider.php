@@ -71,17 +71,18 @@ class ListenerProvider implements ListenerProviderInterface
      *
      * @param object|string       $event      The event name or instance to attach to.
      * @param iterable|callable[] $listeners  Collection of listeners to attach.
+     * @param int                 $priority   Event priority to use for all $listeners. This will default to 1.
      *
      * @throws InvalidArgumentException  If the $event argument is of an invalid type.
      */
-    public function addListenersForEvent($event, iterable $listeners) : void
+    public function addListenersForEvent($event, iterable $listeners, int $priority = 1) : void
     {
         $collection = $this->getOrCreateListenerCollection($event);
 
         if ($listeners instanceof \Traversable) {
-            $collection->merge($listeners);
+            $collection->merge($listeners, $priority);
         } else {
-            $collection->addListeners($listeners);
+            $collection->addListeners($listeners, $priority);
         }
     }
 

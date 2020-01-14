@@ -1,6 +1,6 @@
 <?php
 
-namespace Arp\EventDispatcher;
+namespace Arp\EventDispatcher\Event;
 
 use Arp\EventDispatcher\Resolver\EventNameAwareInterface;
 
@@ -8,7 +8,7 @@ use Arp\EventDispatcher\Resolver\EventNameAwareInterface;
  * NamedEvent
  *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\EventDispatcher
+ * @package Arp\EventDispatcher\Event
  */
 class NamedEvent extends AbstractEvent implements EventNameAwareInterface
 {
@@ -25,9 +25,9 @@ class NamedEvent extends AbstractEvent implements EventNameAwareInterface
      */
     public function __construct(string $eventName, array $params = [])
     {
-        $this->eventName = $eventName;
+        parent::__construct($params);
 
-        $this->setParams($params);
+        $this->eventName = $eventName;
     }
 
     /**
