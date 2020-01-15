@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Listener;
 
+use Arp\EventDispatcher\Exception\RuntimeException;
+
 /**
  * LazyListener
  *
@@ -47,7 +49,9 @@ class LazyListener
     /**
      * Create and then execute the event listener.
      *
-     * @param object $event
+     * @param object $event  The event that has been dispatched.
+     *
+     * @throws RuntimeException  If the loaded event listener is not callable.
      */
     public function __invoke(object $event) : void
     {
@@ -58,6 +62,14 @@ class LazyListener
         }
 
         $listener = $factory($this->className, $this->arguments);
+
+        if (! is_callable($listener)) {
+            throw new RuntimeException(sprintf(
+                'The the lazy loaded event listener, using class \'%s\', is not callable.',
+                $this->className
+            ));
+        }
+
         $listener($event);
     }
 
