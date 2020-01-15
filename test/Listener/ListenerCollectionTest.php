@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @package ArpTest\EventDispatcher\Listener
  */
-class ListenerCollectionTest extends TestCase
+final class ListenerCollectionTest extends TestCase
 {
     /**
      * Assert that the listener collection implements ListenerCollectionInterface.
@@ -78,6 +78,34 @@ class ListenerCollectionTest extends TestCase
         ];
 
         $collection->addListeners($listeners);
+
+        $this->assertSame(count($listeners), $collection->count());
+    }
+
+    /**
+     * Assert that we can add a collection of event listeners via the __construct.
+     *
+     * @test
+     */
+    public function testEventListenersCanBeAddedViaConstructor() : void
+    {
+        $listeners = [
+            static function () {
+                return 'foo';
+            },
+            static function () {
+                return 'bar';
+            },
+            static function () {
+                return 'baz';
+            },
+        ];
+
+        $collection = new ListenerCollection($listeners);
+
+        foreach ($collection->getIterator() as $index => $listener) {
+            $this->assertSame($listeners[$index], $listener);
+        }
 
         $this->assertSame(count($listeners), $collection->count());
     }
