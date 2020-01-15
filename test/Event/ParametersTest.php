@@ -61,7 +61,7 @@ final class ParametersTest extends TestCase
                 [
                     'test'  => 'Red',
                     'blue'  => true,
-                    123     => 455.667,
+                    'Hello' => 455.667,
                 ],
             ],
 
@@ -73,7 +73,7 @@ final class ParametersTest extends TestCase
                     },
                     'data' => [
                         'foo' => 'bar',
-                        789 => 123.456,
+                        '789' => 123.456,
                     ],
                     'object' => new \stdClass(),
                 ]

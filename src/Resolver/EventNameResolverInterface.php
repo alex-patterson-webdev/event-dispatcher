@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Arp\EventDispatcher\Resolver;
 
 use Arp\EventDispatcher\Exception\InvalidArgumentException;
