@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Resolver;
 
-use Arp\EventDispatcher\Exception\InvalidArgumentException;
+use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 
 /**
  * EventNameResolverInterface
@@ -20,7 +20,7 @@ interface EventNameResolverInterface
      *
      * @return string
      *
-     * @throws InvalidArgumentException  If the provided $event is not a string or object.
+     * @throws EventNameResolverException  If the provided $event is not a string or object.
      */
     public function resolveEventName($event) : string;
 }

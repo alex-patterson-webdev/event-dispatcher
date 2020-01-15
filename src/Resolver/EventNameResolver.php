@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Resolver;
 
-use Arp\EventDispatcher\Exception\InvalidArgumentException;
+use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 
 /**
  * EventNameResolver
@@ -20,7 +20,7 @@ class EventNameResolver implements EventNameResolverInterface
      *
      * @return string
      *
-     * @throws InvalidArgumentException  If the provided $event is not a string or object.
+     * @throws EventNameResolverException  If the provided $event is not a string or object.
      */
     public function resolveEventName($event): string
     {
@@ -29,7 +29,7 @@ class EventNameResolver implements EventNameResolverInterface
         }
 
         if (! is_object($event)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new EventNameResolverException(sprintf(
                 'The \'event\' argument must be of type \'string\' or \'object\'; \'%s\' provided in \'%s\'.',
                 gettype($event),
                 __METHOD__

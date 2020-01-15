@@ -5,7 +5,7 @@ namespace ArpTest\EventDispatcher\Resolver;
 use Arp\EventDispatcher\Resolver\EventNameResolver;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
 use Arp\EventDispatcher\Resolver\EventNameAwareInterface;
-use Arp\EventDispatcher\Exception\InvalidArgumentException;
+use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -98,7 +98,7 @@ class EventNameProviderTest extends TestCase
 
         $event = 1.1; // float is invalid.
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(EventNameResolverException::class);
         $this->expectExceptionMessage(sprintf(
             'The \'event\' argument must be of type \'string\' or \'object\'; \'%s\' provided in \'%s::%s\'.',
             gettype($event),

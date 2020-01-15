@@ -2,10 +2,11 @@
 
 namespace ArpTest\EventDispatcher\Listener;
 
-use Arp\EventDispatcher\Exception\InvalidArgumentException;
+use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
 use Arp\EventDispatcher\Listener\ListenerProvider;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
+use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -129,26 +130,27 @@ class ListenerProviderTest extends TestCase
     }
 
     /**
-     * Assert that when providing an invalid $event argument calls to getListenersForEvent() will return a
-     * empty listener collection instance.
+     * Assert that a EventListenerException will be thrown if the provided event name cannot be resolved.
      *
      * @test
      */
-    public function testGetListenerForEventWillReturnEmptyCollectionIfProvidedEventIsInvalid()
+    public function testGetListenersForEventWillThrowEventListenerExceptionIfTheEventNameCannotBeResolved() : void
     {
         $provider = new ListenerProvider($this->eventNameResolver);
 
         $event = new \stdClass;
 
         $exceptionMessage = 'Test exception message';
-        $exception = new InvalidArgumentException($exceptionMessage);
+        $exception = new EventNameResolverException($exceptionMessage);
 
         $this->eventNameResolver->expects($this->once())
             ->method('resolveEventName')
             ->with($event)
             ->willThrowException($exception);
 
-        $this->assertInstanceOf(ListenerCollectionInterface::class, $provider->getListenersForEvent($event));
-    }
+        $this->expectException(EventListenerException::class);
+        $this->expectExceptionMessage(sprintf('Failed to resolve the event name : %s', $exceptionMessage));
 
+        $provider->getListenersForEvent($event);
+    }
 }

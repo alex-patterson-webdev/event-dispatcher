@@ -2,7 +2,6 @@
 
 namespace ArpTest\EventDispatcher\Listener;
 
-use Arp\EventDispatcher\Exception\InvalidArgumentException;
 use Arp\EventDispatcher\Listener\ListenerCollection;
 use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
 use PHPUnit\Framework\TestCase;

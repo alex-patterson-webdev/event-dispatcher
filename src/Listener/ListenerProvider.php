@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Listener;
 
-use Arp\EventDispatcher\Exception\InvalidArgumentException;
+use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
+use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use Psr\EventDispatcher\ListenerProviderInterface;
 
 /**
@@ -44,15 +45,12 @@ class ListenerProvider implements ListenerProviderInterface
      * @param object $event The event that will be triggered.
      *
      * @return callable[] A collection of event listeners to execute.
+     *
+     * @throws EventListenerException  If the $event name cannot be resolved.
      */
     public function getListenersForEvent(object $event) : iterable
     {
-        try {
-            return $this->getOrCreateListenerCollection($event);
-        } catch (InvalidArgumentException $e) {
-        }
-
-        return $this->createListenerCollection();
+        return $this->getOrCreateListenerCollection($event);
     }
 
     /**
@@ -62,7 +60,7 @@ class ListenerProvider implements ListenerProviderInterface
      * @param callable       $listener  The event listener to attach.
      * @param int            $priority  The event priority.
      *
-     * @throws InvalidArgumentException  If the $event argument is of an invalid type.
+     * @throws EventListenerException  If the $event name cannot be resolved.
      */
     public function addListenerForEvent($event, callable $listener, int $priority = 1) : void
     {
@@ -76,7 +74,7 @@ class ListenerProvider implements ListenerProviderInterface
      * @param iterable|callable[] $listeners  Collection of listeners to attach.
      * @param int                 $priority   Event priority to use for all $listeners. This will default to 1.
      *
-     * @throws InvalidArgumentException  If the $event argument is of an invalid type.
+     * @throws EventListenerException  If the $event name cannot be resolved.
      */
     public function addListenersForEvent($event, iterable $listeners, int $priority = 1) : void
     {
@@ -97,11 +95,21 @@ class ListenerProvider implements ListenerProviderInterface
      *
      * @return ListenerCollectionInterface
      *
-     * @throws InvalidArgumentException  If the $event argument is of an invalid type.
+     * @throws EventListenerException  If the $event name cannot be resolved.
      */
     private function getOrCreateListenerCollection($event) : ListenerCollectionInterface
     {
-        $eventName = $this->eventNameResolver->resolveEventName($event);
+        try {
+            $eventName = $this->eventNameResolver->resolveEventName($event);
+        }
+        catch (EventNameResolverException $e) {
+
+            throw new EventListenerException(
+                sprintf('Failed to resolve the event name : %s', $e->getMessage()),
+                $e->getCode(),
+                $e
+            );
+        }
 
         if (! isset($this->collections[$eventName])) {
             $this->collections[$eventName] = $this->createListenerCollection();

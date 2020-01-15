@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ArpTest\EventDispatcher\Listener;
 
+use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\LazyListener;
-use Arp\EventDispatcher\Exception\RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,11 +28,11 @@ final class LazyListenerTest extends TestCase
     }
 
     /**
-     * Assert that a new RuntimeException will be thrown if the lazy loaded event listener is not callable.
+     * Assert that a new EventListenerException will be thrown if the lazy loaded event listener is not callable.
      *
      * @test
      */
-    public function testInvokeWillThrowRuntimeExceptionIfLoadedListenerIsNotCallable() : void
+    public function testInvokeWillThrowEventListenerExceptionIfLoadedListenerIsNotCallable() : void
     {
         $className = \stdClass::class;
 
@@ -42,7 +42,7 @@ final class LazyListenerTest extends TestCase
 
         $listener = new LazyListener($className, [], $factory);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(EventListenerException::class);
         $this->expectExceptionMessage(sprintf(
             'The the lazy loaded event listener, using class \'%s\', is not callable.',
             $className
