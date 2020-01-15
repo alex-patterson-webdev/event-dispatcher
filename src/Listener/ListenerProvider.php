@@ -11,6 +11,7 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 /**
  * ListenerProvider
  *
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Listener
  */
 class ListenerProvider implements ListenerProviderInterface

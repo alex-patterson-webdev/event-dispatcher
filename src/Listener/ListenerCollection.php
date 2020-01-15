@@ -7,6 +7,7 @@ namespace Arp\EventDispatcher\Listener;
 /**
  * ListenerCollection
  *
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Listener
  */
 class ListenerCollection implements ListenerCollectionInterface

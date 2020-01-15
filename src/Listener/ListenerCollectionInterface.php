@@ -7,6 +7,7 @@ namespace Arp\EventDispatcher\Listener;
 /**
  * ListenerCollectionInterface
  *
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Listener
  */
 interface ListenerCollectionInterface extends \IteratorAggregate, \Countable
