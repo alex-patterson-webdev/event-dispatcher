@@ -18,7 +18,7 @@ class LazyListener
     /**
      * @var array
      */
-    private $arguments = [];
+    private $arguments;
 
     /**
      * @var callable|null
@@ -39,7 +39,7 @@ class LazyListener
     ){
         $this->className = $className;
         $this->arguments = $arguments;
-        $this->factory   = $factory;
+        $this->factory = $factory;
     }
 
     /**
@@ -47,27 +47,27 @@ class LazyListener
      *
      * @param object $event
      */
-    public function __invoke(object $event)
+    public function __invoke(object $event) : void
     {
-        $listener = call_user_func_array(
-            (isset($this->factory) ? $this->factory : [$this, 'createListener']),
-            [$this->className, $this->arguments]
-        );
+        $factory = $this->factory;
 
+        if (null === $factory) {
+            $factory = $this->getDefaultListenerFactory();
+        }
+
+        $listener = $factory($this->className, $this->arguments);
         $listener($event);
     }
 
     /**
-     * Create the event listener.
+     * Return the default event listener factory.
      *
-     * @param string $className
-     * @param array  $arguments
-     *
-     * @return callable
+     * @return \Closure
      */
-    protected function createListener(string $className, array $arguments = []) : callable
+    protected function getDefaultListenerFactory() : callable
     {
-        return new $className(...$arguments);
+        return static function(string $className, array $arguments = []) {
+            return new $className(...$arguments);
+        };
     }
-
 }
