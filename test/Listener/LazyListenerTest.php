@@ -120,4 +120,24 @@ final class LazyListenerTest extends TestCase
         $lazyListener($expectedEvent);
     }
 
+    /**
+     * Assert that the defaultFactory is created and lazy loaded listener is executed correctly.
+     *
+     * @return void
+     */
+    public function testDefaultFactoryCreatesAndInvokesLazyListenerMock() : void
+    {
+        $event = new \stdClass();
+
+        $className = LazyListenerMock::class;
+        $arguments = [
+            $event, // bit of a hack but we need $event in the fake listener to assert something...
+            'foo' => 'bar',
+            'test' => 123,
+        ];
+
+        $lazyListener = new LazyListener($className, $arguments);
+
+        $lazyListener($event);
+    }
 }

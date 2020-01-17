@@ -81,7 +81,7 @@ class LazyListener
     protected function getDefaultListenerFactory() : callable
     {
         return static function(string $className, array $arguments = []) {
-            return new $className(...$arguments);
+            return new $className($arguments);
         };
     }
 }
