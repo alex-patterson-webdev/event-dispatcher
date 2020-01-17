@@ -10,6 +10,7 @@ use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use function foo\func;
 
 /**
  * ListenerProviderTest
@@ -151,5 +152,64 @@ class ListenerProviderTest extends TestCase
         $this->expectExceptionMessage(sprintf('Failed to resolve the event name : %s', $exceptionMessage));
 
         $provider->getListenersForEvent($event);
+    }
+
+    /**
+     * Assert calls to addListenerForEvent() will fetch a listener collection and add the provided listener.
+     *
+     * @param callable $listener
+     * @param int      $priority
+     *
+     * @dataProvider getAddListenerForEventData
+     * @return void
+     */
+    public function testAddListenerForEvent(callable $listener, int $priority = 1) : void
+    {
+        /** @var ListenerProvider|MockObject $provider */
+        $provider = $this->getMockBuilder(ListenerProvider::class)
+            ->setConstructorArgs([$this->eventNameResolver])
+            ->onlyMethods(['createListenerCollection'])
+            ->getMock();
+
+        $event = new \stdClass();
+        $eventName = \stdClass::class;
+
+        $this->eventNameResolver->expects($this->once())
+            ->method('resolveEventName')
+            ->with($event)
+            ->willReturn($eventName);
+
+        /** @var ListenerCollectionInterface|MockObject $collection */
+        $collection = $this->getMockForAbstractClass(ListenerCollectionInterface::class);
+
+        $provider->expects($this->once())
+            ->method('createListenerCollection')
+            ->willReturn($collection);
+
+        $collection->expects($this->once())
+            ->method('addListener')
+            ->with($listener, $priority);
+
+        $provider->addListenerForEvent($event, $listener, $priority);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAddListenerForEventData() : array
+    {
+        return [
+            [
+                static function () {},
+            ],
+            [
+                static function () {},
+                100
+            ],
+            [
+                static function () {},
+                -100
+            ],
+        ];
     }
 }
