@@ -10,7 +10,6 @@ use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use function foo\func;
 
 /**
  * ListenerProviderTest
