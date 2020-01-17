@@ -36,7 +36,7 @@ class ListenerProviderTest extends TestCase
     /**
      * Assert that the listener provider implements ListenerProviderInterface.
      *
-     * @test
+     * @return void
      */
     public function testImplementsListenerProviderInterface() : void
     {
@@ -52,7 +52,6 @@ class ListenerProviderTest extends TestCase
      * @param iterable|callable[]  $listeners  The collection of event listeners to test.
      *
      * @dataProvider getAddListenersForEventAndGetListenerForEventData
-     * @test
      */
     public function testAddListenersForEventAndGetListenerForEvent(iterable $listeners) : void
     {
@@ -102,7 +101,7 @@ class ListenerProviderTest extends TestCase
             [
                 [
                     static function(\stdClass $event) {
-                        return 'Foo';
+                        return $event->foo ?? 'Bar';
                     }
                 ]
             ],
@@ -111,13 +110,13 @@ class ListenerProviderTest extends TestCase
             [
                 [
                     static function(\stdClass $event) {
-                        return 'Foo';
+                        return $event->foo ?? 'Bar';
                     },
                     static function(\stdClass $event) {
-                        return 'Bar';
+                        return $event->foo ?? 'Bar';
                     },
                     static function(\stdClass $event) {
-                        return 'Baz';
+                        return $event->foo ?? 'Bar';
                     }
                 ],
             ],
@@ -132,7 +131,7 @@ class ListenerProviderTest extends TestCase
     /**
      * Assert that a EventListenerException will be thrown if the provided event name cannot be resolved.
      *
-     * @test
+     * @return void
      */
     public function testGetListenersForEventWillThrowEventListenerExceptionIfTheEventNameCannotBeResolved() : void
     {
