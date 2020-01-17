@@ -6,11 +6,13 @@ namespace ArpTest\EventDispatcher\Listener;
 
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\LazyListener;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * LazyListenerTest
  *
+ * @author Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\EventDispatcher\Listener
  */
 final class LazyListenerTest extends TestCase
@@ -18,7 +20,7 @@ final class LazyListenerTest extends TestCase
     /**
      * testIsCallable
      *
-     * @test
+     * @return void
      */
     public function testIsCallable() : void
     {
@@ -30,7 +32,7 @@ final class LazyListenerTest extends TestCase
     /**
      * Assert that a new EventListenerException will be thrown if the lazy loaded event listener is not callable.
      *
-     * @test
+     * @return void
      */
     public function testInvokeWillThrowEventListenerExceptionIfLoadedListenerIsNotCallable() : void
     {
@@ -56,22 +58,66 @@ final class LazyListenerTest extends TestCase
     /**
      * Assert that the event listener will be created and invoked.
      *
-     * @test
+     * @return void
      */
     public function testInvokeWillCreateAndInvokeTheLazyEventListener() : void
     {
-        $event = new \stdClass();
+        $expectedClassName = \stdClass::class;
 
-        $mockedListener = function ($passedEvent) use ($event)  {
-            $this->assertSame($passedEvent, $event);
+        $expectedEvent = new \stdClass();
+        $expectedArgs  = ['hello' => 'foo'];
+
+        $mockedListener = function ($passedEvent) use ($expectedEvent)  {
+            $this->assertSame($passedEvent, $expectedEvent);
         };
 
-        $factory = static function ($event) use ($mockedListener) {
+        $factory = function ($className, $arguments) use ($mockedListener, $expectedArgs, $expectedClassName) {
+            $this->assertSame($expectedClassName, $className);
+            $this->assertSame($expectedArgs, $arguments);
             return $mockedListener;
         };
 
-        $listener = new LazyListener('Foo', [], $factory);
+        $lazyListener = new LazyListener($expectedClassName, $expectedArgs, $factory);
 
-        $listener($event);
+        $lazyListener($expectedEvent);
     }
+
+    /**
+     * Assert that the default factory will be used if no factory has been provided to the.
+     *
+     * @throws EventListenerException
+     */
+    public function testDefaultFactoryWillBeUsedWhenOneIsNotProvidedViaConstruct() : void
+    {
+        $expectedClassName = 'Foo';
+        $expectedArguments = ['foo' => 'bar', 'bar' => 123];
+
+        $expectedEvent = new \stdClass();
+
+        $defaultListener = function (object $event) use ($expectedEvent) {
+            $this->assertSame($expectedEvent, $event);
+        };
+
+        $defaultListenerFactory = function (string $className, array $arguments = [])
+            use ($expectedClassName, $expectedArguments, $defaultListener)
+        {
+            $this->assertSame($expectedClassName, $className);
+            $this->assertSame($expectedArguments, $arguments);
+
+            return $defaultListener;
+        };
+
+        /** @var LazyListener|MockObject $lazyListener */
+        $lazyListener = $this->getMockBuilder(LazyListener::class)
+            ->setConstructorArgs([$expectedClassName, $expectedArguments])
+            ->onlyMethods(['getDefaultListenerFactory'])
+            ->getMock();
+
+        $lazyListener->expects($this->once())
+            ->method('getDefaultListenerFactory')
+            ->willReturn($defaultListenerFactory);
+
+        $lazyListener($expectedEvent);
+    }
+
 }
