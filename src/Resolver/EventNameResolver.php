@@ -8,7 +8,7 @@ use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Resolver
  */
-class EventNameResolver implements EventNameResolverInterface
+final class EventNameResolver implements EventNameResolverInterface
 {
     /**
      * Resolve an event instance into an event name.
