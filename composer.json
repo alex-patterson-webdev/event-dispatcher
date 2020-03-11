@@ -1,5 +1,8 @@
 {
   "name" : "alex-patterson-webdev/event-dispatcher",
+  "version": "1.0.0",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
   "require": {
     "php" : ">=7.2",
     "psr/event-dispatcher" : "^1"
@@ -16,5 +19,13 @@
     "psr-4": {
       "ArpTest\\EventDispatcher\\" : "test/"
     }
+  },
+  "scripts": {
+    "test": "phpunit"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "optimize-autoloader": true,
+    "sort-packages": true
   }
 }

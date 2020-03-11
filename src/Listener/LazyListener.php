@@ -26,8 +26,6 @@ class LazyListener
     private $factory;
 
     /**
-     * __construct
-     *
      * @param string        $className
      * @param array         $arguments
      * @param callable|null $factory

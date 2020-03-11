@@ -1,6 +1,9 @@
+[![Latest Stable Version](https://poser.pugx.org/alex-patterson-webdev/event-dispatcher/version)](https://packagist.org/packages/alex-patterson-webdev/event-dispatcher) 
+[![Latest Unstable Version](https://poser.pugx.org/alex-patterson-webdev/event-dispatcher/v/unstable)](//packagist.org/packages/alex-patterson-webdev/event-dispatcher) 
+[![Total Downloads](https://poser.pugx.org/alex-patterson-webdev/event-dispatcher/downloads)](https://packagist.org/packages/alex-patterson-webdev/event-dispatcher) 
+[![composer.lock available](https://poser.pugx.org/alex-patterson-webdev/event-dispatcher/composerlock)](https://packagist.org/packages/alex-patterson-webdev/event-dispatcher)
 
 # About
-
 A simple implementation of the [PSR-14 Event Dispatcher](https://www.php-fig.org/psr/psr-14/).
 
 # Installation

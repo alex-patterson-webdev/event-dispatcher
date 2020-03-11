@@ -15,7 +15,7 @@ final class EventDispatcher implements EventDispatcherInterface
     /**
      * @var ListenerProviderInterface
      */
-    protected $listenerProvider;
+    private $listenerProvider;
 
     /**
      * @param ListenerProviderInterface $listenerProvider
@@ -32,14 +32,13 @@ final class EventDispatcher implements EventDispatcherInterface
      *
      * @return object
      */
-    public function dispatch(object $event)
+    public function dispatch(object $event) : object
     {
         if ($this->isPropagationStopped($event)) {
             return $event;
         }
 
         foreach($this->listenerProvider->getListenersForEvent($event) as $listener) {
-
             $listener($event);
 
             if ($this->isPropagationStopped($event)) {
