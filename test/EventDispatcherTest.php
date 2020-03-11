@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ArpTest\EventDispatcher;
 
@@ -10,11 +10,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * EventDispatcherTest
- *
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\EventDispatcher
  */
-class EventDispatcherTest extends TestCase
+final class EventDispatcherTest extends TestCase
 {
     /**
      * @var ListenerProviderInterface|MockObject

@@ -1,14 +1,10 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Event;
 
 use Arp\EventDispatcher\Resolver\EventNameAwareInterface;
 
 /**
- * NamedEvent
- *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Event
  */
@@ -20,8 +16,6 @@ class NamedEvent extends AbstractEvent implements EventNameAwareInterface
     protected $eventName;
 
     /**
-     * __construct
-     *
      * @param string $eventName
      * @param array  $params
      */
@@ -37,7 +31,7 @@ class NamedEvent extends AbstractEvent implements EventNameAwareInterface
      *
      * @return string
      */
-    public function getEventName(): string
+    public function getEventName() : string
     {
         return $this->eventName;
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ArpTest\EventDispatcher\Listener;
 
@@ -7,8 +7,7 @@ use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
- * ListenerCollectionTest
- *
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\EventDispatcher\Listener
  */
 final class ListenerCollectionTest extends TestCase

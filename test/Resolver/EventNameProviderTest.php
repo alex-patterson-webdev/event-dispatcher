@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ArpTest\EventDispatcher\Resolver;
 
@@ -9,11 +9,10 @@ use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * EventNameProviderTest
- *
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\EventDispatcher\Resolver
  */
-class EventNameProviderTest extends TestCase
+final class EventNameProviderTest extends TestCase
 {
     /**
      * Assert that the EventNameResolver implements EventNameResolverInterface

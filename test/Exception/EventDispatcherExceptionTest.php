@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ArpTest\EventDispatcher\Exception;
 
@@ -6,11 +6,10 @@ use Arp\EventDispatcher\Exception\EventDispatcherException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * EventDispatcherExceptionTest
- *
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\EventDispatcher\Exception
  */
-class EventDispatcherExceptionTest extends TestCase
+final class EventDispatcherExceptionTest extends TestCase
 {
     /**
      * Assert that the EventDispatcherException extends \Exception.
