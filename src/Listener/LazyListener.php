@@ -1,14 +1,10 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Listener;
 
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 
 /**
- * LazyListener
- *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Listener
  */

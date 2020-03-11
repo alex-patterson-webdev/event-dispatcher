@@ -1,12 +1,8 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Event;
 
 /**
- * Parameters
- *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Event
  */
@@ -38,7 +34,7 @@ final class Parameters implements ParametersInterface
      *
      * @return bool
      */
-    public function hasParam(string $name): bool
+    public function hasParam(string $name) : bool
     {
         return isset($this->params[$name]);
     }
@@ -69,7 +65,7 @@ final class Parameters implements ParametersInterface
     /**
      * @param array $params
      */
-    public function setParams(array $params): void
+    public function setParams(array $params) : void
     {
         $this->removeParams([]);
 
@@ -82,7 +78,7 @@ final class Parameters implements ParametersInterface
      * @param string $name
      * @param mixed  $value
      */
-    public function setParam(string $name, $value): void
+    public function setParam(string $name, $value) : void
     {
         $this->params[$name] = $value;
     }
@@ -120,7 +116,7 @@ final class Parameters implements ParametersInterface
     /**
      * @return int
      */
-    public function count(): int
+    public function count() : int
     {
         return count($this->params);
     }
@@ -128,7 +124,7 @@ final class Parameters implements ParametersInterface
     /**
      * @return bool
      */
-    public function isEmpty(): bool
+    public function isEmpty() : bool
     {
         return empty($this->params);
     }
@@ -136,7 +132,7 @@ final class Parameters implements ParametersInterface
     /**
      * @return array
      */
-    public function getKeys(): array
+    public function getKeys() : array
     {
         return array_keys($this->params);
     }
@@ -144,7 +140,7 @@ final class Parameters implements ParametersInterface
     /**
      * @return array
      */
-    public function getValues(): array
+    public function getValues() : array
     {
         return array_values($this->params);
     }

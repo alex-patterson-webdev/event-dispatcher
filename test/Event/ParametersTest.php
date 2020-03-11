@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ArpTest\EventDispatcher\Event;
 
@@ -7,8 +7,6 @@ use Arp\EventDispatcher\Event\ParametersInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
- * ParametersTest
- *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\EventDispatcher\Event
  */
