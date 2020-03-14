@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Event;
 
@@ -92,7 +94,7 @@ final class Parameters implements ParametersInterface
             $params = $this->getKeys();
         }
 
-        foreach($params as $name) {
+        foreach ($params as $name) {
             $this->removeParam($name);
         }
     }

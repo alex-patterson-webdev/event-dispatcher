@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Listener;
 
@@ -99,9 +101,7 @@ class ListenerProvider implements ListenerProviderInterface
     {
         try {
             $eventName = $this->eventNameResolver->resolveEventName($event);
-        }
-        catch (EventNameResolverException $e) {
-
+        } catch (EventNameResolverException $e) {
             throw new EventListenerException(
                 sprintf('Failed to resolve the event name : %s', $e->getMessage()),
                 $e->getCode(),

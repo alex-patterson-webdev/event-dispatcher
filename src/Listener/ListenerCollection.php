@@ -1,10 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Listener;
 
 /**
- * ListenerCollection
- *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Listener
  */
@@ -25,13 +25,11 @@ class ListenerCollection implements ListenerCollectionInterface
     private $queueOrder = PHP_INT_MIN;
 
     /**
-     * __construct
-     *
      * @param callable[] $listeners
      */
     public function __construct($listeners = [])
     {
-        $this->listeners = new \SplPriorityQueue;
+        $this->listeners = new \SplPriorityQueue();
 
         if (! empty($listeners)) {
             $this->addListeners($listeners);
@@ -71,7 +69,7 @@ class ListenerCollection implements ListenerCollectionInterface
      */
     public function addListeners(array $listeners, int $priority = 1) : void
     {
-        foreach($listeners as $listener) {
+        foreach ($listeners as $listener) {
             $this->addListener($listener, $priority);
         }
     }
@@ -84,7 +82,7 @@ class ListenerCollection implements ListenerCollectionInterface
      */
     public function merge(\Traversable $collection, int $priority = 1) : void
     {
-        $this->addListeners(iterator_to_array($collection, false), $priority = 1);
+        $this->addListeners(iterator_to_array($collection, false), $priority);
     }
 
     /**

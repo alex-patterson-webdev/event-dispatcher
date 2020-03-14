@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Listener;
 
@@ -34,7 +36,7 @@ class LazyListener
         string $className,
         array $arguments = [],
         callable $factory = null
-    ){
+    ) {
         $this->className = $className;
         $this->arguments = $arguments;
         $this->factory = $factory;
@@ -74,7 +76,7 @@ class LazyListener
      */
     protected function getDefaultListenerFactory() : callable
     {
-        return static function(string $className, array $arguments = []) {
+        return static function (string $className, array $arguments = []) {
             return new $className($arguments);
         };
     }

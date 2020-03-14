@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Arp\EventDispatcher;
 
@@ -38,7 +40,7 @@ final class EventDispatcher implements EventDispatcherInterface
             return $event;
         }
 
-        foreach($this->listenerProvider->getListenersForEvent($event) as $listener) {
+        foreach ($this->listenerProvider->getListenersForEvent($event) as $listener) {
             $listener($event);
 
             if ($this->isPropagationStopped($event)) {
