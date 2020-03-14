@@ -19,7 +19,7 @@ final class EventNameProviderTest extends TestCase
     /**
      * Assert that the EventNameResolver implements EventNameResolverInterface
      *
-     * @test
+     * @covers \Arp\EventDispatcher\Resolver\EventNameResolver
      */
     public function testImplementsEventNameResolverInterface(): void
     {
@@ -34,7 +34,7 @@ final class EventNameProviderTest extends TestCase
      * @param string $eventName The event name string to test.
      *
      * @dataProvider getResolveEventNameWillResolveStringEventNameData
-     * @test
+     * @covers \Arp\EventDispatcher\Resolver\EventNameResolver::resolveEventName
      */
     public function testResolveEventNameWillResolveStringEventName(string $eventName): void
     {
@@ -58,13 +58,13 @@ final class EventNameProviderTest extends TestCase
     /**
      * Assert that the class name of the object provided to resolveEventName() will return the FQCN.
      *
-     * @test
+     * @covers \Arp\EventDispatcher\Resolver\EventNameResolver::resolveEventName
      */
     public function testResolveEventNameWillResolveObjectEventName(): void
     {
         $resolver = new EventNameResolver();
 
-        $event = new \stdClass;
+        $event = new \stdClass();
 
         $this->assertSame(get_class($event), $resolver->resolveEventName($event));
     }
@@ -72,7 +72,7 @@ final class EventNameProviderTest extends TestCase
     /**
      * Assert that the event name will resolve to the FQCN of the provided object when calling resolveEventName().
      *
-     * @test
+     * @covers \Arp\EventDispatcher\Resolver\EventNameResolver::resolveEventName
      */
     public function testResolveEventNameWillResolveEventNameAwareEventName(): void
     {
@@ -91,7 +91,7 @@ final class EventNameProviderTest extends TestCase
     /**
      * Assert that a InvalidArgumentException is thrown when passing an invalid argument to resolveEventName().
      *
-     * @test
+     * @covers \Arp\EventDispatcher\Resolver\EventNameResolver::resolveEventName
      */
     public function testResolveEventNameWillThrowInvalidArgumentException(): void
     {

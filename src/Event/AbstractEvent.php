@@ -24,7 +24,7 @@ abstract class AbstractEvent
     }
 
     /**
-     * setParameters
+     * Set the parameters collection.
      *
      * @param ParametersInterface $params
      */
@@ -34,7 +34,7 @@ abstract class AbstractEvent
     }
 
     /**
-     * Return the parameters collection
+     * Return the parameters collection.
      *
      * @return ParametersInterface
      */

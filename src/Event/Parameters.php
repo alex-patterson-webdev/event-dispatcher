@@ -24,11 +24,19 @@ final class Parameters implements ParametersInterface
     }
 
     /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return count($this->params);
+    }
+
+    /**
      * @return bool
      */
-    public function hasParams(): bool
+    public function isEmpty(): bool
     {
-        return !empty($this->params);
+        return empty($this->params);
     }
 
     /**
@@ -44,7 +52,7 @@ final class Parameters implements ParametersInterface
      */
     public function setParams(array $params): void
     {
-        $this->removeParams([]);
+        $this->removeParams();
 
         foreach ($params as $name => $value) {
             $this->setParam($name, $value);
@@ -63,22 +71,6 @@ final class Parameters implements ParametersInterface
         foreach ($params as $name) {
             $this->removeParam($name);
         }
-    }
-
-    /**
-     * @return int
-     */
-    public function count(): int
-    {
-        return count($this->params);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEmpty(): bool
-    {
-        return empty($this->params);
     }
 
     /**
@@ -138,7 +130,6 @@ final class Parameters implements ParametersInterface
         if ($this->hasParam($name)) {
             return $this->params[$name];
         }
-
         return $default;
     }
 
@@ -177,10 +168,8 @@ final class Parameters implements ParametersInterface
     {
         if ($this->hasParam($name)) {
             unset($this->params[$name]);
-
             return true;
         }
-
         return false;
     }
 

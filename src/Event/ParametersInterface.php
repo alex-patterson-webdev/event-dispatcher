@@ -11,11 +11,6 @@ namespace Arp\EventDispatcher\Event;
 interface ParametersInterface extends \IteratorAggregate, \Countable, \ArrayAccess
 {
     /**
-     * @return bool
-     */
-    public function hasParams(): bool;
-
-    /**
      * @param string $name
      *
      * @return bool

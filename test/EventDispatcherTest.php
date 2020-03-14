@@ -35,7 +35,7 @@ final class EventDispatcherTest extends TestCase
     /**
      * Ensure that the event manager implements EventDispatcherInterface.
      *
-     * @test
+     * @covers \Arp\EventDispatcher\EventDispatcher
      */
     public function testImplementsEventDispatcherInterface(): void
     {
@@ -48,7 +48,7 @@ final class EventDispatcherTest extends TestCase
      * If we call dispatch with a StoppableEventInterface that already has propagation stopped, no event listeners
      * should be triggered.
      *
-     * @test
+     * @covers \Arp\EventDispatcher\EventDispatcher::dispatch
      */
     public function testDispatchWillPreventEventPropagationIfProvidedEventHasPropagationStopped(): void
     {
@@ -74,7 +74,8 @@ final class EventDispatcherTest extends TestCase
      * @param integer $stopIndex     The index that the event listener should stop propagation.
      *
      * @dataProvider getDispatchWillPreventEventPropagationIfItIsStoppedWithinAListenerData
-     * @test
+     *
+     * @covers \Arp\EventDispatcher\EventDispatcher::dispatch
      */
     public function testDispatchWillNotPropagationEventIfItIsStoppedWithinAListener(
         int $listenerCount,
@@ -137,7 +138,8 @@ final class EventDispatcherTest extends TestCase
      * @param int    $numberOfListeners
      *
      * @dataProvider getDispatchWillInvokeEventListenersForProvidedEventData
-     * @test
+     *
+     * @covers \Arp\EventDispatcher\EventDispatcher::dispatch
      */
     public function testDispatchWillInvokeEventListenersForProvidedEvent($event, $numberOfListeners = 0): void
     {
@@ -168,10 +170,9 @@ final class EventDispatcherTest extends TestCase
     {
         return [
             [
-                new \stdClass,
+                new \stdClass(),
                 7,
             ],
-
             [
                 $this->getMockForAbstractClass(StoppableEventInterface::class)
                     ->expects($this->exactly(5))
@@ -181,5 +182,4 @@ final class EventDispatcherTest extends TestCase
             ],
         ];
     }
-
 }
