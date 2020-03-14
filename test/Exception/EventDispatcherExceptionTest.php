@@ -16,7 +16,7 @@ final class EventDispatcherExceptionTest extends TestCase
      *
      * @test
      */
-    public function testImplementsException() : void
+    public function testImplementsException(): void
     {
         $exception = new EventDispatcherException();
 

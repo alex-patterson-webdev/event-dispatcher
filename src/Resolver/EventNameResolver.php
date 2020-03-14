@@ -27,7 +27,7 @@ final class EventNameResolver implements EventNameResolverInterface
             return $event;
         }
 
-        if (! is_object($event)) {
+        if (!is_object($event)) {
             throw new EventNameResolverException(sprintf(
                 'The \'event\' argument must be of type \'string\' or \'object\'; \'%s\' provided in \'%s\'.',
                 gettype($event),

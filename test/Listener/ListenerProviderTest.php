@@ -7,9 +7,9 @@ use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
 use Arp\EventDispatcher\Listener\ListenerProvider;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
 use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
-use Psr\EventDispatcher\ListenerProviderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\EventDispatcher\ListenerProviderInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -37,7 +37,7 @@ final class ListenerProviderTest extends TestCase
      *
      * @return void
      */
-    public function testImplementsListenerProviderInterface() : void
+    public function testImplementsListenerProviderInterface(): void
     {
         $provider = new ListenerProvider($this->eventNameResolver);
 
@@ -48,11 +48,11 @@ final class ListenerProviderTest extends TestCase
      * Assert that the listener provider will return a clone of the internal listener collection which contains
      * the required event listeners in the correct priority order.
      *
-     * @param iterable|callable[]  $listeners  The collection of event listeners to test.
+     * @param iterable|callable[] $listeners The collection of event listeners to test.
      *
      * @dataProvider getAddListenersForEventAndGetListenerForEventData
      */
-    public function testAddListenersForEventAndGetListenerForEvent(iterable $listeners) : void
+    public function testAddListenersForEventAndGetListenerForEvent(iterable $listeners): void
     {
         $provider = new ListenerProvider($this->eventNameResolver);
 
@@ -68,7 +68,7 @@ final class ListenerProviderTest extends TestCase
             ? iterator_to_array($listeners)
             : $listeners;
 
-        foreach($collection as $index => $item) {
+        foreach ($collection as $index => $item) {
             $this->assertSame($listeners[$index], $item);
         }
     }
@@ -76,12 +76,15 @@ final class ListenerProviderTest extends TestCase
     /**
      * @return array
      */
-    public function getAddListenersForEventAndGetListenerForEventData() : array
+    public function getAddListenersForEventAndGetListenerForEventData(): array
     {
         $collectionIterator = new \ArrayObject([
-            static function ($event) {},
-            static function ($event) {},
-            static function ($event) {},
+            static function ($event) {
+            },
+            static function ($event) {
+            },
+            static function ($event) {
+            },
         ]);
 
         $collection = $this->getMockForAbstractClass(ListenerCollectionInterface::class);
@@ -99,31 +102,31 @@ final class ListenerProviderTest extends TestCase
             // One Listener (with type hint)
             [
                 [
-                    static function(\stdClass $event) {
+                    static function (\stdClass $event) {
                         return $event->foo ?? 'Bar';
-                    }
-                ]
+                    },
+                ],
             ],
 
             // Three Listeners
             [
                 [
-                    static function(\stdClass $event) {
+                    static function (\stdClass $event) {
                         return $event->foo ?? 'Bar';
                     },
-                    static function(\stdClass $event) {
+                    static function (\stdClass $event) {
                         return $event->foo ?? 'Bar';
                     },
-                    static function(\stdClass $event) {
+                    static function (\stdClass $event) {
                         return $event->foo ?? 'Bar';
-                    }
+                    },
                 ],
             ],
 
             // Traversable test
             [
                 $collection,
-            ]
+            ],
         ];
     }
 
@@ -132,7 +135,7 @@ final class ListenerProviderTest extends TestCase
      *
      * @return void
      */
-    public function testGetListenersForEventWillThrowEventListenerExceptionIfTheEventNameCannotBeResolved() : void
+    public function testGetListenersForEventWillThrowEventListenerExceptionIfTheEventNameCannotBeResolved(): void
     {
         $provider = new ListenerProvider($this->eventNameResolver);
 
@@ -161,7 +164,7 @@ final class ListenerProviderTest extends TestCase
      * @dataProvider getAddListenerForEventData
      * @return void
      */
-    public function testAddListenerForEvent(callable $listener, int $priority = 1) : void
+    public function testAddListenerForEvent(callable $listener, int $priority = 1): void
     {
         /** @var ListenerProvider|MockObject $provider */
         $provider = $this->getMockBuilder(ListenerProvider::class)
@@ -194,19 +197,22 @@ final class ListenerProviderTest extends TestCase
     /**
      * @return array
      */
-    public function getAddListenerForEventData() : array
+    public function getAddListenerForEventData(): array
     {
         return [
             [
-                static function () {},
+                static function () {
+                },
             ],
             [
-                static function () {},
-                100
+                static function () {
+                },
+                100,
             ],
             [
-                static function () {},
-                -100
+                static function () {
+                },
+                -100,
             ],
         ];
     }

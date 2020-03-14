@@ -3,11 +3,11 @@
 namespace ArpTest\EventDispatcher;
 
 use Arp\EventDispatcher\EventDispatcher;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -35,7 +35,7 @@ final class EventDispatcherTest extends TestCase
      *
      * @test
      */
-    public function testImplementsEventDispatcherInterface() : void
+    public function testImplementsEventDispatcherInterface(): void
     {
         $eventManager = new EventDispatcher($this->listenerProvider);
 
@@ -48,7 +48,7 @@ final class EventDispatcherTest extends TestCase
      *
      * @test
      */
-    public function testDispatchWillPreventEventPropagationIfProvidedEventHasPropagationStopped() : void
+    public function testDispatchWillPreventEventPropagationIfProvidedEventHasPropagationStopped(): void
     {
         $eventDispatcher = new EventDispatcher($this->listenerProvider);
 
@@ -68,8 +68,8 @@ final class EventDispatcherTest extends TestCase
     /**
      * Assert that the event propagation is stopped if we modify the StoppableEventInterface within an event.
      *
-     * @param integer  $listenerCount  The number of event listeners attached to the dispatched event.
-     * @param integer  $stopIndex      The index that the event listener should stop propagation.
+     * @param integer $listenerCount The number of event listeners attached to the dispatched event.
+     * @param integer $stopIndex     The index that the event listener should stop propagation.
      *
      * @dataProvider getDispatchWillPreventEventPropagationIfItIsStoppedWithinAListenerData
      * @test
@@ -77,8 +77,7 @@ final class EventDispatcherTest extends TestCase
     public function testDispatchWillNotPropagationEventIfItIsStoppedWithinAListener(
         int $listenerCount,
         int $stopIndex
-    ) : void
-    {
+    ): void {
         if ($stopIndex >= $listenerCount) {
             $this->fail(sprintf(
                 'The stop index \'%d\' must be less than the number of event listeners \'%d\'.',
@@ -96,9 +95,10 @@ final class EventDispatcherTest extends TestCase
         $isStopped = [];
 
         for ($x = 0; $x < $listenerCount; $x++) {
-            $eventListeners[] = static function (StoppableEventInterface $event) use ($x, $stopIndex) {};
+            $eventListeners[] = static function (StoppableEventInterface $event) use ($x, $stopIndex) {
+            };
 
-            if ($x < ($stopIndex+1)) {
+            if ($x < ($stopIndex + 1)) {
                 $isStopped[] = ($x === $stopIndex);
             }
         }
@@ -117,7 +117,7 @@ final class EventDispatcherTest extends TestCase
     /**
      * @return array
      */
-    public function getDispatchWillPreventEventPropagationIfItIsStoppedWithinAListenerData() : array
+    public function getDispatchWillPreventEventPropagationIfItIsStoppedWithinAListenerData(): array
     {
         return [
             [1, 0],
@@ -137,13 +137,13 @@ final class EventDispatcherTest extends TestCase
      * @dataProvider getDispatchWillInvokeEventListenersForProvidedEventData
      * @test
      */
-    public function testDispatchWillInvokeEventListenersForProvidedEvent($event, $numberOfListeners = 0) : void
+    public function testDispatchWillInvokeEventListenersForProvidedEvent($event, $numberOfListeners = 0): void
     {
         $eventDispatcher = new EventDispatcher($this->listenerProvider);
 
         $listeners = [];
 
-        for($x = 0; $x < $numberOfListeners; $x++) {
+        for ($x = 0; $x < $numberOfListeners; $x++) {
             $listeners[] = static function ($event) use ($x) {
                 return 'Foo' . $x;
             };
@@ -162,12 +162,12 @@ final class EventDispatcherTest extends TestCase
     /**
      * @return array
      */
-    public function getDispatchWillInvokeEventListenersForProvidedEventData() : array
+    public function getDispatchWillInvokeEventListenersForProvidedEventData(): array
     {
         return [
             [
                 new \stdClass,
-                7
+                7,
             ],
 
             [
@@ -175,8 +175,8 @@ final class EventDispatcherTest extends TestCase
                     ->expects($this->exactly(5))
                     ->method('isPropagationStopped')
                     ->willReturn(false),
-                5
-            ]
+                5,
+            ],
         ];
     }
 

@@ -8,7 +8,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author Alex Patterson <alex.patterson.webdev@gmail.com>
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\EventDispatcher\Listener
  */
 final class LazyListenerTest extends TestCase
@@ -18,7 +18,7 @@ final class LazyListenerTest extends TestCase
      *
      * @return void
      */
-    public function testIsCallable() : void
+    public function testIsCallable(): void
     {
         $listener = new LazyListener(\stdClass::class, []);
 
@@ -30,7 +30,7 @@ final class LazyListenerTest extends TestCase
      *
      * @return void
      */
-    public function testInvokeWillThrowEventListenerExceptionIfLoadedListenerIsNotCallable() : void
+    public function testInvokeWillThrowEventListenerExceptionIfLoadedListenerIsNotCallable(): void
     {
         $className = \stdClass::class;
 
@@ -56,14 +56,14 @@ final class LazyListenerTest extends TestCase
      *
      * @return void
      */
-    public function testInvokeWillCreateAndInvokeTheLazyEventListener() : void
+    public function testInvokeWillCreateAndInvokeTheLazyEventListener(): void
     {
         $expectedClassName = \stdClass::class;
 
         $expectedEvent = new \stdClass();
-        $expectedArgs  = ['hello' => 'foo'];
+        $expectedArgs = ['hello' => 'foo'];
 
-        $mockedListener = function ($passedEvent) use ($expectedEvent)  {
+        $mockedListener = function ($passedEvent) use ($expectedEvent) {
             $this->assertSame($passedEvent, $expectedEvent);
         };
 
@@ -83,7 +83,7 @@ final class LazyListenerTest extends TestCase
      *
      * @throws EventListenerException
      */
-    public function testDefaultFactoryWillBeUsedWhenOneIsNotProvidedViaConstruct() : void
+    public function testDefaultFactoryWillBeUsedWhenOneIsNotProvidedViaConstruct(): void
     {
         $expectedClassName = 'Foo';
         $expectedArguments = ['foo' => 'bar', 'bar' => 123];
@@ -95,8 +95,7 @@ final class LazyListenerTest extends TestCase
         };
 
         $defaultListenerFactory = function (string $className, array $arguments = [])
-            use ($expectedClassName, $expectedArguments, $defaultListener)
-        {
+        use ($expectedClassName, $expectedArguments, $defaultListener) {
             $this->assertSame($expectedClassName, $className);
             $this->assertSame($expectedArguments, $arguments);
 
@@ -121,7 +120,7 @@ final class LazyListenerTest extends TestCase
      *
      * @return void
      */
-    public function testDefaultFactoryCreatesAndInvokesLazyListenerMock() : void
+    public function testDefaultFactoryCreatesAndInvokesLazyListenerMock(): void
     {
         $event = new \stdClass();
 

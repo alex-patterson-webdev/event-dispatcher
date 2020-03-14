@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\EventDispatcher;
 
-use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
 
 /**
@@ -24,17 +24,17 @@ final class EventDispatcher implements EventDispatcherInterface
      */
     public function __construct(ListenerProviderInterface $listenerProvider)
     {
-        $this->listenerProvider  = $listenerProvider;
+        $this->listenerProvider = $listenerProvider;
     }
 
     /**
      * Trigger the registered collection of events.
      *
-     * @param object $event  The event that should be triggered.
+     * @param object $event The event that should be triggered.
      *
      * @return object
      */
-    public function dispatch(object $event) : object
+    public function dispatch(object $event): object
     {
         if ($this->isPropagationStopped($event)) {
             return $event;
@@ -56,7 +56,7 @@ final class EventDispatcher implements EventDispatcherInterface
      *
      * @return bool
      */
-    private function isPropagationStopped(object $event) : bool
+    private function isPropagationStopped(object $event): bool
     {
         return ($event instanceof StoppableEventInterface && $event->isPropagationStopped());
     }

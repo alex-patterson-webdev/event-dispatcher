@@ -17,7 +17,7 @@ final class ParametersTest extends TestCase
      *
      * @test
      */
-    public function testImplementsParametersInterface() : void
+    public function testImplementsParametersInterface(): void
     {
         $params = new Parameters([]);
 
@@ -30,7 +30,7 @@ final class ParametersTest extends TestCase
      * @dataProvider getGetSetParametersData
      * @test
      */
-    public function testGetSetParameters(array $data) : void
+    public function testGetSetParameters(array $data): void
     {
         $params = new Parameters();
 
@@ -44,21 +44,21 @@ final class ParametersTest extends TestCase
     /**
      * @return array
      */
-    public function getGetSetParametersData() : array
+    public function getGetSetParametersData(): array
     {
         return [
             // Simple
             [
                 [
                     'foo' => 'bar',
-                ]
+                ],
             ],
 
             // Extra data types
             [
                 [
-                    'test'  => 'Red',
-                    'blue'  => true,
+                    'test' => 'Red',
+                    'blue' => true,
                     'Hello' => 455.667,
                 ],
             ],
@@ -74,7 +74,7 @@ final class ParametersTest extends TestCase
                         '789' => 123.456,
                     ],
                     'object' => new \stdClass(),
-                ]
+                ],
             ],
         ];
     }

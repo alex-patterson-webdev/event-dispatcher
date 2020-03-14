@@ -7,7 +7,7 @@ use PHPUnit\Framework\Assert;
 /**
  * Test listener class that we can get the LazyListener to create within our testing.
  *
- * @author Alex Patterson <alex.patterson.webdev@gmail.com>
+ * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\EventDispatcher\Listener
  */
 final class LazyListenerMock

@@ -2,9 +2,9 @@
 
 namespace ArpTest\EventDispatcher\Resolver;
 
+use Arp\EventDispatcher\Resolver\EventNameAwareInterface;
 use Arp\EventDispatcher\Resolver\EventNameResolver;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
-use Arp\EventDispatcher\Resolver\EventNameAwareInterface;
 use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use PHPUnit\Framework\TestCase;
 
@@ -19,7 +19,7 @@ final class EventNameProviderTest extends TestCase
      *
      * @test
      */
-    public function testImplementsEventNameResolverInterface() : void
+    public function testImplementsEventNameResolverInterface(): void
     {
         $resolver = new EventNameResolver();
 
@@ -29,12 +29,12 @@ final class EventNameProviderTest extends TestCase
     /**
      * Assert that when providing a string to resolveEventName() we will return the same string.
      *
-     * @param string $eventName  The event name string to test.
+     * @param string $eventName The event name string to test.
      *
      * @dataProvider getResolveEventNameWillResolveStringEventNameData
      * @test
      */
-    public function testResolveEventNameWillResolveStringEventName(string $eventName) : void
+    public function testResolveEventNameWillResolveStringEventName(string $eventName): void
     {
         $resolver = new EventNameResolver();
 
@@ -44,12 +44,12 @@ final class EventNameProviderTest extends TestCase
     /**
      * @return array
      */
-    public function getResolveEventNameWillResolveStringEventNameData() : array
+    public function getResolveEventNameWillResolveStringEventNameData(): array
     {
         return [
             ['FooEvent'],
             ['BarEvent'],
-            ['HelloWorld']
+            ['HelloWorld'],
         ];
     }
 
@@ -58,7 +58,7 @@ final class EventNameProviderTest extends TestCase
      *
      * @test
      */
-    public function testResolveEventNameWillResolveObjectEventName() : void
+    public function testResolveEventNameWillResolveObjectEventName(): void
     {
         $resolver = new EventNameResolver();
 
@@ -72,7 +72,7 @@ final class EventNameProviderTest extends TestCase
      *
      * @test
      */
-    public function testResolveEventNameWillResolveEventNameAwareEventName() : void
+    public function testResolveEventNameWillResolveEventNameAwareEventName(): void
     {
         $resolver = new EventNameResolver();
 
@@ -91,7 +91,7 @@ final class EventNameProviderTest extends TestCase
      *
      * @test
      */
-    public function testResolveEventNameWillThrowInvalidArgumentException() : void
+    public function testResolveEventNameWillThrowInvalidArgumentException(): void
     {
         $resolver = new EventNameResolver();
 

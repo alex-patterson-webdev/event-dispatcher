@@ -45,11 +45,11 @@ class LazyListener
     /**
      * Create and then execute the event listener.
      *
-     * @param object $event  The event that has been dispatched.
+     * @param object $event The event that has been dispatched.
      *
      * @throws EventListenerException  If the loaded event listener is not callable.
      */
-    public function __invoke(object $event) : void
+    public function __invoke(object $event): void
     {
         $factory = $this->factory;
 
@@ -59,7 +59,7 @@ class LazyListener
 
         $listener = $factory($this->className, $this->arguments);
 
-        if (! is_callable($listener)) {
+        if (!is_callable($listener)) {
             throw new EventListenerException(sprintf(
                 'The the lazy loaded event listener, using class \'%s\', is not callable.',
                 $this->className
@@ -74,7 +74,7 @@ class LazyListener
      *
      * @return \Closure
      */
-    protected function getDefaultListenerFactory() : callable
+    protected function getDefaultListenerFactory(): callable
     {
         return static function (string $className, array $arguments = []) {
             return new $className($arguments);

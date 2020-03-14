@@ -33,7 +33,7 @@ class NamedEvent extends AbstractEvent implements EventNameAwareInterface
      *
      * @return string
      */
-    public function getEventName() : string
+    public function getEventName(): string
     {
         return $this->eventName;
     }
