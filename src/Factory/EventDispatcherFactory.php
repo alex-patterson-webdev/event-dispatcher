@@ -25,16 +25,16 @@ final class EventDispatcherFactory implements FactoryInterface
     private $defaultClassName = EventDispatcher::class;
 
     /**
-     * @var ListenerProviderFactory
+     * @var FactoryInterface
      */
     private $listenerProviderFactory;
 
     /**
-     * @param ListenerProviderFactory|null $listenerProviderFactory
+     * @param FactoryInterface|null $listenerProviderFactory
      * @param string|null $defaultClassName
      */
     public function __construct(
-        ListenerProviderFactory $listenerProviderFactory = null,
+        FactoryInterface $listenerProviderFactory = null,
         string $defaultClassName = null
     ) {
         if (null === $listenerProviderFactory) {
