@@ -98,6 +98,41 @@ final class ParametersTest extends TestCase
     }
 
     /**
+     * Assert that parameter values can be set and get by name.
+     *
+     * @covers \Arp\EventDispatcher\Event\Parameters::setParam
+     * @covers \Arp\EventDispatcher\Event\Parameters::getParam
+     */
+    public function testGetAndSetParam(): void
+    {
+        $params = new Parameters([]);
+
+        $params->setParam('foo', 123);
+
+        $this->assertSame(123, $params->getParam('foo'));
+    }
+
+    /**
+     * Assert that the default value is returned for calls to getParam() when the request parameter value cannot be
+     * found within the collection.
+     *
+     * @covers \Arp\EventDispatcher\Event\Parameters::getParam
+     */
+    public function testGetParamWillReturnDefaultValueForNonExistingParam(): void
+    {
+        $params = new Parameters([]);
+
+        $this->assertNull($params->getParam('bob'));
+
+        $params->setParam('foo', 123);
+        $params->setParam('bar', 'Hello');
+
+        $defaultValue = 'default value';
+
+        $this->assertSame($defaultValue, $params->getParam('test', $defaultValue));
+    }
+
+    /**
      * Assert that isEmpty() will return true when the params collection is empty.
      *
      * @covers \Arp\EventDispatcher\Event\Parameters::isEmpty
@@ -174,9 +209,9 @@ final class ParametersTest extends TestCase
      *
      * @param array $params The parameters that should be set.
      *
-     * @covers \Arp\EventDispatcher\Event\Parameters::getValues
-     *
      * @dataProvider getGetValuesWillReturnTheParametersValuesData
+     *
+     * @covers \Arp\EventDispatcher\Event\Parameters::getValues
      */
     public function testGetValuesWillReturnTheParametersValues(array $params): void
     {
@@ -222,5 +257,120 @@ final class ParametersTest extends TestCase
         $this->assertFalse($parameters->hasParam('test'));
         $this->assertFalse($parameters->hasParam('fred'));
         $this->assertFalse($parameters->hasParam('bob'));
+    }
+
+    /**
+     * Assert that removeParam() with remove the provided key from the collection. If the parameter name provided
+     * exists in the collection, the method should remove it and return boolean true, otherwise just return false.
+     *
+     * @covers \Arp\EventDispatcher\Event\Parameters::removeParam
+     */
+    public function testRemoveParam(): void
+    {
+        $params = new Parameters([
+            'foo' => 'bar',
+            'bar' => 'baz',
+            'abc' => 123,
+        ]);
+
+        $this->assertTrue($params->removeParam('foo'));
+        $this->assertFalse($params->removeParam('bob'));
+        $this->assertTrue($params->removeParam('abc'));
+
+        $this->assertSame(['bar' => 'baz'], $params->getParams());
+    }
+
+    /**
+     * Assert that an array of parameters can be removed from the collection.
+     *
+     * @covers \Arp\EventDispatcher\Event\Parameters::removeParams
+     */
+    public function testRemoveParams(): void
+    {
+        $data = [
+            'foo' => 'bar',
+            'bar' => 'bsz',
+            'test' => 'Hello World',
+            'alex' => 'bye!',
+        ];
+
+        $params = new Parameters($data);
+
+        $this->assertSame($data, $params->getParams());
+
+        $params->removeParams(['foo', 'bar']);
+        unset($data['foo'], $data['bar']);
+
+        $this->assertSame($data, $params->getParams());
+    }
+
+    /**
+     * Assert that the offsetExists() method will check if the parameter is defined
+     *
+     * @covers \Arp\EventDispatcher\Event\Parameters::offsetExists
+     */
+    public function testOffsetExists(): void
+    {
+        $params = new Parameters(['test' => 123]);
+
+        $this->assertTrue(isset($params['test']));
+        $this->assertFalse(isset($params['hello']));
+    }
+
+    /**
+     * Assert that the parameters can be set and returned using the array access interface.
+     *
+     * @covers \Arp\EventDispatcher\Event\Parameters::offsetGet
+     * @covers \Arp\EventDispatcher\Event\Parameters::offsetSet
+     */
+    public function testOffsetGetAndOffsetSet(): void
+    {
+        $params = new Parameters([]);
+
+        $params['test'] = 123;
+        $params['hello'] = 'Foo';
+
+        $this->assertSame(123, $params['test']);
+        $this->assertSame('Foo', $params['hello']);
+    }
+
+    /**
+     * Assert that a parameter can be removed via the \ArrayAccess api.
+     *
+     * @covers \Arp\EventDispatcher\Event\Parameters::offsetUnset
+     */
+    public function testOffsetUnset(): void
+    {
+        $data = [
+            'foo' => 'fred',
+            'bar' => 'bob',
+            'baz' => 'alex',
+        ];
+
+        $params = new Parameters($data);
+
+        unset($params['foo'], $data['foo']);
+
+        $this->assertSame($data, $params->getParams());
+    }
+
+    /**
+     * Assert that the getIterator() method will return an \ArrayIterator instance with a copy of the params collection.
+     *
+     * @covers \Arp\EventDispatcher\Event\Parameters::getIterator
+     */
+    public function testGetIteratorWillReturnArrayIteratorWithParamsCollection(): void
+    {
+        $data = [
+            'foo' => 'fred',
+            'bar' => 'bob',
+            'baz' => 'alex',
+        ];
+
+        $params = new Parameters($data);
+
+        $iterator = $params->getIterator();
+
+        $this->assertSame($data, $iterator->getArrayCopy());
     }
 }

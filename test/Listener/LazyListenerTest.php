@@ -18,7 +18,7 @@ final class LazyListenerTest extends TestCase
     /**
      * testIsCallable
      *
-     * @return void
+     * @covers \Arp\EventDispatcher\Listener\LazyListener::__construct
      */
     public function testIsCallable(): void
     {
@@ -30,7 +30,7 @@ final class LazyListenerTest extends TestCase
     /**
      * Assert that a new EventListenerException will be thrown if the lazy loaded event listener is not callable.
      *
-     * @return void
+     * @covers \Arp\EventDispatcher\Listener\LazyListener::__invoke
      */
     public function testInvokeWillThrowEventListenerExceptionIfLoadedListenerIsNotCallable(): void
     {
@@ -56,7 +56,7 @@ final class LazyListenerTest extends TestCase
     /**
      * Assert that the event listener will be created and invoked.
      *
-     * @return void
+     * @covers \Arp\EventDispatcher\Listener\LazyListener::__invoke
      */
     public function testInvokeWillCreateAndInvokeTheLazyEventListener(): void
     {
@@ -84,6 +84,8 @@ final class LazyListenerTest extends TestCase
      * Assert that the default factory will be used if no factory has been provided to the.
      *
      * @throws EventListenerException
+     *
+     * @covers \Arp\EventDispatcher\Listener\LazyListener::__invoke
      */
     public function testDefaultFactoryWillBeUsedWhenOneIsNotProvidedViaConstruct(): void
     {
@@ -96,8 +98,14 @@ final class LazyListenerTest extends TestCase
             $this->assertSame($expectedEvent, $event);
         };
 
-        $defaultListenerFactory = function (string $className, array $arguments = [])
-        use ($expectedClassName, $expectedArguments, $defaultListener) {
+        $defaultListenerFactory = function (
+            string $className,
+            array $arguments = []
+        ) use (
+            $expectedClassName,
+            $expectedArguments,
+            $defaultListener
+        ) {
             $this->assertSame($expectedClassName, $className);
             $this->assertSame($expectedArguments, $arguments);
 

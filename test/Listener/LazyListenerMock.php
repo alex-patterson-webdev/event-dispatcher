@@ -34,7 +34,6 @@ final class LazyListenerMock
      */
     public function __invoke(object $event)
     {
-        // so hacky :-/
         if (isset($this->arguments[0]) && is_object($this->arguments[0])) {
             Assert::assertSame($this->arguments[0], $event);
         }

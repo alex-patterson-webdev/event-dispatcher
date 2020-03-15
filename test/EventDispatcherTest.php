@@ -49,6 +49,7 @@ final class EventDispatcherTest extends TestCase
      * should be triggered.
      *
      * @covers \Arp\EventDispatcher\EventDispatcher::dispatch
+     * @covers \Arp\EventDispatcher\EventDispatcher::isPropagationStopped
      */
     public function testDispatchWillPreventEventPropagationIfProvidedEventHasPropagationStopped(): void
     {
@@ -76,6 +77,7 @@ final class EventDispatcherTest extends TestCase
      * @dataProvider getDispatchWillPreventEventPropagationIfItIsStoppedWithinAListenerData
      *
      * @covers \Arp\EventDispatcher\EventDispatcher::dispatch
+     * @covers \Arp\EventDispatcher\EventDispatcher::isPropagationStopped
      */
     public function testDispatchWillNotPropagationEventIfItIsStoppedWithinAListener(
         int $listenerCount,
@@ -140,6 +142,7 @@ final class EventDispatcherTest extends TestCase
      * @dataProvider getDispatchWillInvokeEventListenersForProvidedEventData
      *
      * @covers \Arp\EventDispatcher\EventDispatcher::dispatch
+     * @covers \Arp\EventDispatcher\EventDispatcher::isPropagationStopped
      */
     public function testDispatchWillInvokeEventListenersForProvidedEvent($event, $numberOfListeners = 0): void
     {
