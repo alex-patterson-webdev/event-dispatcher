@@ -21,7 +21,7 @@ Installation via [composer](https://getcomposer.org).
         
 ## Usage
 
-## The EventDispatcher
+## The Event Dispatcher
 
 The `Arp\EventDispatcher\EventDispatcher` class is responsible for the event orchestration. We will pass an event object to the `dispatch()` method
 and the event dispatcher will work out the listeners that should be executed.
@@ -94,16 +94,17 @@ If two or more listeners share the same priority, they will respect the order in
     // Listener 2
     // Listener 1
 
-## The EventNameResolver
+## The Event Name Resolver
  
-By default the `EventNameProvider` will use the fully qualified class name of the event object as the name of the event that will be dispatched. There may 
+By default the `EventNameResolver` will use the fully qualified class name of the event object as the name of the event that will be dispatched. There may 
 however be times where you would like to provide the name of the event as a property of the event object. This can be achieved
 by implementing `Arp\EventDispacther\Resolver\EventNameAwareInterface` on your event class or using the default `Arp\EventDispacther\NamedEvent`.
 
-When an object that implements `EventNameAwareInterface` is passed to the `EventNameProvider` the provider will return the value of `getEventName()`.
+When an object that implements `EventNameAwareInterface` is passed to the `EventNameResolver` the provider will return the value of `getEventName()`.
 
-    // Dispatch the 'foo' event using a 'named event'
     $namedEvent = new Arp\EventDispatcher\Event\NamedEvent('foo');
+    
+    // Dispatch the 'foo' event
     $eventDispatcher->dispatcher($namedEvent);   
 
 ## Unit Tests
