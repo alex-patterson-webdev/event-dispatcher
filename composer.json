@@ -5,7 +5,8 @@
   "prefer-stable": true,
   "require": {
     "php": ">=7.2",
-    "psr/event-dispatcher": "^1"
+    "psr/event-dispatcher": "^1",
+    "alex-patterson-webdev/factory": "^1"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.5",
