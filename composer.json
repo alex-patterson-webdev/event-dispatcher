@@ -19,7 +19,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "ArpTest\\EventDispatcher\\" : "test/"
+      "ArpTest\\EventDispatcher\\" : "test/phpunit"
     }
   },
   "scripts": {
