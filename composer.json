@@ -23,7 +23,7 @@
     }
   },
   "scripts": {
-    "test": "phpunit"
+    "test": "phpunit --coverage-clover=coverage.xml"
   },
   "config": {
     "preferred-install": "dist",
