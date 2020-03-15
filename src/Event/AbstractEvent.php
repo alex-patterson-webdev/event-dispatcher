@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Event;
 
@@ -22,22 +24,22 @@ abstract class AbstractEvent
     }
 
     /**
-     * Return the parameters collection
-     *
-     * @return ParametersInterface
-     */
-    public function getParameters() : ParametersInterface
-    {
-        return $this->params;
-    }
-
-    /**
-     * setParameters
+     * Set the parameters collection.
      *
      * @param ParametersInterface $params
      */
-    public function setParameters(ParametersInterface $params) : void
+    public function setParameters(ParametersInterface $params): void
     {
         $this->params = $params;
+    }
+
+    /**
+     * Return the parameters collection.
+     *
+     * @return ParametersInterface
+     */
+    public function getParameters(): ParametersInterface
+    {
+        return $this->params;
     }
 }

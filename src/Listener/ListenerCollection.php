@@ -1,10 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Listener;
 
 /**
- * ListenerCollection
- *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Listener
  */
@@ -25,17 +25,39 @@ class ListenerCollection implements ListenerCollectionInterface
     private $queueOrder = PHP_INT_MIN;
 
     /**
-     * __construct
-     *
      * @param callable[] $listeners
      */
     public function __construct($listeners = [])
     {
-        $this->listeners = new \SplPriorityQueue;
+        $this->listeners = new \SplPriorityQueue();
 
-        if (! empty($listeners)) {
+        if (!empty($listeners)) {
             $this->addListeners($listeners);
         }
+    }
+
+    /**
+     * Add a collection of listeners to the collection.
+     *
+     * @param callable[] $listeners The collection of event listeners to add.
+     * @param int        $priority  Optional priority for the listener.
+     */
+    public function addListeners(array $listeners, int $priority = 1): void
+    {
+        foreach ($listeners as $listener) {
+            $this->addListener($listener, $priority);
+        }
+    }
+
+    /**
+     * Add a single listener to the collection.
+     *
+     * @param callable $listener The listener that should be attached.
+     * @param int      $priority Optional priority for the listener.
+     */
+    public function addListener(callable $listener, int $priority = 1): void
+    {
+        $this->listeners->insert($listener, [$priority, $this->queueOrder++]);
     }
 
     /**
@@ -43,7 +65,7 @@ class ListenerCollection implements ListenerCollectionInterface
      *
      * @return \Traversable
      */
-    public function getIterator() : \Traversable
+    public function getIterator(): \Traversable
     {
         $clone = clone $this->listeners;
 
@@ -53,38 +75,14 @@ class ListenerCollection implements ListenerCollectionInterface
     }
 
     /**
-     * Add a single listener to the collection.
-     *
-     * @param callable $listener   The listener that should be attached.
-     * @param int      $priority   Optional priority for the listener.
-     */
-    public function addListener(callable $listener, int $priority = 1) : void
-    {
-        $this->listeners->insert($listener, [$priority, $this->queueOrder++]);
-    }
-
-    /**
-     * Add a collection of listeners to the collection.
-     *
-     * @param callable[] $listeners  The collection of event listeners to add.
-     * @param int        $priority   Optional priority for the listener.
-     */
-    public function addListeners(array $listeners, int $priority = 1) : void
-    {
-        foreach($listeners as $listener) {
-            $this->addListener($listener, $priority);
-        }
-    }
-
-    /**
      * Merge the provided collection into the current one.
      *
      * @param \Traversable $collection The collection that should be merged.
      * @param int          $priority   Optional priority for the listener.
      */
-    public function merge(\Traversable $collection, int $priority = 1) : void
+    public function merge(\Traversable $collection, int $priority = 1): void
     {
-        $this->addListeners(iterator_to_array($collection, false), $priority = 1);
+        $this->addListeners(iterator_to_array($collection, false), $priority);
     }
 
     /**
@@ -92,7 +90,7 @@ class ListenerCollection implements ListenerCollectionInterface
      *
      * @return int
      */
-    public function count() : int
+    public function count(): int
     {
         return $this->listeners->count();
     }

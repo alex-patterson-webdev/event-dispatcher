@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ArpTest\EventDispatcher\Listener;
 
@@ -17,7 +19,7 @@ final class ListenerCollectionTest extends TestCase
      *
      * @test
      */
-    public function testImplementsListenerCollectionInterface() : void
+    public function testImplementsListenerCollectionInterface(): void
     {
         $collection = new ListenerCollection();
 
@@ -29,17 +31,29 @@ final class ListenerCollectionTest extends TestCase
      *
      * @test
      */
-    public function testGetIteratorWillReturnCloneOfListenerQueue() : void
+    public function testGetIteratorWillReturnCloneOfListenerQueue(): void
     {
         $collection = new ListenerCollection();
 
         $listeners = [
-            static function () { return '0'; },
-            static function () { return '1'; },
-            static function () { return '2'; },
-            static function () { return '3'; },
-            static function () { return '4'; },
-            static function () { return '5'; },
+            static function () {
+                return '0';
+            },
+            static function () {
+                return '1';
+            },
+            static function () {
+                return '2';
+            },
+            static function () {
+                return '3';
+            },
+            static function () {
+                return '4';
+            },
+            static function () {
+                return '5';
+            },
         ];
 
         foreach ($listeners as $index => $listener) {
@@ -64,16 +78,20 @@ final class ListenerCollectionTest extends TestCase
      *
      * @test
      */
-    public function testCountWillReturnIntegerMatchingTheNumberOfEventListeners() : void
+    public function testCountWillReturnIntegerMatchingTheNumberOfEventListeners(): void
     {
         $collection = new ListenerCollection;
 
         /** @var callable[] $listeners */
         $listeners = [
-            static function () {},
-            static function () {},
-            static function () {},
-            static function () {},
+            static function () {
+            },
+            static function () {
+            },
+            static function () {
+            },
+            static function () {
+            },
         ];
 
         $collection->addListeners($listeners);
@@ -86,7 +104,7 @@ final class ListenerCollectionTest extends TestCase
      *
      * @test
      */
-    public function testEventListenersCanBeAddedViaConstructor() : void
+    public function testEventListenersCanBeAddedViaConstructor(): void
     {
         $listeners = [
             static function () {

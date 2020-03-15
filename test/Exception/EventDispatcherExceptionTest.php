@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace ArpTest\EventDispatcher\Exception;
 
@@ -14,9 +16,9 @@ final class EventDispatcherExceptionTest extends TestCase
     /**
      * Assert that the EventDispatcherException extends \Exception.
      *
-     * @test
+     * @covers \Arp\EventDispatcher\Exception\EventDispatcherException
      */
-    public function testImplementsException() : void
+    public function testImplementsException(): void
     {
         $exception = new EventDispatcherException();
 

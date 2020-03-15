@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Event;
 
@@ -9,16 +11,11 @@ namespace Arp\EventDispatcher\Event;
 interface ParametersInterface extends \IteratorAggregate, \Countable, \ArrayAccess
 {
     /**
-     * @return bool
-     */
-    public function hasParams() : bool;
-
-    /**
      * @param string $name
      *
      * @return bool
      */
-    public function hasParam(string $name) : bool;
+    public function hasParam(string $name): bool;
 
     /**
      * @param string $name
@@ -31,48 +28,48 @@ interface ParametersInterface extends \IteratorAggregate, \Countable, \ArrayAcce
     /**
      * @return array
      */
-    public function getParams() : array;
+    public function getParams(): array;
 
     /**
      * @param array $params
      */
-    public function setParams(array $params) : void;
+    public function setParams(array $params): void;
 
     /**
      * @param string $name
      * @param mixed  $value
      */
-    public function setParam(string $name, $value) : void;
+    public function setParam(string $name, $value): void;
 
     /**
      * @param array $params
      */
-    public function removeParams(array $params = []) : void;
+    public function removeParams(array $params = []): void;
 
     /**
      * @param string $name
      *
      * @return bool
      */
-    public function removeParam(string $name) : bool;
+    public function removeParam(string $name): bool;
 
     /**
      * @return int
      */
-    public function count() : int;
+    public function count(): int;
 
     /**
      * @return bool
      */
-    public function isEmpty() : bool;
+    public function isEmpty(): bool;
 
     /**
      * @return array
      */
-    public function getKeys() : array;
+    public function getKeys(): array;
 
     /**
      * @return array
      */
-    public function getValues() : array;
+    public function getValues(): array;
 }

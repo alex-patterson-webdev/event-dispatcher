@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Event;
 
@@ -31,7 +33,7 @@ class NamedEvent extends AbstractEvent implements EventNameAwareInterface
      *
      * @return string
      */
-    public function getEventName() : string
+    public function getEventName(): string
     {
         return $this->eventName;
     }
