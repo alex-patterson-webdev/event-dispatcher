@@ -51,11 +51,7 @@ class LazyListener
      */
     public function __invoke(object $event): void
     {
-        $factory = $this->factory;
-
-        if (null === $factory) {
-            $factory = $this->getDefaultListenerFactory();
-        }
+        $factory = $this->factory ?? $this->getDefaultListenerFactory();
 
         $listener = $factory($this->className, $this->arguments);
 
