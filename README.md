@@ -52,7 +52,7 @@ We can register any PHP `callable` directly using the `ListenerProvider::addList
 
     $listenerProvider = (new ListenerProviderFactory())->create([]);
     $eventDispatcher = (new EventDispatcherFactory())->create([
-        'listener_provider => $listenerProvider,
+        'listener_provider' => $listenerProvider,
     ]]);
     
     $event = new My\Event\Foo();
@@ -67,20 +67,23 @@ We can register any PHP `callable` directly using the `ListenerProvider::addList
     
 Internally the listener provider will keep an iterable priority queue of all the listeners for each event you provide.
 
-The `$priority` argument allow the ordering of each listener. Higher priority listeners will execute before lower priority listeners. 
+The `$priority` argument allows the ordering of each listener. Higher priority listeners will execute before lower priority listeners. 
 If two or more listeners share the same priority, they will respect the order in which they where added.
     
-    use Arp\EventDispatcher\Listener\ListenerProvider;
+    use Arp\EventDispatcher\Factory\Listener\ListenerProviderFactory;
+    use Arp\EventDispatcher\Factory\EventDispatcherFactory;
     use Arp\EventDispatcher\Resolver\EventNameResolver;
     use Arp\EventDispatcher\EventDispatcher;
     
-    $listenerProvider = new ListenerProvider(new EventNameResolver());
-    $eventDispatcher = new EventDispatcher($listenerProvider);
+    $listenerProvider = (new ListenerProviderFactory())->create([]);
+    $eventDispatcher = (new EventDispatcherFactory())->create([
+        'listener_provider' => $listenerProvider,
+    ]]);
     
-    $listener1 = static function(Foo $event) {
+    $listener1 = static function (Foo $event) {
         echo 'Listener 1' . PHP_EOL;
     };
-    $listener2 = static function(Foo $event) {
+    $listener2 = static function (Foo $event) {
         echo 'Listener 2';
     };
     
