@@ -25,9 +25,9 @@ class ListenerCollection implements ListenerCollectionInterface
     private $queueOrder = PHP_INT_MIN;
 
     /**
-     * @param callable[] $listeners
+     * @param iterable|callable[] $listeners
      */
-    public function __construct($listeners = [])
+    public function __construct(iterable $listeners = [])
     {
         $this->listeners = new \SplPriorityQueue();
 
@@ -42,7 +42,7 @@ class ListenerCollection implements ListenerCollectionInterface
      * @param callable[] $listeners The collection of event listeners to add.
      * @param int        $priority  Optional priority for the listener.
      */
-    public function addListeners(array $listeners, int $priority = 1): void
+    public function addListeners(iterable $listeners, int $priority = 1): void
     {
         foreach ($listeners as $listener) {
             $this->addListener($listener, $priority);
@@ -72,17 +72,6 @@ class ListenerCollection implements ListenerCollectionInterface
         $clone->rewind();
 
         return $clone;
-    }
-
-    /**
-     * Merge the provided collection into the current one.
-     *
-     * @param \Traversable $collection The collection that should be merged.
-     * @param int          $priority   Optional priority for the listener.
-     */
-    public function merge(\Traversable $collection, int $priority = 1): void
-    {
-        $this->addListeners(iterator_to_array($collection, false), $priority);
     }
 
     /**

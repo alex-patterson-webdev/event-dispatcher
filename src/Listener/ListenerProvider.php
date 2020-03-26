@@ -42,7 +42,7 @@ class ListenerProvider implements ListenerProviderInterface
      *
      * @param object $event The event that will be triggered.
      *
-     * @return callable[] A collection of event listeners to execute.
+     * @return iterable|callable[] A collection of event listeners to execute.
      *
      * @throws EventListenerException  If the $event name cannot be resolved.
      */
@@ -117,12 +117,6 @@ class ListenerProvider implements ListenerProviderInterface
      */
     public function addListenersForEvent($event, iterable $listeners, int $priority = 1): void
     {
-        $collection = $this->getOrCreateListenerCollection($event);
-
-        if ($listeners instanceof \Traversable) {
-            $collection->merge($listeners, $priority);
-        } else {
-            $collection->addListeners($listeners, $priority);
-        }
+        $this->getOrCreateListenerCollection($event)->addListeners($listeners, $priority);
     }
 }
