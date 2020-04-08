@@ -1,6 +1,6 @@
 {
   "name": "alex-patterson-webdev/event-dispatcher",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "authors": [
