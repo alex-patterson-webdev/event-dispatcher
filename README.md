@@ -53,7 +53,7 @@ We can also attach an array of listeners with the `addListenersForEvent()` metho
 
 ## The Event Dispatcher
 
-The `Arp\EventDispatcher\EventDispatcher` class is responsible for the execution of the required event listeners and it does so using an internal `ListenerProvider`. 
+The `Arp\EventDispatcher\EventDispatcher` class is responsible for the execution of the required event listeners and it does so by using an internal `ListenerProvider`. 
 
 When calling `$dispatcher->dispatch($event)` each event listener that is registered will for that event will be be executed in the configured order.
 
@@ -64,7 +64,7 @@ When calling `$dispatcher->dispatch($event)` each event listener that is registe
     $dispatcher->dispatch($event);
 
 Any object can be used as an event; by default an internal `EventNameResolver` instance will return the fully qualified class name of the object to use as the event name. See 
-the `EventNameResolver` section for more configuration options.
+the 'The Event Name Resolver' section for more configuration options.
 
 ## Listener Priority
     
@@ -106,7 +106,7 @@ When an object that implements `EventNameAwareInterface` is passed to the `Event
     // Dispatch the 'foo' event
     $eventDispatcher->dispatch(new NamedEvent('foo'));
     
-# Event Propagation
+## Event Propagation
 
 In accordance with the PSR, if provided with a `Psr\EventDispatcher\StoppableEventInterface` event instance the dispatcher will respect the 
  result of the call `isPropagationStopped()`. If set to `true` the event dispatcher will be prevented from executing any further listeners.
