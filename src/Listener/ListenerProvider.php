@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Arp\EventDispatcher\Listener;
 
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
+use Arp\EventDispatcher\Resolver\EventNameResolver;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
 use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use Psr\EventDispatcher\ListenerProviderInterface;
@@ -13,7 +14,7 @@ use Psr\EventDispatcher\ListenerProviderInterface;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Listener
  */
-class ListenerProvider implements ListenerProviderInterface
+class ListenerProvider implements ListenerProviderInterface, ListenerRegistrationInterface
 {
     /**
      * Collection of priority queue's for each event collection.
@@ -32,8 +33,12 @@ class ListenerProvider implements ListenerProviderInterface
     /**
      * @param EventNameResolverInterface $eventNameResolver
      */
-    public function __construct(EventNameResolverInterface $eventNameResolver)
+    public function __construct(EventNameResolverInterface $eventNameResolver = null)
     {
+        if (null === $eventNameResolver) {
+            $eventNameResolver = new EventNameResolver();
+        }
+
         $this->eventNameResolver = $eventNameResolver;
     }
 

@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace ArpTest\EventDispatcher;
 
 use Arp\EventDispatcher\EventDispatcher;
+use Arp\EventDispatcher\Listener\Exception\EventListenerException;
+use Arp\EventDispatcher\Listener\ListenerProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
 
 /**
@@ -18,7 +19,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 final class EventDispatcherTest extends TestCase
 {
     /**
-     * @var ListenerProviderInterface|MockObject
+     * @var ListenerProvider|MockObject
      */
     private $listenerProvider;
 
@@ -29,7 +30,7 @@ final class EventDispatcherTest extends TestCase
      */
     public function setUp(): void
     {
-        $this->listenerProvider = $this->getMockForAbstractClass(ListenerProviderInterface::class);
+        $this->listenerProvider = $this->createMock(ListenerProvider::class);
     }
 
     /**
@@ -152,7 +153,7 @@ final class EventDispatcherTest extends TestCase
 
         for ($x = 0; $x < $numberOfListeners; $x++) {
             $listeners[] = static function ($event) use ($x) {
-                return 'Foo' . $x;
+                get_class($event);
             };
         }
 
@@ -184,5 +185,58 @@ final class EventDispatcherTest extends TestCase
                 5,
             ],
         ];
+    }
+
+    /**
+     * Assert that calls to addListenerForEvent() proxies to the internal ListenerProvider.
+     *
+     * @covers \Arp\EventDispatcher\EventDispatcher::addListenerForEvent
+     *
+     * @throws EventListenerException
+     */
+    public function testAddListenerForEventWillProxyToInternalListenerProvider(): void
+    {
+        $dispatcher = new EventDispatcher($this->listenerProvider);
+
+        $event = new \stdClass();
+        $priority = 10;
+        $listener = static function (\stdClass $event): void {
+            echo $event->name;
+        };
+
+        $this->listenerProvider->expects($this->once())
+            ->method('addListenerForEvent')
+            ->with($event, $listener, $priority);
+
+        $dispatcher->addListenerForEvent($event, $listener, $priority);
+    }
+
+    /**
+     * Assert that calls to addListenerForEvent() proxies to the internal ListenerProvider.
+     *
+     * @covers \Arp\EventDispatcher\EventDispatcher::addListenersForEvent
+     *
+     * @throws EventListenerException
+     */
+    public function testAddListenersForEventWillProxyToInternalListenerProvider(): void
+    {
+        $dispatcher = new EventDispatcher($this->listenerProvider);
+
+        $event = new \stdClass();
+        $priority = 100;
+        $listeners = [
+            static function (\stdClass $event): void {
+                echo $event->name;
+            },
+            static function (\stdClass $event): void {
+                echo $event->name;
+            },
+        ];
+
+        $this->listenerProvider->expects($this->once())
+            ->method('addListenersForEvent')
+            ->with($event, $listeners, $priority);
+
+        $dispatcher->addListenersForEvent($event, $listeners, $priority);
     }
 }

@@ -41,7 +41,7 @@ final class ListenerProviderTest extends TestCase
      */
     public function testImplementsListenerProviderInterface(): void
     {
-        $provider = new ListenerProvider($this->eventNameResolver);
+        $provider = new ListenerProvider();
 
         $this->assertInstanceOf(ListenerProviderInterface::class, $provider);
     }
@@ -58,7 +58,7 @@ final class ListenerProviderTest extends TestCase
     {
         $provider = new ListenerProvider($this->eventNameResolver);
 
-        $event = new \stdClass;
+        $event = new \stdClass();
 
         $provider->addListenersForEvent($event, $listeners);
 
