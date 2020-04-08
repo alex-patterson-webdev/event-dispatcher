@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/alex-patterson-webdev/event-dispatcher/branch/master/graph/badge.svg)](https://codecov.io/gh/alex-patterson-webdev/event-dispatcher)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alex-patterson-webdev/event-dispatcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alex-patterson-webdev/event-dispatcher/?branch=master)
 
-# ARP\EventDispatcher
+# Arp\EventDispatcher
 
 ## About
 
