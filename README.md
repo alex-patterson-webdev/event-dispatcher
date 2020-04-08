@@ -12,7 +12,7 @@ An implementation of the [PSR-14 Event Dispatcher](https://www.php-fig.org/psr/p
 
 Installation via [composer](https://getcomposer.org).
 
-    require alex-patterson-webdev/event-dispatcher ^1
+    require alex-patterson-webdev/event-dispatcher ^0.1
         
 ## Usage
 
