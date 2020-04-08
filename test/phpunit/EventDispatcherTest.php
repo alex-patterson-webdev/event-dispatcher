@@ -214,7 +214,7 @@ final class EventDispatcherTest extends TestCase
     /**
      * Assert that calls to addListenerForEvent() proxies to the internal ListenerProvider.
      *
-     * @covers \Arp\EventDispatcher\EventDispatcher::addListenerForEvent
+     * @covers \Arp\EventDispatcher\EventDispatcher::addListenersForEvent
      *
      * @throws EventListenerException
      */
