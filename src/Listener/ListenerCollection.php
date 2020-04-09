@@ -22,7 +22,7 @@ class ListenerCollection implements ListenerCollectionInterface
      *
      * @var int
      */
-    private $queueOrder = PHP_INT_MIN;
+    private $queueOrder = PHP_INT_MAX;
 
     /**
      * @param iterable|callable[] $listeners
@@ -57,7 +57,7 @@ class ListenerCollection implements ListenerCollectionInterface
      */
     public function addListener(callable $listener, int $priority = 1): void
     {
-        $this->listeners->insert($listener, [$priority, $this->queueOrder++]);
+        $this->listeners->insert($listener, [$priority, $this->queueOrder--]);
     }
 
     /**
