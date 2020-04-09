@@ -57,7 +57,7 @@ final class ListenerCollectionTest extends TestCase
     /**
      * Assert that the count() method will return an integer matching the number of listeners added to the collection.
      *
-     * @test
+     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::addListeners
      */
     public function testCountWillReturnIntegerMatchingTheNumberOfEventListeners(): void
     {
@@ -83,7 +83,7 @@ final class ListenerCollectionTest extends TestCase
     /**
      * Assert that we can add a collection of event listeners via the __construct.
      *
-     * @test
+     * @covers \Arp\EventDispatcher\Listener\ListenerCollection
      */
     public function testEventListenersCanBeAddedViaConstructor(): void
     {
