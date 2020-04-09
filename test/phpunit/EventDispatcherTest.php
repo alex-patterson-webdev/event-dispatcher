@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ArpTest\EventDispatcher;
 
 use Arp\EventDispatcher\EventDispatcher;
+use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\ListenerProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -43,6 +44,18 @@ final class EventDispatcherTest extends TestCase
         $eventManager = new EventDispatcher($this->listenerProvider);
 
         $this->assertInstanceOf(EventDispatcherInterface::class, $eventManager);
+    }
+
+    /**
+     * Ensure that the event manager implements AddListenerAwareInterface.
+     *
+     * @covers \Arp\EventDispatcher\EventDispatcher
+     */
+    public function testImplementsAddListenerAwareInterface(): void
+    {
+        $eventManager = new EventDispatcher($this->listenerProvider);
+
+        $this->assertInstanceOf(AddListenerAwareInterface::class, $eventManager);
     }
 
     /**
