@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ArpTest\EventDispatcher\Listener;
 
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
+use Arp\EventDispatcher\Listener\ListenerCollection;
 use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
 use Arp\EventDispatcher\Listener\ListenerProvider;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
@@ -58,6 +59,10 @@ final class ListenerProviderTest extends TestCase
     {
         $provider = new ListenerProvider($this->eventNameResolver);
 
+        $this->eventNameResolver
+            ->method('resolveEventName')
+            ->willReturn(\stdClass::class);
+
         $event = new \stdClass();
 
         $provider->addListenersForEvent($event, $listeners);
@@ -66,13 +71,17 @@ final class ListenerProviderTest extends TestCase
 
         $this->assertInstanceOf(ListenerCollectionInterface::class, $collection);
 
-        $listeners = ($listeners instanceof \Traversable)
-            ? iterator_to_array($listeners)
-            : $listeners;
-
-        foreach ($collection as $index => $item) {
-            $this->assertSame($listeners[$index], $item);
+        $expected = [];
+        foreach ($listeners as $listener) {
+            $expected[] = $listener($event);
         }
+
+        $actual = [];
+        foreach ($collection as $listener) {
+            $actual[] = $listener($event);
+        }
+
+        $this->assertSame($expected, $actual);
     }
 
     /**
@@ -80,20 +89,6 @@ final class ListenerProviderTest extends TestCase
      */
     public function getAddListenersForEventAndGetListenerForEventData(): array
     {
-        $collectionIterator = new \ArrayObject([
-            static function ($event) {
-            },
-            static function ($event) {
-            },
-            static function ($event) {
-            },
-        ]);
-
-        $collection = $this->getMockForAbstractClass(ListenerCollectionInterface::class);
-        $collection->expects($this->exactly(2))
-            ->method('getIterator')
-            ->willReturn($collectionIterator);
-
         return [
 
             // Empty listener collection test...
@@ -105,7 +100,7 @@ final class ListenerProviderTest extends TestCase
             [
                 [
                     static function (\stdClass $event) {
-                        return $event->foo ?? 'Bar';
+                        return 1;
                     },
                 ],
             ],
@@ -114,20 +109,30 @@ final class ListenerProviderTest extends TestCase
             [
                 [
                     static function (\stdClass $event) {
-                        return $event->foo ?? 'Bar';
+                        return 0;
                     },
                     static function (\stdClass $event) {
-                        return $event->foo ?? 'Bar';
+                        return 1;
                     },
                     static function (\stdClass $event) {
-                        return $event->foo ?? 'Bar';
+                        return 2;
                     },
                 ],
             ],
 
             // Traversable test
             [
-                $collection,
+                new ListenerCollection([
+                    static function ($event) {
+                        return 0;
+                    },
+                    static function ($event) {
+                        return 1;
+                    },
+                    static function ($event) {
+                        return 2;
+                    },
+                ]),
             ],
         ];
     }
@@ -141,7 +146,7 @@ final class ListenerProviderTest extends TestCase
     {
         $provider = new ListenerProvider($this->eventNameResolver);
 
-        $event = new \stdClass;
+        $event = new \stdClass();
 
         $exceptionMessage = 'Test exception message';
         $exception = new EventNameResolverException($exceptionMessage);
