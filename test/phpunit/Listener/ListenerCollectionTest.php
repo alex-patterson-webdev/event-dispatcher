@@ -17,7 +17,7 @@ final class ListenerCollectionTest extends TestCase
     /**
      * Assert that the listener collection implements ListenerCollectionInterface.
      *
-     * @test
+     * @covers \Arp\EventDispatcher\Listener\ListenerCollection
      */
     public function testImplementsListenerCollectionInterface(): void
     {
@@ -27,50 +27,31 @@ final class ListenerCollectionTest extends TestCase
     }
 
     /**
-     * Assert that
+     * Assert that getIterator() will return a clone of the listener priority queue.
      *
-     * @test
+     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::getIterator
      */
     public function testGetIteratorWillReturnCloneOfListenerQueue(): void
     {
         $collection = new ListenerCollection();
 
         $listeners = [
-            static function () {
-                return '0';
+            'Foo' => static function () {
+                return 'Foo';
             },
-            static function () {
-                return '1';
-            },
-            static function () {
-                return '2';
-            },
-            static function () {
-                return '3';
-            },
-            static function () {
-                return '4';
-            },
-            static function () {
-                return '5';
+            'Bar' => static function () {
+                return 'Bar';
             },
         ];
 
-        foreach ($listeners as $index => $listener) {
-            $collection->addListener($listener, 10);
+        $collection->addListeners($listeners, 1);
+
+        $results = [];
+        foreach ($collection as $index => $listener) {
+            $results[] = $listener();
         }
 
-        $cloneOfQueue = $collection->getIterator();
-
-        foreach ($cloneOfQueue as $index => $item) {
-            $expected = $listeners[$index]();
-            $value = $item();
-
-            $this->assertSame(
-                $expected,
-                $value, sprintf('Index \'%d\' is invalid', $index)
-            );
-        }
+        $this->assertSame(['Foo', 'Bar'], $results);
     }
 
     /**
@@ -80,7 +61,7 @@ final class ListenerCollectionTest extends TestCase
      */
     public function testCountWillReturnIntegerMatchingTheNumberOfEventListeners(): void
     {
-        $collection = new ListenerCollection;
+        $collection = new ListenerCollection();
 
         /** @var callable[] $listeners */
         $listeners = [
@@ -106,6 +87,12 @@ final class ListenerCollectionTest extends TestCase
      */
     public function testEventListenersCanBeAddedViaConstructor(): void
     {
+        $expected = [
+            'foo',
+            'bar',
+            'baz',
+        ];
+
         $listeners = [
             static function () {
                 return 'foo';
@@ -120,10 +107,67 @@ final class ListenerCollectionTest extends TestCase
 
         $collection = new ListenerCollection($listeners);
 
-        foreach ($collection->getIterator() as $index => $listener) {
-            $this->assertSame($listeners[$index], $listener);
+        $results = [];
+        foreach ($collection as $index => $listener) {
+            $results[] = $listener();
         }
 
+        $this->assertSame($expected, $results);
         $this->assertSame(count($listeners), $collection->count());
+    }
+
+    /**
+     * Assert that the listeners priorities are respected, regardless of when the listener is registered with the
+     * collection.
+     *
+     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::addListener
+     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::addListeners
+     */
+    public function testListenerPriorities(): void
+    {
+        $listeners = [
+            static function () {
+                return 5;
+            },
+            static function () {
+                return 1;
+            },
+            static function () {
+                return 3;
+            },
+            static function () {
+                return 7;
+            },
+            static function () {
+                return 4;
+            },
+            static function () {
+                return 8;
+            },
+            static function () {
+                return 6;
+            },
+            static function () {
+                return 2;
+            },
+        ];
+
+        $collection = new ListenerCollection();
+
+        $collection->addListener($listeners[0], 300); // 5
+        $collection->addListener($listeners[1], 700); // 1
+        $collection->addListener($listeners[2], 500); // 3
+        $collection->addListener($listeners[3], 101); // 7
+        $collection->addListener($listeners[4], 400); // 4
+        $collection->addListener($listeners[5], 100); // 8
+        $collection->addListener($listeners[6], 200); // 6
+        $collection->addListener($listeners[7], 600); // 2
+
+        $results = [];
+        foreach ($collection as $item) {
+            $results[] = $item();
+        }
+
+        $this->assertSame([1,2,3,4,5,6,7,8], $results);
     }
 }

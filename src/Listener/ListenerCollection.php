@@ -13,7 +13,7 @@ class ListenerCollection implements ListenerCollectionInterface
     /**
      * The collection of listeners to iterate.
      *
-     * @var \SplPriorityQueue|callable[]
+     * @var PriorityQueue|callable[]
      */
     private $listeners;
 
@@ -29,7 +29,7 @@ class ListenerCollection implements ListenerCollectionInterface
      */
     public function __construct(iterable $listeners = [])
     {
-        $this->listeners = new \SplPriorityQueue();
+        $this->listeners = new PriorityQueue();
 
         if (!empty($listeners)) {
             $this->addListeners($listeners);
@@ -67,11 +67,10 @@ class ListenerCollection implements ListenerCollectionInterface
      */
     public function getIterator(): \Traversable
     {
-        $clone = clone $this->listeners;
+        $iterator = clone $this->listeners;
+        $iterator->rewind();
 
-        $clone->rewind();
-
-        return $clone;
+        return $iterator;
     }
 
     /**
