@@ -10,7 +10,7 @@ use Arp\EventDispatcher\Listener\Exception\EventListenerException;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Listener
  */
-interface ListenerRegistrationInterface
+interface AddListenerAwareInterface
 {
     /**
      * Add a new event listener to the collection.

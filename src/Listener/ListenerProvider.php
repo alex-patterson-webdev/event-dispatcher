@@ -14,7 +14,7 @@ use Psr\EventDispatcher\ListenerProviderInterface;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Listener
  */
-class ListenerProvider implements ListenerProviderInterface, ListenerRegistrationInterface
+class ListenerProvider implements ListenerProviderInterface, AddListenerAwareInterface
 {
     /**
      * Collection of priority queue's for each event collection.

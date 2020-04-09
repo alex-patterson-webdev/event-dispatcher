@@ -6,7 +6,7 @@ namespace Arp\EventDispatcher;
 
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\ListenerProvider;
-use Arp\EventDispatcher\Listener\ListenerRegistrationInterface;
+use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
 
@@ -14,7 +14,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher
  */
-final class EventDispatcher implements EventDispatcherInterface, ListenerRegistrationInterface
+final class EventDispatcher implements EventDispatcherInterface, AddListenerAwareInterface
 {
     /**
      * @var ListenerProvider
