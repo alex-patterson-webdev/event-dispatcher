@@ -168,6 +168,61 @@ final class ListenerCollectionTest extends TestCase
             $results[] = $item();
         }
 
-        $this->assertSame([1,2,3,4,5,6,7,8], $results);
+        $this->assertSame([1, 2, 3, 4, 5, 6, 7, 8], $results);
+    }
+
+    /**
+     * Assert that the listeners natural order is respected when provided with event listeners with the same
+     * priorities. This means that the collection operates on a first in first out basis.
+     *
+     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::addListener
+     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::addListeners
+     */
+    public function testListenerPrioritiesRespectNaturalOrderWhenPrioritiesAreTheSame(): void
+    {
+        $listeners = [
+            static function () {
+                return 5;
+            },
+            static function () {
+                return 1;
+            },
+            static function () {
+                return 3;
+            },
+            static function () {
+                return 7;
+            },
+            static function () {
+                return 4;
+            },
+            static function () {
+                return 8;
+            },
+            static function () {
+                return 6;
+            },
+            static function () {
+                return 2;
+            },
+        ];
+
+        $collection = new ListenerCollection();
+
+        $collection->addListener($listeners[0], 1); // 5
+        $collection->addListener($listeners[1], 1); // 1
+        $collection->addListener($listeners[2], 1); // 3
+        $collection->addListener($listeners[3], 1); // 7
+        $collection->addListener($listeners[4], 1); // 4
+        $collection->addListener($listeners[5], 1); // 8
+        $collection->addListener($listeners[6], 1); // 6
+        $collection->addListener($listeners[7], 1); // 2
+
+        $results = [];
+        foreach ($collection as $item) {
+            $results[] = $item();
+        }
+
+        $this->assertSame([5, 1, 3, 7, 4, 8, 6, 2], $results);
     }
 }

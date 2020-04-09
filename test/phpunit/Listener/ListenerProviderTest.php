@@ -8,7 +8,6 @@ use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\ListenerCollection;
 use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
 use Arp\EventDispatcher\Listener\ListenerProvider;
-use Arp\EventDispatcher\Listener\PriorityQueue;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
 use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use PHPUnit\Framework\MockObject\MockObject;
