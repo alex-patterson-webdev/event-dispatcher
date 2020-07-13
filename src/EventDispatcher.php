@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Arp\EventDispatcher;
 
+use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\ListenerProvider;
-use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
 

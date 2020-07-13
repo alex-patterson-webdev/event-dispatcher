@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace ArpTest\EventDispatcher\Listener;
 
-use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Arp\EventDispatcher\Listener\ListenerCollection;
 use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
 use PHPUnit\Framework\TestCase;

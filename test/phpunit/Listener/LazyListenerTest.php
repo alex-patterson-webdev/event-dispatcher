@@ -36,7 +36,7 @@ final class LazyListenerTest extends TestCase
     {
         $className = \stdClass::class;
 
-        $factory = static function () {
+        $factory = static function() {
             return false; // our result is not a callable type.
         };
 
@@ -65,11 +65,11 @@ final class LazyListenerTest extends TestCase
         $expectedEvent = new \stdClass();
         $expectedArgs = ['hello' => 'foo'];
 
-        $mockedListener = function ($passedEvent) use ($expectedEvent) {
+        $mockedListener = function($passedEvent) use ($expectedEvent) {
             $this->assertSame($passedEvent, $expectedEvent);
         };
 
-        $factory = function ($className, $arguments) use ($mockedListener, $expectedArgs, $expectedClassName) {
+        $factory = function($className, $arguments) use ($mockedListener, $expectedArgs, $expectedClassName) {
             $this->assertSame($expectedClassName, $className);
             $this->assertSame($expectedArgs, $arguments);
             return $mockedListener;
@@ -94,11 +94,11 @@ final class LazyListenerTest extends TestCase
 
         $expectedEvent = new \stdClass();
 
-        $defaultListener = function (object $event) use ($expectedEvent) {
+        $defaultListener = function(object $event) use ($expectedEvent) {
             $this->assertSame($expectedEvent, $event);
         };
 
-        $defaultListenerFactory = function (
+        $defaultListenerFactory = function(
             string $className,
             array $arguments = []
         ) use (
