@@ -247,12 +247,14 @@ final class ParametersTest extends TestCase
             'foo' => 123,
             'bar' => 'baz',
             'bax' => 45,
+            'null_test' => null,
         ];
         $parameters = new Parameters($data);
 
         $this->assertTrue($parameters->hasParam('foo'));
         $this->assertTrue($parameters->hasParam('bar'));
         $this->assertTrue($parameters->hasParam('bax'));
+        $this->assertTrue($parameters->hasParam('null_test'));
 
         $this->assertFalse($parameters->hasParam('test'));
         $this->assertFalse($parameters->hasParam('fred'));

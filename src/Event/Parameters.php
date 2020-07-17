@@ -106,7 +106,7 @@ final class Parameters implements ParametersInterface
      */
     public function hasParam(string $name): bool
     {
-        return isset($this->params[$name]);
+        return array_key_exists($name, $this->params);
     }
 
     /**
