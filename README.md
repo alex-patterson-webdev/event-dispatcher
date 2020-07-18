@@ -18,9 +18,9 @@ Installation via [composer](https://getcomposer.org).
 
 ### Dispatching events
 
-The `Arp\EventDispatcher\EventDispatcher` class is responsible for executing the necessary event listeners for any given event instance. 
-The event dispatcher requires a `Arp\EventDispatcher\Listener\ListenerProvider` instance as a single dependency; which provides the event 
-listeners that can be dispatched.
+The `Arp\EventDispatcher\EventDispatcher` class is responsible for executing the event listeners for any given event instance. 
+The event dispatcher requires a `Arp\EventDispatcher\Listener\ListenerProvider` instance as a single dependency. 
+The `ListenerProvider` all of the event contains all the event listeners that can be dispatched.
 
     use Arp\EventDispatcher\EventDispatcher;
     use Arp\EventDispatcher\Listener\ListenerProvider;
@@ -28,8 +28,8 @@ listeners that can be dispatched.
     $listenerProvider = new ListenerProvider();
     $dispatcher = new EventDispatcher($listenerProvider);
     
-Internally the call to `EventDispatcher::dispatch()` will loop through the registered event listeners from the provider. Any listeners that  
-match `$event` will be executed using the configured priority order.
+The call to `EventDispatcher::dispatch()` will loop through the registered event listeners from the provider. 
+Any listeners that match `$event` will be executed using the configured priority order.
 
     $dispatcher->dispatch(new \My\Event\Foo());
 
@@ -41,7 +41,7 @@ name of the object to use as the event name. See the 'Event Name Resolver' secti
 The `Arp\EventDispatcher\Listener\ListenerProvider` is an implementation of the `Psr\EventDispatcher\ListenerProviderInterface`. 
 The class has been designed to store and 'provide' an `iterable` collection of event listeners for a given event object.
 The `ListenerProvider` also implements interface `Arp\EventDispatcher\Listener\AddListenerAwareInterface` which exposes public 
-methods which allow fot the registration of event listeners.
+methods which allow for the registration of event listeners.
  
 We can register any PHP `callable` data type directly using the `ListenerProvider::addListenerForEvent()` method. 
 
