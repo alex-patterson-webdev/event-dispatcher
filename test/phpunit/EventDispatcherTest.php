@@ -115,7 +115,7 @@ final class EventDispatcherTest extends TestCase
         $isStopped = [];
 
         for ($x = 0; $x < $listenerCount; $x++) {
-            $eventListeners[] = static function (StoppableEventInterface $event) {
+            $eventListeners[] = static function () {
             };
 
             if ($x < ($stopIndex + 1)) {
