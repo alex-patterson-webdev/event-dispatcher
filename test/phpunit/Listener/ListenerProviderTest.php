@@ -73,7 +73,7 @@ final class ListenerProviderTest extends TestCase
     {
         $provider = new ListenerProvider($this->eventNameResolver);
 
-        $this->eventNameResolver
+        $this->eventNameResolver->expects($this->once())
             ->method('resolveEventName')
             ->willReturn(\stdClass::class);
 
