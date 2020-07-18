@@ -20,7 +20,7 @@ Installation via [composer](https://getcomposer.org).
 
 The `Arp\EventDispatcher\EventDispatcher` class is responsible for executing the event listeners for any given event instance. 
 The event dispatcher requires a `Arp\EventDispatcher\Listener\ListenerProvider` instance as a single dependency. 
-The `ListenerProvider` all of the event contains all the event listeners that can be dispatched.
+The `ListenerProvider` contains all the event listeners that can be dispatched.
 
     use Arp\EventDispatcher\EventDispatcher;
     use Arp\EventDispatcher\Listener\ListenerProvider;
