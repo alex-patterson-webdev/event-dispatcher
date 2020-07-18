@@ -8,7 +8,6 @@ use Arp\EventDispatcher\EventDispatcher;
 use Arp\EventDispatcher\Listener\AddableListenerProviderInterface;
 use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
-use Arp\EventDispatcher\Listener\ListenerProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
