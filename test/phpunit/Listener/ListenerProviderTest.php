@@ -73,7 +73,9 @@ final class ListenerProviderTest extends TestCase
     {
         $provider = new ListenerProvider($this->eventNameResolver);
 
-        $this->eventNameResolver->expects($this->once())
+        // We resolve the event name twice, once for 'adding' and once for 'getting'
+        $this->eventNameResolver
+            ->expects($this->exactly(2))
             ->method('resolveEventName')
             ->willReturn(\stdClass::class);
 
