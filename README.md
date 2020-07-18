@@ -14,9 +14,9 @@ Installation via [composer](https://getcomposer.org).
 
     require alex-patterson-webdev/event-dispatcher ^1
 
-### The Event Dispatcher
+## Usage
 
-#### Dispatching events
+### Dispatching events
 
 The `Arp\EventDispatcher\EventDispatcher` class is responsible for executing the necessary event listeners for any given event instance. 
 The event dispatcher requires a `Arp\EventDispatcher\Listener\ListenerProvider` instance as a single dependency; which provides the event 
@@ -35,7 +35,7 @@ listeners that can be dispatched.
 Any object can be used as an event; by default an internal `EventNameResolver` instance will return the fully qualified class name of the object to use as the event name. See 
 the 'Event Name Resolver' section for more configuration options.
 
-#### Event Listener Registration
+### Event Listener Registration
  
 The `Arp\EventDispatcher\Listener\ListenerProvider` is an implementation of the `Psr\EventDispatcher\ListenerProviderInterface`. 
 The class has been designed to store and 'provide' an `iterable` collection of event listeners for a given event object.
@@ -78,7 +78,7 @@ an instance of `Arp\EventDispatcher\Listener\ListenerCollectionInterface`, which
     /** @var ListenerCollectionInterface $listenerCollection */
     $listenerCollection = $listenerProvider->getListenersForEvent($event);
 
-#### Adding Listeners via the Event Dispatcher
+### Adding Listeners via the Event Dispatcher
 
 For convenience, the `EventDispatcher` class also implements `Arp\EventDispatcher\Listener\AddListenerAwareInterface`. This provides public methods 
 to add event listeners to collections of the listener provider _after_ it has been passed to the `EventDispatcher`.
@@ -103,7 +103,7 @@ For example
     
     $dispatcher->dispatch(new My\Event\Foo());
          
-#### Immutable Event Dispatcher
+### Immutable Event Dispatcher
 
 If you do not want the collection of event listeners to be modified after being passed to the `EventDispatcher` you can
 use the provided `Arp\EventDispatcher\ImmutableEventDispatcher`. This event dispatcher implementation does not expose any methods
