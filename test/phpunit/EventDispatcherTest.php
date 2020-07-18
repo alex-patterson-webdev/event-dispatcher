@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace ArpTest\EventDispatcher;
 
 use Arp\EventDispatcher\EventDispatcher;
+use Arp\EventDispatcher\Listener\AddableListenerProviderInterface;
+use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\ListenerProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -19,7 +21,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 final class EventDispatcherTest extends TestCase
 {
     /**
-     * @var ListenerProvider|MockObject
+     * @var AddableListenerProviderInterface|MockObject
      */
     private $listenerProvider;
 
@@ -30,19 +32,32 @@ final class EventDispatcherTest extends TestCase
      */
     public function setUp(): void
     {
-        $this->listenerProvider = $this->createMock(ListenerProvider::class);
+        $this->listenerProvider = $this->getMockForAbstractClass(AddableListenerProviderInterface::class);
     }
 
     /**
      * Ensure that the event manager implements EventDispatcherInterface.
      *
      * @covers \Arp\EventDispatcher\EventDispatcher
+     * @covers \Arp\EventDispatcher\AbstractEventDispatcher
      */
     public function testImplementsEventDispatcherInterface(): void
     {
         $eventManager = new EventDispatcher($this->listenerProvider);
 
         $this->assertInstanceOf(EventDispatcherInterface::class, $eventManager);
+    }
+
+    /**
+     * Ensure that the event manager implements AddListenerAwareInterface.
+     *
+     * @covers \Arp\EventDispatcher\EventDispatcher
+     */
+    public function testImplementsAddListenerAwareInterface(): void
+    {
+        $eventManager = new EventDispatcher($this->listenerProvider);
+
+        $this->assertInstanceOf(AddListenerAwareInterface::class, $eventManager);
     }
 
     /**
@@ -101,7 +116,7 @@ final class EventDispatcherTest extends TestCase
         $isStopped = [];
 
         for ($x = 0; $x < $listenerCount; $x++) {
-            $eventListeners[] = static function (StoppableEventInterface $event) use ($x, $stopIndex) {
+            $eventListeners[] = static function (StoppableEventInterface $event) {
             };
 
             if ($x < ($stopIndex + 1)) {
@@ -152,7 +167,7 @@ final class EventDispatcherTest extends TestCase
         $listeners = [];
 
         for ($x = 0; $x < $numberOfListeners; $x++) {
-            $listeners[] = static function ($event) use ($x) {
+            $listeners[] = static function ($event) {
                 get_class($event);
             };
         }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ArpTest\EventDispatcher\Listener;
 
+use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\ListenerCollection;
 use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
@@ -38,7 +39,7 @@ final class ListenerProviderTest extends TestCase
     /**
      * Assert that the listener provider implements ListenerProviderInterface.
      *
-     * @return void
+     * @covers \Arp\EventDispatcher\Listener\ListenerProvider
      */
     public function testImplementsListenerProviderInterface(): void
     {
@@ -46,6 +47,19 @@ final class ListenerProviderTest extends TestCase
 
         $this->assertInstanceOf(ListenerProviderInterface::class, $provider);
     }
+
+    /**
+     * Assert that the listener collection implements AddListenerAwareInterface.
+     *
+     * @covers \Arp\EventDispatcher\Listener\ListenerProvider
+     */
+    public function testImplementsAddListenerAwareInterface(): void
+    {
+        $provider = new ListenerProvider();
+
+        $this->assertInstanceOf(AddListenerAwareInterface::class, $provider);
+    }
+
 
     /**
      * Assert that the listener provider will return a clone of the internal listener collection which contains
@@ -99,7 +113,7 @@ final class ListenerProviderTest extends TestCase
             // One Listener (with type hint)
             [
                 [
-                    static function (\stdClass $event) {
+                    static function () {
                         return 1;
                     },
                 ],
@@ -108,13 +122,13 @@ final class ListenerProviderTest extends TestCase
             // Three Listeners
             [
                 [
-                    static function (\stdClass $event) {
+                    static function () {
                         return 0;
                     },
-                    static function (\stdClass $event) {
+                    static function () {
                         return 1;
                     },
-                    static function (\stdClass $event) {
+                    static function () {
                         return 2;
                     },
                 ],
@@ -123,13 +137,13 @@ final class ListenerProviderTest extends TestCase
             // Traversable test
             [
                 new ListenerCollection([
-                    static function ($event) {
+                    static function () {
                         return 0;
                     },
-                    static function ($event) {
+                    static function () {
                         return 1;
                     },
-                    static function ($event) {
+                    static function () {
                         return 2;
                     },
                 ]),

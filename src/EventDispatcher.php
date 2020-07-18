@@ -4,55 +4,27 @@ declare(strict_types=1);
 
 namespace Arp\EventDispatcher;
 
+use Arp\EventDispatcher\Listener\AddableListenerProviderInterface;
+use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
-use Arp\EventDispatcher\Listener\ListenerProvider;
-use Arp\EventDispatcher\Listener\ListenerRegistrationInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\EventDispatcher\StoppableEventInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher
  */
-final class EventDispatcher implements EventDispatcherInterface, ListenerRegistrationInterface
+final class EventDispatcher extends AbstractEventDispatcher implements AddListenerAwareInterface
 {
     /**
-     * @var ListenerProvider
+     * @var AddableListenerProviderInterface
      */
-    private $listenerProvider;
+    protected $listenerProvider;
 
     /**
-     * @param ListenerProvider $listenerProvider
+     * @param AddableListenerProviderInterface $listenerProvider
      */
-    public function __construct(ListenerProvider $listenerProvider)
+    public function __construct(AddableListenerProviderInterface $listenerProvider)
     {
         $this->listenerProvider = $listenerProvider;
-    }
-
-    /**
-     * Trigger the registered collection of events.
-     *
-     * @param object $event The event that should be triggered.
-     *
-     * @return object
-     *
-     * @throws EventListenerException
-     */
-    public function dispatch(object $event): object
-    {
-        if ($this->isPropagationStopped($event)) {
-            return $event;
-        }
-
-        foreach ($this->listenerProvider->getListenersForEvent($event) as $listener) {
-            $listener($event);
-
-            if ($this->isPropagationStopped($event)) {
-                break;
-            }
-        }
-
-        return $event;
     }
 
     /**
@@ -62,7 +34,7 @@ final class EventDispatcher implements EventDispatcherInterface, ListenerRegistr
      * @param callable      $listener The event listener to attach.
      * @param int           $priority The event priority.
      *
-     * @throws EventListenerException  If the $event name cannot be resolved.
+     * @throws EventListenerException  If the event listener cannot be added.
      */
     public function addListenerForEvent($event, callable $listener, int $priority = 1): void
     {
@@ -76,22 +48,10 @@ final class EventDispatcher implements EventDispatcherInterface, ListenerRegistr
      * @param iterable|callable[] $listeners Collection of listeners to attach.
      * @param int                 $priority  Event priority to use for all $listeners. This will default to 1.
      *
-     * @throws EventListenerException  If the $event name cannot be resolved.
+     * @throws EventListenerException  If the event listeners cannot be added.
      */
     public function addListenersForEvent($event, iterable $listeners, int $priority = 1): void
     {
         $this->listenerProvider->addListenersForEvent($event, $listeners, $priority);
-    }
-
-    /**
-     * Check if the event propagation has been stopped.
-     *
-     * @param object $event
-     *
-     * @return bool
-     */
-    private function isPropagationStopped(object $event): bool
-    {
-        return ($event instanceof StoppableEventInterface && $event->isPropagationStopped());
     }
 }

@@ -34,7 +34,7 @@ final class PriorityQueueTest extends TestCase
      *
      * @dataProvider getCompareData
      *
-     * @covers \Arp\EventDispatcher\Listener\PriorityQueue::compare
+     * @covers       \Arp\EventDispatcher\Listener\PriorityQueue::compare
      */
     public function testCompare($priority1, $priority2): void
     {
@@ -57,7 +57,7 @@ final class PriorityQueueTest extends TestCase
             [300, 1],
             [2345, 999],
             [1, 1],
-            [1000,1000],
+            [1000, 1000],
             [
                 [1, 100],
                 [1, 100],

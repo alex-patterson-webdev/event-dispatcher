@@ -1,0 +1,28 @@
+build:
+  nodes:
+    php73:
+      environment:
+        php: 7.3
+    php74:
+      environment:
+        php: 7.4
+    analysis:
+      project_setup:
+        override:
+          - 'true'
+      tests:
+        override:
+          - php-scrutinizer-run
+          - command: phpcs-run
+checks:
+  php: true
+coding_style:
+  php:
+    spaces:
+      general:
+        linefeed_character: return-newline
+      before_parentheses:
+        closure_definition: true
+filter:
+  dependency_paths:
+    - "vendor/"

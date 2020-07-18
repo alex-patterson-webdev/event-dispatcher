@@ -8,7 +8,7 @@
 >
     <testsuites>
         <testsuite name="EventDispatcher">
-            <directory>./test</directory>
+            <directory>./test/phpunit</directory>
         </testsuite>
     </testsuites>
     <filter>
