@@ -28,18 +28,19 @@ listeners that can be dispatched.
     $listenerProvider = new ListenerProvider();
     $dispatcher = new EventDispatcher($listenerProvider);
     
-`EventDispatcher::dispatch()` will loop through the registered event listener matching `$event`; executing each one in turn using the configured priority order.
+Internally the call to `EventDispatcher::dispatch()` will loop through the registered event listeners from the provider. Any listeners that  
+match `$event` will be executed using the configured priority order.
 
     $dispatcher->dispatch(new \My\Event\Foo());
 
-Any object can be used as an event; by default an internal `EventNameResolver` instance will return the fully qualified class name of the object to use as the event name. See 
-the 'Event Name Resolver' section for more configuration options.
+Any object can be used as an event; by default an internal `EventNameResolver` instance will return the fully qualified class 
+name of the object to use as the event name. See the 'Event Name Resolver' section for more configuration options.
 
 ### Event Listener Registration
  
 The `Arp\EventDispatcher\Listener\ListenerProvider` is an implementation of the `Psr\EventDispatcher\ListenerProviderInterface`. 
 The class has been designed to store and 'provide' an `iterable` collection of event listeners for a given event object.
-The `ListenerProvider` also implements interface `Arp\EventDispatcher\Listener\AddListenerAwareInterface` which provides public 
+The `ListenerProvider` also implements interface `Arp\EventDispatcher\Listener\AddListenerAwareInterface` which exposes public 
 methods which allow fot the registration of event listeners.
  
 We can register any PHP `callable` data type directly using the `ListenerProvider::addListenerForEvent()` method. 
@@ -47,12 +48,13 @@ We can register any PHP `callable` data type directly using the `ListenerProvide
 For example :
     
     use Arp\EventDispatcher\Listener\ListenerProvider;
+    use My\Event\Foo;
 
     $listenerProvider = new ListenerProvider();
 
-    $event = new \My\Event\Foo();
+    $event = new Foo();
     $listener = static function (Foo $event) {
-        echo 'Event \My\Event\Foo was dispatched' . PHP_EOL;
+        echo 'The My\Event\Foo event was dispatched' . PHP_EOL;
     };
     
     $listenerProvider->addListenerForEvent($event, $listener);
@@ -80,11 +82,10 @@ an instance of `Arp\EventDispatcher\Listener\ListenerCollectionInterface`, which
 
 ### Adding Listeners via the Event Dispatcher
 
-For convenience, the `EventDispatcher` class also implements `Arp\EventDispatcher\Listener\AddListenerAwareInterface`. This provides public methods 
-to add event listeners to collections of the listener provider _after_ it has been passed to the `EventDispatcher`.
-Internally calls to `addListenerForEvent()` and `addListenersForEvent()` will proxy to the internal listener provider.
+For convenience, the `EventDispatcher` class also implements `Arp\EventDispatcher\Listener\AddListenerAwareInterface`. 
+This provides public methods to add event listeners to collections of the listener provider _after_ it has been passed to the `EventDispatcher`.
 
-For example 
+Internally calls to `addListenerForEvent()` and `addListenersForEvent()` will proxy to the internal listener provider.
 
     use Arp\EventDispatcher\EventDispatcher;
     use Arp\EventDispatcher\Listener\ListenerProvider;
@@ -156,6 +157,6 @@ In accordance with the PSR, if provided with a `Psr\EventDispatcher\StoppableEve
 
 ## Unit Tests
 
-PHP Unit test using PHPUnit 8.
+PHP Unit test using PHPUnit.
 
     php vendor/bin/phpunit
