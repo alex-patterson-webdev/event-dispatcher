@@ -76,6 +76,6 @@ class ListenerProviderFactory implements FactoryInterface
             $this->eventNameResolverFactory = new EventNameResolverFactory();
         }
 
-        return $this->eventNameResolverFactory->create($config);
+        return $this->eventNameResolverFactory->create(is_array($config) ? $config : []);
     }
 }
