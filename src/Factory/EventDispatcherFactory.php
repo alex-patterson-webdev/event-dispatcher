@@ -7,6 +7,7 @@ namespace Arp\EventDispatcher\Factory;
 use Arp\EventDispatcher\EventDispatcher;
 use Arp\EventDispatcher\Factory\Listener\ListenerProviderFactory;
 use Arp\EventDispatcher\Listener\AddableListenerProviderInterface;
+use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Arp\Factory\Exception\FactoryException;
 use Arp\Factory\FactoryInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -49,7 +50,7 @@ class EventDispatcherFactory implements FactoryInterface
         );
 
         $listeners = $config['listeners'] ?? [];
-        if (!empty($listeners) && $eventDispatcher instanceof AddableListenerProviderInterface) {
+        if (!empty($listeners) && $eventDispatcher instanceof AddListenerAwareInterface) {
             $this->registerEventListeners($eventDispatcher, $listeners);
         }
 
