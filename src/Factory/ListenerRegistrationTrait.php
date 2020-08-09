@@ -21,6 +21,12 @@ trait ListenerRegistrationTrait
      * $listenerConfig can be provided in the following format.
      *
      * $listenerConfig = [
+     *      new class implements AggregateListenerInterface {
+     *          //...
+     *      }
+     *
+     *      or...
+     *
      *      'eventA' => [
      *          static function() {
      *              echo 'foo';
@@ -44,12 +50,23 @@ trait ListenerRegistrationTrait
     protected function registerEventListeners(AddListenerAwareInterface $collection, array $listenerConfig): void
     {
         foreach ($listenerConfig as $eventName => $listeners) {
-            foreach ($listeners as $listener) {
-                if ($listener instanceof AggregateListenerInterface) {
-                    $listener->addListeners($collection);
-                    continue;
-                }
+            if ($listeners instanceof AggregateListenerInterface) {
+                $listeners->addListeners($collection);
+                continue;
+            }
 
+            if (!is_iterable($listeners)) {
+                throw new FactoryException(
+                    sprintf(
+                        'Event listeners must be of type \'%s\' or \'iterable\'; \'%s\' provided for event \'%s\'',
+                        AggregateListenerInterface::class,
+                        gettype($listeners),
+                        $eventName
+                    )
+                );
+            }
+
+            foreach ($listeners as $listener) {
                 $event = $eventName;
                 $priority = 1;
 
