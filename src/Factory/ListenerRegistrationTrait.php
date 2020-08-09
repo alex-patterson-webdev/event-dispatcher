@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Arp\EventDispatcher\Factory;
 
 use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
+use Arp\EventDispatcher\Listener\AggregateListenerInterface;
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\Factory\Exception\FactoryException;
 
@@ -44,6 +45,11 @@ trait ListenerRegistrationTrait
     {
         foreach ($listenerConfig as $eventName => $listeners) {
             foreach ($listeners as $listener) {
+                if ($listener instanceof AggregateListenerInterface) {
+                    $listener->addListeners($collection);
+                    continue;
+                }
+
                 $event = $eventName;
                 $priority = 1;
 
