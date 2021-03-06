@@ -26,14 +26,15 @@ class ListenerConfig
     protected $priority;
 
     /**
-     * @param callable $listener
      * @param string   $eventName
+     * @param callable $listener
      * @param int      $priority
      */
-    public function __construct(callable $listener, string $eventName, int $priority = 1)
+    public function __construct(string $eventName, callable $listener, int $priority = 1)
     {
-        $this->setListener($listener);
-        $this->setEventName($eventName);
+        $this->eventName = $eventName;
+        $this->listener = $listener;
+        $this->priority = $priority;
     }
 
     /**
@@ -45,27 +46,11 @@ class ListenerConfig
     }
 
     /**
-     * @param callable $listener
-     */
-    public function setListener(callable $listener): void
-    {
-        $this->listener = $listener;
-    }
-
-    /**
      * @return string
      */
     public function getEventName(): string
     {
         return $this->eventName;
-    }
-
-    /**
-     * @param string $eventName
-     */
-    public function setEventName(string $eventName): void
-    {
-        $this->eventName = $eventName;
     }
 
     /**
@@ -85,16 +70,28 @@ class ListenerConfig
     }
 
     /**
+     * Compare the priority with another listener config instance.
+     *
+     * @param ListenerConfig $config
+     *
+     * @return int
+     */
+    public function comparePriority(ListenerConfig $config): int
+    {
+        return ($this->priority <=> $config->getPriority());
+    }
+
+    /**
      * @param array $data
      */
     public function fromArray(array $data): void
     {
-        if (isset($data['listener'])) {
-            $this->setListener($data['listener']);
+        if (isset($data['listener']) && is_callable($data['listener'])) {
+            $this->listener = $data['listener'];
         }
 
-        if (isset($data['event_name'])) {
-            $this->setEventName($data['event_name']);
+        if (isset($data['event_name']) && is_string($data['event_name'])) {
+            $this->eventName = $data['event_name'];
         }
 
         if (isset($data['priority'])) {

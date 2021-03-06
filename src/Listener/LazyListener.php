@@ -13,9 +13,9 @@ use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 class LazyListener
 {
     /**
-     * @var string
+     * @var callable|null
      */
-    private $className;
+    private $factory;
 
     /**
      * @var array
@@ -23,23 +23,13 @@ class LazyListener
     private $arguments;
 
     /**
-     * @var callable|null
+     * @param callable $factory
+     * @param array    $arguments
      */
-    private $factory;
-
-    /**
-     * @param string        $className
-     * @param array         $arguments
-     * @param callable|null $factory
-     */
-    public function __construct(
-        string $className,
-        array $arguments = [],
-        callable $factory = null
-    ) {
-        $this->className = $className;
-        $this->arguments = $arguments;
+    public function __construct(callable $factory, array $arguments = [])
+    {
         $this->factory = $factory;
+        $this->arguments = $arguments;
     }
 
     /**
@@ -51,18 +41,17 @@ class LazyListener
      */
     public function __invoke(object $event): void
     {
-        $factory = $this->factory ?? $this->getDefaultListenerFactory();
-
-        $listener = $factory($this->className, $this->arguments);
-
-        if (!is_callable($listener)) {
-            throw new EventListenerException(sprintf(
-                'The the lazy loaded event listener, using class \'%s\', is not callable.',
-                $this->className
-            ));
-        }
-
+        $listener = $this->loadListener($event);
         $listener($event);
+    }
+
+    /**
+     * @return callable
+     */
+    private function loadListener(): callable
+    {
+        $factory = $this->factory ?? $this->getDefaultListenerFactory();
+        return $factory($this->arguments);
     }
 
     /**

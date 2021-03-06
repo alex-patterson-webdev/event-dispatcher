@@ -15,7 +15,7 @@ use Arp\Factory\FactoryInterface;
 final class LazyListenerConfig extends ListenerConfig
 {
     /**
-     * @var string|FactoryInterface
+     * @var string|callable|FactoryInterface
      */
     private $factory;
 
@@ -34,10 +34,14 @@ final class LazyListenerConfig extends ListenerConfig
      */
     public function __construct($factory, string $eventName, int $priority = 1, array $options = [])
     {
-        if (!$factory instanceof FactoryInterface && !is_a($factory, FactoryInterface::class, true)) {
+        if (
+            is_callable($factory)
+            && !$factory instanceof FactoryInterface
+            && !is_a($factory, FactoryInterface::class, true)
+        ) {
             throw new EventListenerException(
                 sprintf(
-                    'The \'listener\' argument must be a \'string\' or an object of type \'%s\'; '
+                    'The \'listener\' argument must be a \'string\', \'callable\' or an object of type \'%s\'; '
                     . '\'%s\' provided in \'%s\'',
                     FactoryInterface::class,
                     is_object($factory) ? get_class($factory) : gettype($factory),
@@ -62,6 +66,8 @@ final class LazyListenerConfig extends ListenerConfig
      */
     public function getListener(): callable
     {
+        $listener = new LazyListener();
+
         $listener = $this->listener;
         $factory = $this->factory;
 
