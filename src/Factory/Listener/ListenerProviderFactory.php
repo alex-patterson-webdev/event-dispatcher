@@ -22,9 +22,9 @@ class ListenerProviderFactory implements FactoryInterface
     use ListenerRegistrationTrait;
 
     /**
-     * @var FactoryInterface
+     * @var FactoryInterface|null
      */
-    private $eventNameResolverFactory;
+    private ?FactoryInterface $eventNameResolverFactory;
 
     /**
      * @param FactoryInterface|null $eventNameResolverFactory

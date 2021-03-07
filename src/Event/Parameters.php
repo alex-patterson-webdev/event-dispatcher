@@ -13,7 +13,7 @@ final class Parameters implements ParametersInterface
     /**
      * @var array $params
      */
-    private $params = [];
+    private array $params = [];
 
     /**
      * @param array $params

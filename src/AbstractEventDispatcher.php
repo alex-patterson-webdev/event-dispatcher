@@ -17,7 +17,7 @@ abstract class AbstractEventDispatcher implements EventDispatcherInterface
     /**
      * @var ListenerProviderInterface
      */
-    protected $listenerProvider;
+    protected ListenerProviderInterface $listenerProvider;
 
     /**
      * Trigger the registered collection of events.

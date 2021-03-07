@@ -7,6 +7,7 @@ namespace Arp\EventDispatcher;
 use Arp\EventDispatcher\Listener\AddableListenerProviderInterface;
 use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
+use Psr\EventDispatcher\ListenerProviderInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -15,9 +16,9 @@ use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 final class EventDispatcher extends AbstractEventDispatcher implements AddListenerAwareInterface
 {
     /**
-     * @var AddableListenerProviderInterface
+     * @var ListenerProviderInterface|AddableListenerProviderInterface
      */
-    protected $listenerProvider;
+    protected ListenerProviderInterface $listenerProvider;
 
     /**
      * @param AddableListenerProviderInterface $listenerProvider

@@ -13,7 +13,7 @@ abstract class AbstractEvent
     /**
      * @var ParametersInterface
      */
-    protected $params;
+    protected ParametersInterface $params;
 
     /**
      * @param array $params

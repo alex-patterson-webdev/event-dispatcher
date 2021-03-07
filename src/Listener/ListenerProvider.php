@@ -20,19 +20,19 @@ class ListenerProvider implements AddableListenerProviderInterface
      *
      * @var ListenerCollectionInterface[]
      */
-    protected $collections = [];
+    protected array $collections = [];
 
     /**
      * Service used to resolve the name of an event.
      *
      * @var EventNameResolverInterface
      */
-    protected $eventNameResolver;
+    protected EventNameResolverInterface $eventNameResolver;
 
     /**
-     * @param EventNameResolverInterface $eventNameResolver
+     * @param EventNameResolverInterface|null $eventNameResolver
      */
-    public function __construct(EventNameResolverInterface $eventNameResolver = null)
+    public function __construct(?EventNameResolverInterface $eventNameResolver = null)
     {
         if (null === $eventNameResolver) {
             $eventNameResolver = new EventNameResolver();

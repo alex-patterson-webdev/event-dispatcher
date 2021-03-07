@@ -24,7 +24,7 @@ class EventDispatcherFactory implements FactoryInterface
     /**
      * @var FactoryInterface|null
      */
-    private $listenerProviderFactory;
+    private ?FactoryInterface $listenerProviderFactory;
 
     /**
      * @param FactoryInterface|null $listenerProviderFactory

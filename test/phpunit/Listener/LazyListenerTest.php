@@ -6,10 +6,12 @@ namespace ArpTest\EventDispatcher\Listener;
 
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
 use Arp\EventDispatcher\Listener\LazyListener;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @covers  \Arp\EventDispatcher\Listener\LazyListener
+ *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package ArpTest\EventDispatcher\Listener
  */
@@ -17,132 +19,173 @@ final class LazyListenerTest extends TestCase
 {
     /**
      * testIsCallable
-     *
-     * @covers \Arp\EventDispatcher\Listener\LazyListener::__construct
      */
     public function testIsCallable(): void
     {
-        $listener = new LazyListener(\stdClass::class, []);
+        $listener = new LazyListener(
+            static function () {
+            }
+        );
 
         $this->assertIsCallable($listener);
     }
 
     /**
-     * Assert that a new EventListenerException will be thrown if the lazy loaded event listener is not callable.
+     * Assert a EventListenerException is thrown from __construct if the provided $factory is invalid
      *
-     * @covers \Arp\EventDispatcher\Listener\LazyListener::__invoke
+     * @param mixed $factory
+     *
+     * @dataProvider getConstructWillThrowEventListenerExceptionIfTheConfiguredFactoryIsNotCallableData
      */
-    public function testInvokeWillThrowEventListenerExceptionIfLoadedListenerIsNotCallable(): void
+    public function testConstructWillThrowEventListenerExceptionIfTheConfiguredFactoryIsNotCallable($factory): void
     {
-        $className = \stdClass::class;
-
-        $factory = static function () {
-            return false; // our result is not a callable type.
-        };
-
-        $listener = new LazyListener($className, [], $factory);
-
         $this->expectException(EventListenerException::class);
-        $this->expectExceptionMessage(sprintf(
-            'The the lazy loaded event listener, using class \'%s\', is not callable.',
-            $className
-        ));
+        $this->expectExceptionMessage(
+            sprintf(
+                'The event listener factory must be of type \'callable\' or \'object\'; \'%s\' provided in \'%s\'',
+                is_object($factory) ? get_class($factory) : gettype($factory),
+                LazyListener::class
+            )
+        );
 
-        $event = new \stdClass();
-
-        $listener($event);
+        new LazyListener($factory);
     }
 
     /**
-     * Assert that the event listener will be created and invoked.
-     *
-     * @covers \Arp\EventDispatcher\Listener\LazyListener::__invoke
+     * @return array
      */
-    public function testInvokeWillCreateAndInvokeTheLazyEventListener(): void
+    public function getConstructWillThrowEventListenerExceptionIfTheConfiguredFactoryIsNotCallableData(): array
     {
-        $expectedClassName = \stdClass::class;
-
-        $expectedEvent = new \stdClass();
-        $expectedArgs = ['hello' => 'foo'];
-
-        $mockedListener = function ($passedEvent) use ($expectedEvent) {
-            $this->assertSame($passedEvent, $expectedEvent);
-        };
-
-        $factory = function ($className, $arguments) use ($mockedListener, $expectedArgs, $expectedClassName) {
-            $this->assertSame($expectedClassName, $className);
-            $this->assertSame($expectedArgs, $arguments);
-            return $mockedListener;
-        };
-
-        $lazyListener = new LazyListener($expectedClassName, $expectedArgs, $factory);
-
-        $lazyListener($expectedEvent);
+        return [
+            ['hello'],
+            [true],
+            [123],
+        ];
     }
 
     /**
-     * Assert that the default factory will be used if no factory has been provided to the.
+     * Assert that non-callable factory methods will raise a EventListenerException in __invoke()
      *
      * @throws EventListenerException
-     *
-     * @covers \Arp\EventDispatcher\Listener\LazyListener::__invoke
      */
-    public function testDefaultFactoryWillBeUsedWhenOneIsNotProvidedViaConstruct(): void
+    public function testInvokeWillThrowEventListenerExceptionIfTheFactoryMethodIsNotCallable(): void
     {
-        $expectedClassName = 'Foo';
-        $expectedArguments = ['foo' => 'bar', 'bar' => 123];
+        $event = new \stdClass();
+        $factory = new \stdClass();
 
-        $expectedEvent = new \stdClass();
+        $lazyListener = new LazyListener($factory);
 
-        $defaultListener = function (object $event) use ($expectedEvent) {
-            $this->assertSame($expectedEvent, $event);
-        };
+        $this->expectException(EventListenerException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                'The factory method \'%s\' is not callable for lazy loaded listener of type \'%s\'',
+                '__invoke',
+                is_object($factory) ? get_class($factory) : gettype($factory)
+            )
+        );
 
-        $defaultListenerFactory = function (
-            string $className,
-            array $arguments = []
-        ) use (
-            $expectedClassName,
-            $expectedArguments,
-            $defaultListener
-        ) {
-            $this->assertSame($expectedClassName, $className);
-            $this->assertSame($expectedArguments, $arguments);
-
-            return $defaultListener;
-        };
-
-        /** @var LazyListener|MockObject $lazyListener */
-        $lazyListener = $this->getMockBuilder(LazyListener::class)
-            ->setConstructorArgs([$expectedClassName, $expectedArguments])
-            ->onlyMethods(['getDefaultListenerFactory'])
-            ->getMock();
-
-        $lazyListener->expects($this->once())
-            ->method('getDefaultListenerFactory')
-            ->willReturn($defaultListenerFactory);
-
-        $lazyListener($expectedEvent);
+        $lazyListener($event);
     }
 
     /**
-     * Assert that the defaultFactory is created and lazy loaded listener is executed correctly.
+     * Assert that a non-callable listener method will raise a EventListenerException in __invoke()
      *
-     * @return void
+     * @throws EventListenerException
      */
-    public function testDefaultFactoryCreatesAndInvokesLazyListenerMock(): void
+    public function testInvokeWillThrowEventListenerExceptionIfTheListenerMethodIsNotCallable(): void
     {
         $event = new \stdClass();
+        $listener = new \stdClass();
+        $factory = static fn() => $listener;
 
-        $className = LazyListenerMock::class;
-        $arguments = [
-            $event, // bit of a hack but we need $event in the fake listener to assert something...
-            'foo' => 'bar',
-            'test' => 123,
-        ];
+        $lazyListener = new LazyListener($factory);
 
-        $lazyListener = new LazyListener($className, $arguments);
+        $this->expectException(EventListenerException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                'The listener method \'%s\' is not callable for lazy loaded listener of type \'%s\'',
+                '__invoke',
+                \stdClass::class
+            )
+        );
 
         $lazyListener($event);
+    }
+
+    /**
+     * @param mixed       $expected
+     * @param mixed       $factory
+     * @param string|null $factoryMethod
+     * @param string|null $listenerMethod
+     *
+     * @throws EventListenerException
+     * @throws ExpectationFailedException
+     *
+     * @dataProvider getLazyListenerWillCreateAndDispatchEventData
+     */
+    public function testLazyListenerWillCreateAndDispatchEvent(
+        $expected,
+        $factory,
+        ?string $factoryMethod = null,
+        ?string $listenerMethod = null
+    ): void {
+        $event = new \stdClass();
+        $lazyListener = new LazyListener($factory, $factoryMethod, $listenerMethod);
+
+        $this->assertSame($expected, $lazyListener($event));
+    }
+
+    /**
+     * @return array
+     */
+    public function getLazyListenerWillCreateAndDispatchEventData(): array
+    {
+        $factory1 = new class () {
+            public function create(): callable
+            {
+                return static fn() => 'hello123';
+            }
+        };
+
+        $listener1 = new class () {
+            public function doSomething(object $event): string
+            {
+                return 'test123';
+            }
+        };
+
+        $factory2 = new class ($listener1) {
+            private object $listener;
+
+            public function __construct(object $listener)
+            {
+                $this->listener = $listener;
+            }
+
+            public function create(): object
+            {
+                return $this->listener;
+            }
+        };
+
+        return [
+//            [
+//                'hello123',
+//                static fn() => static fn() => 'hello123',
+//            ],
+//
+//            [
+//                'hello123',
+//                $factory1,
+//                'create'
+//            ],
+
+            [
+                'test123',
+                $factory2,
+                'create',
+                'doSomething',
+            ]
+        ];
     }
 }

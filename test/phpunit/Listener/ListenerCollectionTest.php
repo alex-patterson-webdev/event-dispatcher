@@ -44,7 +44,7 @@ final class ListenerCollectionTest extends TestCase
             },
         ];
 
-        $collection->addListeners($listeners, 1);
+        $collection->addListeners($listeners);
 
         $results = [];
         foreach ($collection as $index => $listener) {
@@ -209,14 +209,14 @@ final class ListenerCollectionTest extends TestCase
 
         $collection = new ListenerCollection();
 
-        $collection->addListener($listeners[0], 1); // 5
-        $collection->addListener($listeners[1], 1); // 1
-        $collection->addListener($listeners[2], 1); // 3
-        $collection->addListener($listeners[3], 1); // 7
-        $collection->addListener($listeners[4], 1); // 4
-        $collection->addListener($listeners[5], 1); // 8
-        $collection->addListener($listeners[6], 1); // 6
-        $collection->addListener($listeners[7], 1); // 2
+        $collection->addListener($listeners[0]); // 5
+        $collection->addListener($listeners[1]); // 1
+        $collection->addListener($listeners[2]); // 3
+        $collection->addListener($listeners[3]); // 7
+        $collection->addListener($listeners[4]); // 4
+        $collection->addListener($listeners[5]); // 8
+        $collection->addListener($listeners[6]); // 6
+        $collection->addListener($listeners[7]); // 2
 
         $results = [];
         foreach ($collection as $item) {

@@ -15,7 +15,7 @@ class NamedEvent extends AbstractEvent implements EventNameAwareInterface
     /**
      * @var string
      */
-    protected $eventName;
+    protected string $eventName;
 
     /**
      * @param string $eventName
