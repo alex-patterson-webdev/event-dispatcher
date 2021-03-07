@@ -169,16 +169,16 @@ final class LazyListenerTest extends TestCase
         };
 
         return [
-//            [
-//                'hello123',
-//                static fn() => static fn() => 'hello123',
-//            ],
-//
-//            [
-//                'hello123',
-//                $factory1,
-//                'create'
-//            ],
+            [
+                'hello123',
+                static fn() => static fn() => 'hello123',
+            ],
+
+            [
+                'hello123',
+                $factory1,
+                'create'
+            ],
 
             [
                 'test123',
