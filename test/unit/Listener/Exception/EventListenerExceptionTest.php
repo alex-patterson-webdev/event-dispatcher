@@ -14,9 +14,7 @@ use PHPUnit\Framework\TestCase;
 final class EventListenerExceptionTest extends TestCase
 {
     /**
-     * Assert that the EventListenerException extends from Exception.
-     *
-     * @covers \Arp\EventDispatcher\Listener\Exception\EventListenerException
+     * Assert that the EventListenerException extends from Exception
      */
     public function testImplementsException(): void
     {

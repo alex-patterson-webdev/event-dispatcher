@@ -10,5 +10,4 @@ namespace Arp\EventDispatcher\Resolver\Exception;
  */
 class EventNameResolverException extends \Exception
 {
-
 }

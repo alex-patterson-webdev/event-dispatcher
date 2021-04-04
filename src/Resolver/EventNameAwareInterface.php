@@ -11,8 +11,6 @@ namespace Arp\EventDispatcher\Resolver;
 interface EventNameAwareInterface
 {
     /**
-     * getEventName
-     *
      * @return string
      */
     public function getEventName(): string;

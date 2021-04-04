@@ -22,7 +22,7 @@ class ListenerCollection implements ListenerCollectionInterface
      *
      * @var int
      */
-    private $queueOrder = PHP_INT_MAX;
+    private int $queueOrder = PHP_INT_MAX;
 
     /**
      * @param iterable|callable[] $listeners
@@ -63,7 +63,7 @@ class ListenerCollection implements ListenerCollectionInterface
     /**
      * Return the listener iterator
      *
-     * @return \Traversable
+     * @return \Traversable<callable>
      */
     public function getIterator(): \Traversable
     {

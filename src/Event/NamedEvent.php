@@ -15,11 +15,11 @@ class NamedEvent extends AbstractEvent implements EventNameAwareInterface
     /**
      * @var string
      */
-    protected $eventName;
+    protected string $eventName;
 
     /**
-     * @param string $eventName
-     * @param array  $params
+     * @param string       $eventName
+     * @param array<mixed> $params
      */
     public function __construct(string $eventName, array $params = [])
     {
@@ -29,7 +29,7 @@ class NamedEvent extends AbstractEvent implements EventNameAwareInterface
     }
 
     /**
-     * Return the event name.
+     * Return the event name
      *
      * @return string
      */

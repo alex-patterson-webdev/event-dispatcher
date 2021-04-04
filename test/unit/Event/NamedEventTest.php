@@ -17,9 +17,7 @@ use PHPUnit\Framework\TestCase;
 final class NamedEventTest extends TestCase
 {
     /**
-     * Assert that the class implements EventNameAwareInterface.
-     *
-     * @covers \Arp\EventDispatcher\Event\NamedEvent
+     * Assert that the class implements EventNameAwareInterface
      */
     public function testImplementsEventNameAwareInterface(): void
     {
@@ -29,9 +27,7 @@ final class NamedEventTest extends TestCase
     }
 
     /**
-     * Assert that getEventName() will return the name of the event.
-     *
-     * @covers \Arp\EventDispatcher\Event\NamedEvent::getEventName
+     * Assert that getEventName() will return the name of the event
      */
     public function testGetEventNameWillReturnEventName(): void
     {
@@ -41,11 +37,7 @@ final class NamedEventTest extends TestCase
     }
 
     /**
-     * Assert that a empty parameters collection is set by default.
-     *
-     * @covers \Arp\EventDispatcher\Event\AbstractEvent::__construct
-     * @covers \Arp\EventDispatcher\Event\NamedEvent::setParameters
-     * @covers \Arp\EventDispatcher\Event\NamedEvent::getParameters
+     * Assert that a empty parameters collection is set by default
      */
     public function testSetAndGetParameters(): void
     {
@@ -55,8 +47,8 @@ final class NamedEventTest extends TestCase
 
         $this->assertSame($params, $namedEvent->getParameters()->getParams());
 
-        /** @var ParametersInterface|MockObject $parameters */
-        $parameters = $this->getMockForAbstractClass(ParametersInterface::class);
+        /** @var ParametersInterface<mixed>&MockObject $parameters */
+        $parameters = $this->createMock(ParametersInterface::class);
 
         $namedEvent->setParameters($parameters);
 

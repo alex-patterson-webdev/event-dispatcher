@@ -1,12 +1,11 @@
 build:
   nodes:
-    php73:
-      environment:
-        php: 7.3
     php74:
       environment:
         php: 7.4
     analysis:
+      environment:
+        php: 7.4
       project_setup:
         override:
           - 'true'
@@ -14,6 +13,10 @@ build:
         override:
           - php-scrutinizer-run
           - command: phpcs-run
+          - command: composer arp:unit-test-with-coverage
+            coverage:
+              file: test/coverage/clover.xml
+              format: clover
 checks:
   php: true
 coding_style:

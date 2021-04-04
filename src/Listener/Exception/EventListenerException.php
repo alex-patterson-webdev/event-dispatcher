@@ -10,5 +10,4 @@ namespace Arp\EventDispatcher\Listener\Exception;
  */
 class EventListenerException extends \Exception
 {
-
 }

@@ -16,10 +16,23 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 final class ImmutableEventDispatcher extends AbstractEventDispatcher
 {
     /**
+     * @var ListenerProviderInterface
+     */
+    private ListenerProviderInterface $listenerProvider;
+
+    /**
      * @param ListenerProviderInterface $listenerProvider
      */
     public function __construct(ListenerProviderInterface $listenerProvider)
     {
         $this->listenerProvider = $listenerProvider;
+    }
+
+    /**
+     * @return ListenerProviderInterface
+     */
+    protected function getListenerProvider(): ListenerProviderInterface
+    {
+        return $this->listenerProvider;
     }
 }

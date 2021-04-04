@@ -22,7 +22,7 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 final class ListenerProviderTest extends TestCase
 {
     /**
-     * @var EventNameResolverInterface|MockObject
+     * @var EventNameResolverInterface&MockObject
      */
     private $eventNameResolver;
 
@@ -37,9 +37,7 @@ final class ListenerProviderTest extends TestCase
     }
 
     /**
-     * Assert that the listener provider implements ListenerProviderInterface.
-     *
-     * @covers \Arp\EventDispatcher\Listener\ListenerProvider
+     * Assert that the listener provider implements ListenerProviderInterface
      */
     public function testImplementsListenerProviderInterface(): void
     {
@@ -49,9 +47,7 @@ final class ListenerProviderTest extends TestCase
     }
 
     /**
-     * Assert that the listener collection implements AddListenerAwareInterface.
-     *
-     * @covers \Arp\EventDispatcher\Listener\ListenerProvider
+     * Assert that the listener collection implements AddListenerAwareInterface
      */
     public function testImplementsAddListenerAwareInterface(): void
     {
@@ -101,7 +97,7 @@ final class ListenerProviderTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getAddListenersForEventAndGetListenerForEventData(): array
     {
@@ -189,7 +185,7 @@ final class ListenerProviderTest extends TestCase
      */
     public function testAddListenerForEvent(callable $listener, int $priority = 1): void
     {
-        /** @var ListenerProvider|MockObject $provider */
+        /** @var ListenerProvider&MockObject $provider */
         $provider = $this->getMockBuilder(ListenerProvider::class)
             ->setConstructorArgs([$this->eventNameResolver])
             ->onlyMethods(['createListenerCollection'])
@@ -203,7 +199,7 @@ final class ListenerProviderTest extends TestCase
             ->with($event)
             ->willReturn($eventName);
 
-        /** @var ListenerCollectionInterface|MockObject $collection */
+        /** @var ListenerCollectionInterface<mixed>&MockObject $collection */
         $collection = $this->getMockForAbstractClass(ListenerCollectionInterface::class);
 
         $provider->expects($this->once())
@@ -218,7 +214,7 @@ final class ListenerProviderTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getAddListenerForEventData(): array
     {
