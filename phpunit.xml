@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         bootstrap="./vendor/autoload.php"
-         verbose="true"
-         beStrictAboutOutputDuringTests="true"
-         beStrictAboutTodoAnnotatedTests="true"
-         colors="true"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        bootstrap="./vendor/autoload.php"
+        verbose="true"
+        beStrictAboutOutputDuringTests="true"
+        beStrictAboutTestsThatDoNotTestAnything="true"
+        beStrictAboutTodoAnnotatedTests="true"
+        colors="true"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
 >
     <testsuites>
         <testsuite name="EventDispatcher">
-            <directory>./test/phpunit</directory>
+            <directory>./test/unit</directory>
         </testsuite>
     </testsuites>
 
@@ -18,8 +20,4 @@
             <directory suffix=".php">src</directory>
         </include>
     </coverage>
-
-    <logging>
-        <testdoxXml outputFile="./test/coverage/clover.xml"/>
-    </logging>
 </phpunit>

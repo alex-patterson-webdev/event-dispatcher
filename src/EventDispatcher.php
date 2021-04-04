@@ -16,9 +16,9 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 final class EventDispatcher extends AbstractEventDispatcher implements AddListenerAwareInterface
 {
     /**
-     * @var ListenerProviderInterface|AddableListenerProviderInterface
+     * @var AddableListenerProviderInterface
      */
-    protected ListenerProviderInterface $listenerProvider;
+    private AddableListenerProviderInterface $listenerProvider;
 
     /**
      * @param AddableListenerProviderInterface $listenerProvider
@@ -54,5 +54,13 @@ final class EventDispatcher extends AbstractEventDispatcher implements AddListen
     public function addListenersForEvent($event, iterable $listeners, int $priority = 1): void
     {
         $this->listenerProvider->addListenersForEvent($event, $listeners, $priority);
+    }
+
+    /**
+     * @return ListenerProviderInterface
+     */
+    protected function getListenerProvider(): ListenerProviderInterface
+    {
+        return $this->listenerProvider;
     }
 }

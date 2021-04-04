@@ -15,9 +15,7 @@ use PHPUnit\Framework\TestCase;
 final class ListenerCollectionTest extends TestCase
 {
     /**
-     * Assert that the listener collection implements ListenerCollectionInterface.
-     *
-     * @covers \Arp\EventDispatcher\Listener\ListenerCollection
+     * Assert that the listener collection implements ListenerCollectionInterface
      */
     public function testImplementsListenerCollectionInterface(): void
     {
@@ -27,9 +25,7 @@ final class ListenerCollectionTest extends TestCase
     }
 
     /**
-     * Assert that getIterator() will return a clone of the listener priority queue.
-     *
-     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::getIterator
+     * Assert that getIterator() will return a clone of the listener priority queue
      */
     public function testGetIteratorWillReturnCloneOfListenerQueue(): void
     {
@@ -55,9 +51,7 @@ final class ListenerCollectionTest extends TestCase
     }
 
     /**
-     * Assert that the count() method will return an integer matching the number of listeners added to the collection.
-     *
-     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::addListeners
+     * Assert that the count() method will return an integer matching the number of listeners added to the collection
      */
     public function testCountWillReturnIntegerMatchingTheNumberOfEventListeners(): void
     {
@@ -81,9 +75,7 @@ final class ListenerCollectionTest extends TestCase
     }
 
     /**
-     * Assert that we can add a collection of event listeners via the __construct.
-     *
-     * @covers \Arp\EventDispatcher\Listener\ListenerCollection
+     * Assert that we can add a collection of event listeners via the __construct
      */
     public function testEventListenersCanBeAddedViaConstructor(): void
     {
@@ -118,10 +110,7 @@ final class ListenerCollectionTest extends TestCase
 
     /**
      * Assert that the listeners priorities are respected, regardless of when the listener is registered with the
-     * collection.
-     *
-     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::addListener
-     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::addListeners
+     * collection
      */
     public function testListenerPriorities(): void
     {
@@ -173,10 +162,7 @@ final class ListenerCollectionTest extends TestCase
 
     /**
      * Assert that the listeners natural order is respected when provided with event listeners with the same
-     * priorities. This means that the collection operates on a first in first out basis.
-     *
-     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::addListener
-     * @covers \Arp\EventDispatcher\Listener\ListenerCollection::addListeners
+     * priorities. This means that the collection operates on a first in first out basis
      */
     public function testListenerPrioritiesRespectNaturalOrderWhenPrioritiesAreTheSame(): void
     {

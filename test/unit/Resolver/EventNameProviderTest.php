@@ -18,8 +18,6 @@ final class EventNameProviderTest extends TestCase
 {
     /**
      * Assert that the EventNameResolver implements EventNameResolverInterface
-     *
-     * @covers \Arp\EventDispatcher\Resolver\EventNameResolver
      */
     public function testImplementsEventNameResolverInterface(): void
     {
@@ -34,7 +32,6 @@ final class EventNameProviderTest extends TestCase
      * @param string $eventName The event name string to test.
      *
      * @dataProvider getResolveEventNameWillResolveStringEventNameData
-     * @covers \Arp\EventDispatcher\Resolver\EventNameResolver::resolveEventName
      */
     public function testResolveEventNameWillResolveStringEventName(string $eventName): void
     {
@@ -44,7 +41,7 @@ final class EventNameProviderTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getResolveEventNameWillResolveStringEventNameData(): array
     {
@@ -56,9 +53,7 @@ final class EventNameProviderTest extends TestCase
     }
 
     /**
-     * Assert that the class name of the object provided to resolveEventName() will return the FQCN.
-     *
-     * @covers \Arp\EventDispatcher\Resolver\EventNameResolver::resolveEventName
+     * Assert that the class name of the object provided to resolveEventName() will return the FQCN
      */
     public function testResolveEventNameWillResolveObjectEventName(): void
     {
@@ -70,9 +65,7 @@ final class EventNameProviderTest extends TestCase
     }
 
     /**
-     * Assert that the event name will resolve to the FQCN of the provided object when calling resolveEventName().
-     *
-     * @covers \Arp\EventDispatcher\Resolver\EventNameResolver::resolveEventName
+     * Assert that the event name will resolve to the FQCN of the provided object when calling resolveEventName()
      */
     public function testResolveEventNameWillResolveEventNameAwareEventName(): void
     {
@@ -89,9 +82,7 @@ final class EventNameProviderTest extends TestCase
     }
 
     /**
-     * Assert that a InvalidArgumentException is thrown when passing an invalid argument to resolveEventName().
-     *
-     * @covers \Arp\EventDispatcher\Resolver\EventNameResolver::resolveEventName
+     * Assert that a InvalidArgumentException is thrown when passing an invalid argument to resolveEventName()
      */
     public function testResolveEventNameWillThrowInvalidArgumentException(): void
     {
@@ -107,6 +98,7 @@ final class EventNameProviderTest extends TestCase
             'resolveEventName'
         ));
 
+        /** @phpstan-ignore-next-line */
         $resolver->resolveEventName($event);
     }
 }

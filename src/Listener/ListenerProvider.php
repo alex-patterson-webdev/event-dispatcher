@@ -18,7 +18,7 @@ class ListenerProvider implements AddableListenerProviderInterface
     /**
      * Collection of priority queue's for each event collection.
      *
-     * @var ListenerCollectionInterface[]
+     * @var array<ListenerCollectionInterface>
      */
     protected array $collections = [];
 
@@ -34,11 +34,7 @@ class ListenerProvider implements AddableListenerProviderInterface
      */
     public function __construct(?EventNameResolverInterface $eventNameResolver = null)
     {
-        if (null === $eventNameResolver) {
-            $eventNameResolver = new EventNameResolver();
-        }
-
-        $this->eventNameResolver = $eventNameResolver;
+        $this->eventNameResolver = $eventNameResolver ?? new EventNameResolver();
     }
 
     /**
@@ -46,7 +42,7 @@ class ListenerProvider implements AddableListenerProviderInterface
      *
      * @param object $event The event that will be triggered.
      *
-     * @return iterable|callable[] A collection of event listeners to execute.
+     * @return iterable<callable>&ListenerCollectionInterface A collection of event listeners to execute.
      *
      * @throws EventListenerException  If the $event name cannot be resolved.
      */
@@ -61,7 +57,7 @@ class ListenerProvider implements AddableListenerProviderInterface
      *
      * @param string|object $event The name or instance of the event.
      *
-     * @return ListenerCollectionInterface
+     * @return ListenerCollectionInterface<callable>
      *
      * @throws EventListenerException  If the $event name cannot be resolved.
      */
@@ -87,9 +83,9 @@ class ListenerProvider implements AddableListenerProviderInterface
     /**
      * Create a new listener collection with optional $listeners.
      *
-     * @param callable[] $listeners The optional event listeners that should be added.
+     * @param array<callable> $listeners The optional event listeners that should be added.
      *
-     * @return ListenerCollection
+     * @return ListenerCollectionInterface<callable>
      */
     protected function createListenerCollection(array $listeners = []): ListenerCollectionInterface
     {

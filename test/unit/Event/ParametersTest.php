@@ -15,9 +15,7 @@ use PHPUnit\Framework\TestCase;
 final class ParametersTest extends TestCase
 {
     /**
-     * Assert that the class implements the ParametersInterface.
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters
+     * Assert that the class implements the ParametersInterface
      */
     public function testImplementsParametersInterface(): void
     {
@@ -28,8 +26,6 @@ final class ParametersTest extends TestCase
 
     /**
      * Assert that the class implements \ArrayAccess
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters
      */
     public function testImplementsArrayAccess(): void
     {
@@ -39,12 +35,9 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * Assert that parameters can be set and fetched vis getParams() and setParams().
+     * Assert that parameters can be set and fetched vis getParams() and setParams()
      *
-     * @param array $data The test case data.
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::getParams
-     * @covers \Arp\EventDispatcher\Event\Parameters::setParams
+     * @param array<mixed> $data The test case data
      *
      * @dataProvider getGetSetParametersData
      */
@@ -60,7 +53,7 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getGetSetParametersData(): array
     {
@@ -98,10 +91,7 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * Assert that parameter values can be set and get by name.
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::setParam
-     * @covers \Arp\EventDispatcher\Event\Parameters::getParam
+     * Assert that parameter values can be set and get by name
      */
     public function testGetAndSetParam(): void
     {
@@ -114,9 +104,7 @@ final class ParametersTest extends TestCase
 
     /**
      * Assert that the default value is returned for calls to getParam() when the request parameter value cannot be
-     * found within the collection.
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::getParam
+     * found within the collection
      */
     public function testGetParamWillReturnDefaultValueForNonExistingParam(): void
     {
@@ -133,9 +121,7 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * Assert that isEmpty() will return true when the params collection is empty.
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::isEmpty
+     * Assert that isEmpty() will return true when the params collection is empty
      */
     public function testIsEmptyReturnsTrueWhenEmpty(): void
     {
@@ -148,9 +134,7 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * Assert that getParams() will return true when the params collection is not empty.
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::isEmpty
+     * Assert that getParams() will return true when the params collection is not empty
      */
     public function testIsEmptyReturnsFalseWhenNotEmpty(): void
     {
@@ -166,13 +150,11 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * Asser that the count method returns the correct count of the number of params within the collection.
+     * Assert that the count method returns the correct count of the number of params within the collection.
      *
-     * @param array $data  The data test set
+     * @param array<mixed> $data  The data test set
      *
      * @dataProvider getCountData
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::count
      */
     public function testCount(array $data): void
     {
@@ -182,7 +164,7 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getCountData(): array
     {
@@ -207,11 +189,9 @@ final class ParametersTest extends TestCase
     /**
      * Assert that getValues() will return a numerically indexed array of the parameter values.
      *
-     * @param array $params The parameters that should be set.
+     * @param array<mixed> $params The parameters that should be set.
      *
      * @dataProvider getGetValuesWillReturnTheParametersValuesData
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::getValues
      */
     public function testGetValuesWillReturnTheParametersValues(array $params): void
     {
@@ -221,7 +201,7 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getGetValuesWillReturnTheParametersValuesData(): array
     {
@@ -237,9 +217,7 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * Assert that a parameter has been with calls to hasParam().
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::hasParam
+     * Assert that a parameter has been with calls to hasParam()
      */
     public function testHasParamWillReturnBool(): void
     {
@@ -263,9 +241,7 @@ final class ParametersTest extends TestCase
 
     /**
      * Assert that removeParam() with remove the provided key from the collection. If the parameter name provided
-     * exists in the collection, the method should remove it and return boolean true, otherwise just return false.
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::removeParam
+     * exists in the collection, the method should remove it and return boolean true, otherwise just return false
      */
     public function testRemoveParam(): void
     {
@@ -283,9 +259,7 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * Assert that an array of parameters can be removed from the collection.
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::removeParams
+     * Assert that an array of parameters can be removed from the collection
      */
     public function testRemoveParams(): void
     {
@@ -308,8 +282,6 @@ final class ParametersTest extends TestCase
 
     /**
      * Assert that the offsetExists() method will check if the parameter is defined
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::offsetExists
      */
     public function testOffsetExists(): void
     {
@@ -320,10 +292,7 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * Assert that the parameters can be set and returned using the array access interface.
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::offsetGet
-     * @covers \Arp\EventDispatcher\Event\Parameters::offsetSet
+     * Assert that the parameters can be set and returned using the array access interface
      */
     public function testOffsetGetAndOffsetSet(): void
     {
@@ -337,9 +306,7 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * Assert that a parameter can be removed via the \ArrayAccess api.
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::offsetUnset
+     * Assert that a parameter can be removed via the \ArrayAccess api
      */
     public function testOffsetUnset(): void
     {
@@ -357,9 +324,7 @@ final class ParametersTest extends TestCase
     }
 
     /**
-     * Assert that the getIterator() method will return an \ArrayIterator instance with a copy of the params collection.
-     *
-     * @covers \Arp\EventDispatcher\Event\Parameters::getIterator
+     * Assert that the getIterator() method will return an \ArrayIterator instance with a copy of the params collection
      */
     public function testGetIteratorWillReturnArrayIteratorWithParamsCollection(): void
     {

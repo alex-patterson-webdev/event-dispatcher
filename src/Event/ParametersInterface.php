@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Arp\EventDispatcher\Event;
 
 /**
+ * @extends \IteratorAggregate<mixed, mixed>
+ * @extends \ArrayAccess<mixed, mixed>
+ *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Event
  */
@@ -26,12 +29,12 @@ interface ParametersInterface extends \IteratorAggregate, \Countable, \ArrayAcce
     public function getParam(string $name, $default = null);
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getParams(): array;
 
     /**
-     * @param array $params
+     * @param array<mixed> $params
      */
     public function setParams(array $params): void;
 
@@ -42,7 +45,7 @@ interface ParametersInterface extends \IteratorAggregate, \Countable, \ArrayAcce
     public function setParam(string $name, $value): void;
 
     /**
-     * @param array $params
+     * @param array<mixed> $params
      */
     public function removeParams(array $params = []): void;
 
@@ -64,12 +67,12 @@ interface ParametersInterface extends \IteratorAggregate, \Countable, \ArrayAcce
     public function isEmpty(): bool;
 
     /**
-     * @return array
+     * @return array<int, mixed>
      */
     public function getKeys(): array;
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getValues(): array;
 }

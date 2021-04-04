@@ -28,17 +28,14 @@ class LazyListener
     private string $listenerMethodName = '__invoke';
 
     /**
-     * @param callable|object|\Closure $factory
-     * @param string|null              $factoryMethodName
-     * @param string|null              $listenerMethodName
+     * @param callable|object|\Closure|mixed $factory
+     * @param string|null                    $factoryMethodName
+     * @param string|null                    $listenerMethodName
      *
      * @throws EventListenerException
      */
-    public function __construct(
-        $factory,
-        ?string $factoryMethodName = null,
-        ?string $listenerMethodName = null
-    ) {
+    public function __construct($factory, ?string $factoryMethodName = null, ?string $listenerMethodName = null)
+    {
         if (is_callable($factory)) {
             $this->factory = \Closure::fromCallable($factory);
         } elseif (is_object($factory)) {
@@ -68,36 +65,33 @@ class LazyListener
      */
     public function __invoke(object $event)
     {
-        if (!$this->factory instanceof \Closure && !is_callable([$this->factory, $this->factoryMethodName])) {
-            throw new EventListenerException(
-                sprintf(
-                    'The factory method \'%s\' is not callable for lazy loaded listener of type \'%s\'',
-                    $this->factoryMethodName,
-                    is_object($this->factory) ? get_class($this->factory) : gettype($this->factory)
-                )
-            );
-        }
+        $factory = is_callable($this->factory)
+            ? $this->factory
+            : [$this->factory, $this->factoryMethodName];
 
-        if ($this->factory instanceof \Closure) {
-            $listener = ($this->factory)();
+        if (is_callable($factory)) {
+            $listener = $factory();
         } else {
-            $listener = call_user_func([$this->factory, $this->factoryMethodName]);
-        }
-
-        if (!$listener instanceof \Closure && !is_callable([$listener, $this->listenerMethodName])) {
             throw new EventListenerException(
                 sprintf(
-                    'The listener method \'%s\' is not callable for lazy loaded listener of type \'%s\'',
-                    $this->listenerMethodName,
-                    is_object($listener) ? get_class($listener) : gettype($listener)
+                    'The method \'%s\' is not callable for lazy load factory \'%s\'',
+                    $this->factoryMethodName,
+                    gettype($factory)
                 )
             );
         }
 
-        if ($listener instanceof \Closure) {
-            return $listener($event);
+        $listener = is_callable($listener) ? $listener : [$listener, $this->listenerMethodName];
+        if (!is_callable($listener)) {
+            throw new EventListenerException(
+                sprintf(
+                    'The method \'%s\' is not callable for lazy load event listener \'%s\'',
+                    $this->listenerMethodName,
+                    gettype($listener)
+                )
+            );
         }
 
-        return call_user_func([$listener, $this->listenerMethodName], $event);
+        return $listener($event);
     }
 }

@@ -12,5 +12,4 @@ use Psr\EventDispatcher\ListenerProviderInterface;
  */
 interface AddableListenerProviderInterface extends ListenerProviderInterface, AddListenerAwareInterface
 {
-
 }

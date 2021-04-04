@@ -8,38 +8,19 @@ namespace Arp\EventDispatcher\Event;
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Event
  */
-abstract class AbstractEvent
+abstract class AbstractEvent implements ParametersAwareInterface
 {
-    /**
-     * @var ParametersInterface
-     */
-    protected ParametersInterface $params;
+    use ParametersAwareTrait;
 
     /**
-     * @param array $params
+     * @param ParametersInterface<mixed>|array<mixed>|mixed $params
      */
-    public function __construct(array $params = [])
+    public function __construct($params = [])
     {
-        $this->setParameters(new Parameters($params));
-    }
+        if (!$params instanceof ParametersInterface) {
+            $params = new Parameters(is_array($params) ? $params : []);
+        }
 
-    /**
-     * Set the parameters collection.
-     *
-     * @param ParametersInterface $params
-     */
-    public function setParameters(ParametersInterface $params): void
-    {
-        $this->params = $params;
-    }
-
-    /**
-     * Return the parameters collection.
-     *
-     * @return ParametersInterface
-     */
-    public function getParameters(): ParametersInterface
-    {
-        return $this->params;
+        $this->setParameters($params);
     }
 }

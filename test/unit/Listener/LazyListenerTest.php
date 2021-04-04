@@ -52,7 +52,7 @@ final class LazyListenerTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getConstructWillThrowEventListenerExceptionIfTheConfiguredFactoryIsNotCallableData(): array
     {
@@ -78,9 +78,9 @@ final class LazyListenerTest extends TestCase
         $this->expectException(EventListenerException::class);
         $this->expectExceptionMessage(
             sprintf(
-                'The factory method \'%s\' is not callable for lazy loaded listener of type \'%s\'',
+                'The method \'%s\' is not callable for lazy load factory \'%s\'',
                 '__invoke',
-                is_object($factory) ? get_class($factory) : gettype($factory)
+                'array'
             )
         );
 
@@ -96,16 +96,16 @@ final class LazyListenerTest extends TestCase
     {
         $event = new \stdClass();
         $listener = new \stdClass();
-        $factory = static fn() => $listener;
+        $factory = static fn () => $listener;
 
         $lazyListener = new LazyListener($factory);
 
         $this->expectException(EventListenerException::class);
         $this->expectExceptionMessage(
             sprintf(
-                'The listener method \'%s\' is not callable for lazy loaded listener of type \'%s\'',
+                'The method \'%s\' is not callable for lazy load event listener \'%s\'',
                 '__invoke',
-                \stdClass::class
+                'array'
             )
         );
 
@@ -136,25 +136,25 @@ final class LazyListenerTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getLazyListenerWillCreateAndDispatchEventData(): array
     {
-        $factory1 = new class () {
+        $factory1 = new class() {
             public function create(): callable
             {
-                return static fn() => 'hello123';
+                return static fn () => 'hello123';
             }
         };
 
-        $listener1 = new class () {
+        $listener1 = new class() {
             public function doSomething(object $event): string
             {
                 return 'test123';
             }
         };
 
-        $factory2 = new class ($listener1) {
+        $factory2 = new class($listener1) {
             private object $listener;
 
             public function __construct(object $listener)
@@ -171,7 +171,7 @@ final class LazyListenerTest extends TestCase
         return [
             [
                 'hello123',
-                static fn() => static fn() => 'hello123',
+                static fn () => static fn () => 'hello123',
             ],
 
             [

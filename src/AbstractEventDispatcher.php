@@ -15,9 +15,9 @@ use Psr\EventDispatcher\StoppableEventInterface;
 abstract class AbstractEventDispatcher implements EventDispatcherInterface
 {
     /**
-     * @var ListenerProviderInterface
+     * @return ListenerProviderInterface
      */
-    protected ListenerProviderInterface $listenerProvider;
+    abstract protected function getListenerProvider(): ListenerProviderInterface;
 
     /**
      * Trigger the registered collection of events.
@@ -34,7 +34,7 @@ abstract class AbstractEventDispatcher implements EventDispatcherInterface
             return $event;
         }
 
-        foreach ($this->listenerProvider->getListenersForEvent($event) as $listener) {
+        foreach ($this->getListenerProvider()->getListenersForEvent($event) as $listener) {
             $listener($event);
 
             if ($this->isPropagationStopped($event)) {

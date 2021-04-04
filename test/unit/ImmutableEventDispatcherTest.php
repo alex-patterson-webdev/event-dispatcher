@@ -19,7 +19,7 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 final class ImmutableEventDispatcherTest extends TestCase
 {
     /**
-     * @var ListenerProviderInterface|MockObject
+     * @var ListenerProviderInterface&MockObject
      */
     private $listenerProvider;
 
