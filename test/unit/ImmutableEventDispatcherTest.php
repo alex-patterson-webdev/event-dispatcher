@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace ArpTest\EventDispatcher;
 
-use Arp\EventDispatcher\EventDispatcher;
 use Arp\EventDispatcher\ImmutableEventDispatcher;
-use Arp\EventDispatcher\Listener\ListenerProvider;
-use Arp\EventDispatcher\Resolver\EventNameResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
