@@ -28,11 +28,13 @@ final class EventNameResolver implements EventNameResolverInterface
         }
 
         if (!is_object($event)) {
-            throw new EventNameResolverException(sprintf(
-                'The \'event\' argument must be of type \'string\' or \'object\'; \'%s\' provided in \'%s\'.',
-                gettype($event),
-                __METHOD__
-            ));
+            throw new EventNameResolverException(
+                sprintf(
+                    'The \'event\' argument must be of type \'string\' or \'object\'; \'%s\' provided in \'%s\'.',
+                    gettype($event),
+                    __METHOD__
+                )
+            );
         }
 
         if ($event instanceof EventNameAwareInterface) {

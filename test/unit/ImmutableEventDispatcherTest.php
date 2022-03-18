@@ -19,7 +19,7 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 final class ImmutableEventDispatcherTest extends TestCase
 {
     /**
-     * @var ListenerProviderInterface|MockObject
+     * @var ListenerProviderInterface&MockObject
      */
     private $listenerProvider;
 
@@ -39,5 +39,19 @@ final class ImmutableEventDispatcherTest extends TestCase
         $eventDispatcher = new ImmutableEventDispatcher($this->listenerProvider);
 
         $this->assertInstanceOf(EventDispatcherInterface::class, $eventDispatcher);
+    }
+
+    /**
+     * Assert that the provided Event dispatcher's events will be dispatched when calling dispatch()
+     */
+    public function testDispatchOfInternalEventDispatcher(): void
+    {
+        $eventDispatcher = new ImmutableEventDispatcher($this->listenerProvider);
+
+        $this->listenerProvider->expects($this->once())
+            ->method('getListenersForEvent')
+            ->willReturn([]);
+
+        $eventDispatcher->dispatch(new \stdClass());
     }
 }

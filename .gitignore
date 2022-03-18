@@ -4,3 +4,5 @@ composer.phar
 .phpunit.result.cache
 coverage.xml
 clover.xml
+.php_cs.cache
+.php-cs-fixer.cache

@@ -11,12 +11,12 @@ namespace Arp\EventDispatcher\Event;
 final class Parameters implements ParametersInterface
 {
     /**
-     * @var array $params
+     * @var array<mixed> $params
      */
-    private $params = [];
+    private array $params = [];
 
     /**
-     * @param array $params
+     * @param array<mixed> $params
      */
     public function __construct(array $params = [])
     {
@@ -40,7 +40,7 @@ final class Parameters implements ParametersInterface
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getParams(): array
     {
@@ -48,7 +48,7 @@ final class Parameters implements ParametersInterface
     }
 
     /**
-     * @param array $params
+     * @param array<mixed> $params
      */
     public function setParams(array $params): void
     {
@@ -60,7 +60,7 @@ final class Parameters implements ParametersInterface
     }
 
     /**
-     * @param array $params
+     * @param array<mixed> $params
      */
     public function removeParams(array $params = []): void
     {
@@ -74,7 +74,7 @@ final class Parameters implements ParametersInterface
     }
 
     /**
-     * @return array
+     * @return array<int, mixed>
      */
     public function getKeys(): array
     {
@@ -82,7 +82,7 @@ final class Parameters implements ParametersInterface
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getValues(): array
     {
@@ -174,7 +174,7 @@ final class Parameters implements ParametersInterface
     }
 
     /**
-     * @return \ArrayIterator
+     * @return \ArrayIterator<int|string, mixed>
      */
     public function getIterator(): \ArrayIterator
     {

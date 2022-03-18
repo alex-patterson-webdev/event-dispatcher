@@ -20,7 +20,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 final class EventDispatcherTest extends TestCase
 {
     /**
-     * @var AddableListenerProviderInterface|MockObject
+     * @var AddableListenerProviderInterface&MockObject
      */
     private $listenerProvider;
 
@@ -35,10 +35,7 @@ final class EventDispatcherTest extends TestCase
     }
 
     /**
-     * Ensure that the event manager implements EventDispatcherInterface.
-     *
-     * @covers \Arp\EventDispatcher\EventDispatcher
-     * @covers \Arp\EventDispatcher\AbstractEventDispatcher
+     * Ensure that the event manager implements EventDispatcherInterface
      */
     public function testImplementsEventDispatcherInterface(): void
     {
@@ -48,9 +45,7 @@ final class EventDispatcherTest extends TestCase
     }
 
     /**
-     * Ensure that the event manager implements AddListenerAwareInterface.
-     *
-     * @covers \Arp\EventDispatcher\EventDispatcher
+     * Ensure that the event manager implements AddListenerAwareInterface
      */
     public function testImplementsAddListenerAwareInterface(): void
     {
@@ -61,16 +56,13 @@ final class EventDispatcherTest extends TestCase
 
     /**
      * If we call dispatch with a StoppableEventInterface that already has propagation stopped, no event listeners
-     * should be triggered.
-     *
-     * @covers \Arp\EventDispatcher\EventDispatcher::dispatch
-     * @covers \Arp\EventDispatcher\EventDispatcher::isPropagationStopped
+     * should be triggered
      */
     public function testDispatchWillPreventEventPropagationIfProvidedEventHasPropagationStopped(): void
     {
         $eventDispatcher = new EventDispatcher($this->listenerProvider);
 
-        /** @var StoppableEventInterface|MockObject $event */
+        /** @var StoppableEventInterface&MockObject $event */
         $event = $this->getMockForAbstractClass(StoppableEventInterface::class);
 
         $event->expects($this->once())
@@ -90,9 +82,6 @@ final class EventDispatcherTest extends TestCase
      * @param integer $stopIndex     The index that the event listener should stop propagation.
      *
      * @dataProvider getDispatchWillPreventEventPropagationIfItIsStoppedWithinAListenerData
-     *
-     * @covers \Arp\EventDispatcher\EventDispatcher::dispatch
-     * @covers \Arp\EventDispatcher\EventDispatcher::isPropagationStopped
      */
     public function testDispatchWillNotPropagationEventIfItIsStoppedWithinAListener(
         int $listenerCount,
@@ -108,7 +97,7 @@ final class EventDispatcherTest extends TestCase
 
         $eventDispatcher = new EventDispatcher($this->listenerProvider);
 
-        /** @var StoppableEventInterface|MockObject $event */
+        /** @var StoppableEventInterface&MockObject $event */
         $event = $this->getMockForAbstractClass(StoppableEventInterface::class);
 
         $eventListeners = [];
@@ -135,7 +124,7 @@ final class EventDispatcherTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getDispatchWillPreventEventPropagationIfItIsStoppedWithinAListenerData(): array
     {
@@ -155,11 +144,8 @@ final class EventDispatcherTest extends TestCase
      * @param int    $numberOfListeners
      *
      * @dataProvider getDispatchWillInvokeEventListenersForProvidedEventData
-     *
-     * @covers \Arp\EventDispatcher\EventDispatcher::dispatch
-     * @covers \Arp\EventDispatcher\EventDispatcher::isPropagationStopped
      */
-    public function testDispatchWillInvokeEventListenersForProvidedEvent($event, $numberOfListeners = 0): void
+    public function testDispatchWillInvokeEventListenersForProvidedEvent(object $event, $numberOfListeners = 0): void
     {
         $eventDispatcher = new EventDispatcher($this->listenerProvider);
 
@@ -167,7 +153,6 @@ final class EventDispatcherTest extends TestCase
 
         for ($x = 0; $x < $numberOfListeners; $x++) {
             $listeners[] = static function ($event) {
-                get_class($event);
             };
         }
 
@@ -182,7 +167,7 @@ final class EventDispatcherTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getDispatchWillInvokeEventListenersForProvidedEventData(): array
     {
@@ -202,9 +187,7 @@ final class EventDispatcherTest extends TestCase
     }
 
     /**
-     * Assert that calls to addListenerForEvent() proxies to the internal ListenerProvider.
-     *
-     * @covers \Arp\EventDispatcher\EventDispatcher::addListenerForEvent
+     * Assert that calls to addListenerForEvent() proxies to the internal ListenerProvider
      *
      * @throws EventListenerException
      */
@@ -226,9 +209,7 @@ final class EventDispatcherTest extends TestCase
     }
 
     /**
-     * Assert that calls to addListenerForEvent() proxies to the internal ListenerProvider.
-     *
-     * @covers \Arp\EventDispatcher\EventDispatcher::addListenersForEvent
+     * Assert that calls to addListenerForEvent() proxies to the internal ListenerProvider
      *
      * @throws EventListenerException
      */

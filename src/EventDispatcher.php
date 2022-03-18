@@ -7,6 +7,7 @@ namespace Arp\EventDispatcher;
 use Arp\EventDispatcher\Listener\AddableListenerProviderInterface;
 use Arp\EventDispatcher\Listener\AddListenerAwareInterface;
 use Arp\EventDispatcher\Listener\Exception\EventListenerException;
+use Psr\EventDispatcher\ListenerProviderInterface;
 
 /**
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
@@ -17,7 +18,7 @@ final class EventDispatcher extends AbstractEventDispatcher implements AddListen
     /**
      * @var AddableListenerProviderInterface
      */
-    protected $listenerProvider;
+    private AddableListenerProviderInterface $listenerProvider;
 
     /**
      * @param AddableListenerProviderInterface $listenerProvider
@@ -53,5 +54,13 @@ final class EventDispatcher extends AbstractEventDispatcher implements AddListen
     public function addListenersForEvent($event, iterable $listeners, int $priority = 1): void
     {
         $this->listenerProvider->addListenersForEvent($event, $listeners, $priority);
+    }
+
+    /**
+     * @return ListenerProviderInterface
+     */
+    protected function getListenerProvider(): ListenerProviderInterface
+    {
+        return $this->listenerProvider;
     }
 }

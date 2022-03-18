@@ -14,9 +14,7 @@ use PHPUnit\Framework\TestCase;
 final class PriorityQueueTest extends TestCase
 {
     /**
-     * Assert that the class extends from the \SplPriorityQueue.
-     *
-     * @covers \Arp\EventDispatcher\Listener\PriorityQueue
+     * Assert that the class extends from the \SplPriorityQueue
      */
     public function testExtendsSplPriorityQueue(): void
     {
@@ -33,8 +31,6 @@ final class PriorityQueueTest extends TestCase
      * @param mixed $priority2
      *
      * @dataProvider getCompareData
-     *
-     * @covers       \Arp\EventDispatcher\Listener\PriorityQueue::compare
      */
     public function testCompare($priority1, $priority2): void
     {
@@ -47,7 +43,7 @@ final class PriorityQueueTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getCompareData(): array
     {

@@ -15,14 +15,14 @@ use Psr\EventDispatcher\StoppableEventInterface;
 abstract class AbstractEventDispatcher implements EventDispatcherInterface
 {
     /**
-     * @var ListenerProviderInterface
+     * @return ListenerProviderInterface
      */
-    protected $listenerProvider;
+    abstract protected function getListenerProvider(): ListenerProviderInterface;
 
     /**
      * Trigger the registered collection of events.
      *
-     * @param object $event The event that should be triggered.
+     * @param object|StoppableEventInterface $event The event that should be triggered.
      *
      * @return object
      *
@@ -34,9 +34,10 @@ abstract class AbstractEventDispatcher implements EventDispatcherInterface
             return $event;
         }
 
-        foreach ($this->listenerProvider->getListenersForEvent($event) as $listener) {
+        foreach ($this->getListenerProvider()->getListenersForEvent($event) as $listener) {
             $listener($event);
 
+            /** @phpstan-ignore-next-line isPropagationStopped() can be modified by reference */
             if ($this->isPropagationStopped($event)) {
                 break;
             }
