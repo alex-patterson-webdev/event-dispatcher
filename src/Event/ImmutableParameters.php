@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Arp\EventDispatcher\Event;
 
-use Exception;
-use Traversable;
-
 /**
- * A parameters collection that is closed for modifications
+ * A parameter collection that is closed for modifications
  *
  * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
  * @package Arp\EventDispatcher\Event
@@ -127,9 +124,9 @@ final class ImmutableParameters implements ParametersInterface
     }
 
     /**
-     * @return Traversable<mixed>
+     * @return \Traversable<mixed>
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getIterator(): \Traversable
     {
