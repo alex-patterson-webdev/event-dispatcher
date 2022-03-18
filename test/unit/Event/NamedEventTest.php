@@ -54,4 +54,21 @@ final class NamedEventTest extends TestCase
 
         $this->assertSame($parameters, $namedEvent->getParameters());
     }
+
+    /**
+     * Assert that parameters can be added and fetched from the event instance
+     */
+    public function testGetAndSetParam(): void
+    {
+        $event = new NamedEvent('foo');
+
+        $this->assertNull($event->getParam('foo'));
+        $this->assertFalse($event->getParam('foo', false));
+
+        $event->setParam('test', 123);
+        $event->setParam('hello', true);
+
+        $this->assertSame(123, $event->getParam('test'));
+        $this->assertTrue($event->getParam('hello'));
+    }
 }
