@@ -22,7 +22,7 @@ abstract class AbstractEventDispatcher implements EventDispatcherInterface
     /**
      * Trigger the registered collection of events.
      *
-     * @param object $event The event that should be triggered.
+     * @param object|StoppableEventInterface $event The event that should be triggered.
      *
      * @return object
      *
@@ -37,6 +37,7 @@ abstract class AbstractEventDispatcher implements EventDispatcherInterface
         foreach ($this->getListenerProvider()->getListenersForEvent($event) as $listener) {
             $listener($event);
 
+            /** @phpstan-ignore-next-line isPropagationStopped() can be modified by reference */
             if ($this->isPropagationStopped($event)) {
                 break;
             }

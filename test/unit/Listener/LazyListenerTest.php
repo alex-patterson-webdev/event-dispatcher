@@ -140,21 +140,21 @@ final class LazyListenerTest extends TestCase
      */
     public function getLazyListenerWillCreateAndDispatchEventData(): array
     {
-        $factory1 = new class() {
+        $factory1 = new class () {
             public function create(): callable
             {
                 return static fn () => 'hello123';
             }
         };
 
-        $listener1 = new class() {
+        $listener1 = new class () {
             public function doSomething(object $event): string
             {
                 return 'test123';
             }
         };
 
-        $factory2 = new class($listener1) {
+        $factory2 = new class ($listener1) {
             private object $listener;
 
             public function __construct(object $listener)
