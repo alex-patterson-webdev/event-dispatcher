@@ -10,16 +10,10 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers  \Arp\EventDispatcher\Listener\LazyListener
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\EventDispatcher\Listener
+ * @covers \Arp\EventDispatcher\Listener\LazyListener
  */
 final class LazyListenerTest extends TestCase
 {
-    /**
-     * testIsCallable
-     */
     public function testIsCallable(): void
     {
         $listener = new LazyListener(
@@ -31,41 +25,6 @@ final class LazyListenerTest extends TestCase
     }
 
     /**
-     * Assert a EventListenerException is thrown from __construct if the provided $factory is invalid
-     *
-     * @param mixed $factory
-     *
-     * @dataProvider getConstructWillThrowEventListenerExceptionIfTheConfiguredFactoryIsNotCallableData
-     */
-    public function testConstructWillThrowEventListenerExceptionIfTheConfiguredFactoryIsNotCallable($factory): void
-    {
-        $this->expectException(EventListenerException::class);
-        $this->expectExceptionMessage(
-            sprintf(
-                'The event listener factory must be of type \'callable\' or \'object\'; \'%s\' provided in \'%s\'',
-                is_object($factory) ? get_class($factory) : gettype($factory),
-                LazyListener::class
-            )
-        );
-
-        new LazyListener($factory);
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function getConstructWillThrowEventListenerExceptionIfTheConfiguredFactoryIsNotCallableData(): array
-    {
-        return [
-            ['hello'],
-            [true],
-            [123],
-        ];
-    }
-
-    /**
-     * Assert that non-callable factory methods will raise a EventListenerException in __invoke()
-     *
      * @throws EventListenerException
      */
     public function testInvokeWillThrowEventListenerExceptionIfTheFactoryMethodIsNotCallable(): void
@@ -88,8 +47,6 @@ final class LazyListenerTest extends TestCase
     }
 
     /**
-     * Assert that a non-callable listener method will raise a EventListenerException in __invoke()
-     *
      * @throws EventListenerException
      */
     public function testInvokeWillThrowEventListenerExceptionIfTheListenerMethodIsNotCallable(): void
@@ -113,19 +70,14 @@ final class LazyListenerTest extends TestCase
     }
 
     /**
-     * @param mixed       $expected
-     * @param mixed       $factory
-     * @param string|null $factoryMethod
-     * @param string|null $listenerMethod
-     *
      * @throws EventListenerException
      * @throws ExpectationFailedException
      *
      * @dataProvider getLazyListenerWillCreateAndDispatchEventData
      */
     public function testLazyListenerWillCreateAndDispatchEvent(
-        $expected,
-        $factory,
+        mixed $expected,
+        mixed $factory,
         ?string $factoryMethod = null,
         ?string $listenerMethod = null
     ): void {

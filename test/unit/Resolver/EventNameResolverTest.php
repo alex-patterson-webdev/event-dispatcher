@@ -7,19 +7,16 @@ namespace ArpTest\EventDispatcher\Resolver;
 use Arp\EventDispatcher\Resolver\EventNameAwareInterface;
 use Arp\EventDispatcher\Resolver\EventNameResolver;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
-use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Arp\EventDispatcher\Resolver\EventNameResolver
  */
-final class EventNameProviderTest extends TestCase
+final class EventNameResolverTest extends TestCase
 {
     public function testImplementsEventNameResolverInterface(): void
     {
-        $resolver = new EventNameResolver();
-
-        $this->assertInstanceOf(EventNameResolverInterface::class, $resolver);
+        $this->assertInstanceOf(EventNameResolverInterface::class, new EventNameResolver());
     }
 
     /**

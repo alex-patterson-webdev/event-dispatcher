@@ -12,9 +12,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Arp\EventDispatcher\Event\ImmutableParameters
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\EventDispatcher\Event
  */
 final class ImmutableParametersTest extends TestCase
 {

@@ -12,28 +12,16 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 
 /**
  * @covers \Arp\EventDispatcher\ImmutableEventDispatcher
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\EventDispatcher
  */
 final class ImmutableEventDispatcherTest extends TestCase
 {
-    /**
-     * @var ListenerProviderInterface&MockObject
-     */
-    private $listenerProvider;
+    private ListenerProviderInterface&MockObject $listenerProvider;
 
-    /**
-     * Prepare the test case dependencies.
-     */
     public function setUp(): void
     {
         $this->listenerProvider = $this->getMockForAbstractClass(ListenerProviderInterface::class);
     }
 
-    /**
-     * Assert that the event dispatcher is an instance of EventDispatcherInterface.
-     */
     public function testImplementsEventDispatcherInterface(): void
     {
         $eventDispatcher = new ImmutableEventDispatcher($this->listenerProvider);
@@ -41,9 +29,6 @@ final class ImmutableEventDispatcherTest extends TestCase
         $this->assertInstanceOf(EventDispatcherInterface::class, $eventDispatcher);
     }
 
-    /**
-     * Assert that the provided Event dispatcher's events will be dispatched when calling dispatch()
-     */
     public function testDispatchOfInternalEventDispatcher(): void
     {
         $eventDispatcher = new ImmutableEventDispatcher($this->listenerProvider);

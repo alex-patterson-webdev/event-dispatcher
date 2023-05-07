@@ -11,8 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\EventDispatcher\Event
+ * @covers \Arp\EventDispatcher\Event\NamedEvent
  */
 final class NamedEventTest extends TestCase
 {

@@ -8,14 +8,10 @@ use Arp\EventDispatcher\Listener\PriorityQueue;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\EventDispatcher\Listener
+ * @covers \Arp\EventDispatcher\Listener\PriorityQueue
  */
 final class PriorityQueueTest extends TestCase
 {
-    /**
-     * Assert that the class extends from the \SplPriorityQueue
-     */
     public function testExtendsSplPriorityQueue(): void
     {
         $priorityQueue = new PriorityQueue();
@@ -24,15 +20,9 @@ final class PriorityQueueTest extends TestCase
     }
 
     /**
-     * Assert that the priority queue's comparision returns the expeceted result when provided with various
-     * different priority values.
-     *
-     * @param mixed $priority1
-     * @param mixed $priority2
-     *
      * @dataProvider getCompareData
      */
-    public function testCompare($priority1, $priority2): void
+    public function testCompare(mixed $priority1, mixed $priority2): void
     {
         $priorityQueue = new PriorityQueue();
 

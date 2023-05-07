@@ -9,8 +9,7 @@ use Arp\EventDispatcher\Event\ParametersInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\EventDispatcher\Event
+ * @covers \Arp\EventDispatcher\Event\Parameters
  */
 final class ParametersTest extends TestCase
 {
@@ -152,7 +151,7 @@ final class ParametersTest extends TestCase
     /**
      * Assert that the count method returns the correct count of the number of params within the collection.
      *
-     * @param array<mixed> $data  The data test set
+     * @param array<mixed> $data The data test set
      *
      * @dataProvider getCountData
      */
@@ -211,7 +210,7 @@ final class ParametersTest extends TestCase
                     'foo' => 'bar',
                     'baz' => 'boo',
                     'hello' => 'test',
-                ]
+                ],
             ],
         ];
     }
