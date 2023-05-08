@@ -8,20 +8,12 @@ use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\EventDispatcher\Resolver\Exception
+ * @covers \Arp\EventDispatcher\Resolver\Exception\EventNameResolverException
  */
 final class EventNameResolverExceptionTest extends TestCase
 {
-    /**
-     * Assert that the EventListenerException extends from Exception.
-     *
-     * @covers \Arp\EventDispatcher\Resolver\Exception\EventNameResolverException
-     */
     public function testImplementsException(): void
     {
-        $exception = new EventNameResolverException();
-
-        $this->assertInstanceOf(\Exception::class, $exception);
+        $this->assertInstanceOf(\Exception::class, new EventNameResolverException());
     }
 }

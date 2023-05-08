@@ -6,21 +6,10 @@ namespace Arp\EventDispatcher\Listener;
 
 /**
  * @extends \SplPriorityQueue<mixed, mixed>
- *
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\EventDispatcher\Listener
  */
 final class PriorityQueue extends \SplPriorityQueue
 {
-    /**
-     * Compare the priorities.
-     *
-     * @param mixed $priority1
-     * @param mixed $priority2
-     *
-     * @return int
-     */
-    public function compare($priority1, $priority2): int
+    public function compare(mixed $priority1, mixed $priority2): int
     {
         return ($priority1 <=> $priority2);
     }

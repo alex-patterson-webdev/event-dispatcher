@@ -7,30 +7,19 @@ namespace ArpTest\EventDispatcher\Resolver;
 use Arp\EventDispatcher\Resolver\EventNameAwareInterface;
 use Arp\EventDispatcher\Resolver\EventNameResolver;
 use Arp\EventDispatcher\Resolver\EventNameResolverInterface;
-use Arp\EventDispatcher\Resolver\Exception\EventNameResolverException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\EventDispatcher\Resolver
+ * @covers \Arp\EventDispatcher\Resolver\EventNameResolver
  */
-final class EventNameProviderTest extends TestCase
+final class EventNameResolverTest extends TestCase
 {
-    /**
-     * Assert that the EventNameResolver implements EventNameResolverInterface
-     */
     public function testImplementsEventNameResolverInterface(): void
     {
-        $resolver = new EventNameResolver();
-
-        $this->assertInstanceOf(EventNameResolverInterface::class, $resolver);
+        $this->assertInstanceOf(EventNameResolverInterface::class, new EventNameResolver());
     }
 
     /**
-     * Assert that when providing a string to resolveEventName() we will return the same string.
-     *
-     * @param string $eventName The event name string to test.
-     *
      * @dataProvider getResolveEventNameWillResolveStringEventNameData
      */
     public function testResolveEventNameWillResolveStringEventName(string $eventName): void
@@ -52,9 +41,6 @@ final class EventNameProviderTest extends TestCase
         ];
     }
 
-    /**
-     * Assert that the class name of the object provided to resolveEventName() will return the FQCN
-     */
     public function testResolveEventNameWillResolveObjectEventName(): void
     {
         $resolver = new EventNameResolver();
@@ -64,9 +50,6 @@ final class EventNameProviderTest extends TestCase
         $this->assertSame(get_class($event), $resolver->resolveEventName($event));
     }
 
-    /**
-     * Assert that the event name will resolve to the FQCN of the provided object when calling resolveEventName()
-     */
     public function testResolveEventNameWillResolveEventNameAwareEventName(): void
     {
         $resolver = new EventNameResolver();
@@ -79,26 +62,5 @@ final class EventNameProviderTest extends TestCase
             ->willReturn($eventName);
 
         $this->assertSame($eventName, $resolver->resolveEventName($event));
-    }
-
-    /**
-     * Assert that a InvalidArgumentException is thrown when passing an invalid argument to resolveEventName()
-     */
-    public function testResolveEventNameWillThrowInvalidArgumentException(): void
-    {
-        $resolver = new EventNameResolver();
-
-        $event = 1.1; // float is invalid.
-
-        $this->expectException(EventNameResolverException::class);
-        $this->expectExceptionMessage(sprintf(
-            'The \'event\' argument must be of type \'string\' or \'object\'; \'%s\' provided in \'%s::%s\'.',
-            gettype($event),
-            EventNameResolver::class,
-            'resolveEventName'
-        ));
-
-        /** @phpstan-ignore-next-line */
-        $resolver->resolveEventName($event);
     }
 }

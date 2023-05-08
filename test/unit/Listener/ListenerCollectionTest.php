@@ -8,15 +8,8 @@ use Arp\EventDispatcher\Listener\ListenerCollection;
 use Arp\EventDispatcher\Listener\ListenerCollectionInterface;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\EventDispatcher\Listener
- */
 final class ListenerCollectionTest extends TestCase
 {
-    /**
-     * Assert that the listener collection implements ListenerCollectionInterface
-     */
     public function testImplementsListenerCollectionInterface(): void
     {
         $collection = new ListenerCollection();
@@ -24,9 +17,6 @@ final class ListenerCollectionTest extends TestCase
         $this->assertInstanceOf(ListenerCollectionInterface::class, $collection);
     }
 
-    /**
-     * Assert that getIterator() will return a clone of the listener priority queue
-     */
     public function testGetIteratorWillReturnCloneOfListenerQueue(): void
     {
         $collection = new ListenerCollection();
@@ -43,16 +33,13 @@ final class ListenerCollectionTest extends TestCase
         $collection->addListeners($listeners);
 
         $results = [];
-        foreach ($collection as $index => $listener) {
+        foreach ($collection as $listener) {
             $results[] = $listener();
         }
 
         $this->assertSame(['Foo', 'Bar'], $results);
     }
 
-    /**
-     * Assert that the count() method will return an integer matching the number of listeners added to the collection
-     */
     public function testCountWillReturnIntegerMatchingTheNumberOfEventListeners(): void
     {
         $collection = new ListenerCollection();
@@ -74,9 +61,6 @@ final class ListenerCollectionTest extends TestCase
         $this->assertSame(count($listeners), $collection->count());
     }
 
-    /**
-     * Assert that we can add a collection of event listeners via the __construct
-     */
     public function testEventListenersCanBeAddedViaConstructor(): void
     {
         $expected = [
@@ -100,7 +84,7 @@ final class ListenerCollectionTest extends TestCase
         $collection = new ListenerCollection($listeners);
 
         $results = [];
-        foreach ($collection as $index => $listener) {
+        foreach ($collection as $listener) {
             $results[] = $listener();
         }
 
@@ -108,10 +92,6 @@ final class ListenerCollectionTest extends TestCase
         $this->assertSame(count($listeners), $collection->count());
     }
 
-    /**
-     * Assert that the listeners priorities are respected, regardless of when the listener is registered with the
-     * collection
-     */
     public function testListenerPriorities(): void
     {
         $listeners = [
@@ -160,10 +140,6 @@ final class ListenerCollectionTest extends TestCase
         $this->assertSame([1, 2, 3, 4, 5, 6, 7, 8], $results);
     }
 
-    /**
-     * Assert that the listeners natural order is respected when provided with event listeners with the same
-     * priorities. This means that the collection operates on a first in first out basis
-     */
     public function testListenerPrioritiesRespectNaturalOrderWhenPrioritiesAreTheSame(): void
     {
         $listeners = [

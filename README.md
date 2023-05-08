@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/alex-patterson-webdev/event-dispatcher.svg?branch=master)](https://travis-ci.com/alex-patterson-webdev/event-dispatcher)
+![github workflow](https://github.com/alex-patterson-webdev/event-dispatcher/actions/workflows/workflow.yml/badge.svg)
 [![codecov](https://codecov.io/gh/alex-patterson-webdev/event-dispatcher/branch/master/graph/badge.svg)](https://codecov.io/gh/alex-patterson-webdev/event-dispatcher)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alex-patterson-webdev/event-dispatcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alex-patterson-webdev/event-dispatcher/?branch=master)
 
@@ -12,7 +12,7 @@ An implementation of the [PSR-14 Event Dispatcher](https://www.php-fig.org/psr/p
 
 Installation via [composer](https://getcomposer.org).
 
-    require alex-patterson-webdev/event-dispatcher ^1
+    require alex-patterson-webdev/event-dispatcher ^3
 
 ## Usage
 

@@ -14,50 +14,28 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
 
 /**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\EventDispatcher
+ * @covers \Arp\EventDispatcher\EventDispatcher
+ * @covers \Arp\EventDispatcher\AbstractEventDispatcher
  */
 final class EventDispatcherTest extends TestCase
 {
-    /**
-     * @var AddableListenerProviderInterface&MockObject
-     */
-    private $listenerProvider;
+    private AddableListenerProviderInterface&MockObject $listenerProvider;
 
-    /**
-     * Prepare the test dependencies.
-     *
-     * @return void
-     */
     public function setUp(): void
     {
         $this->listenerProvider = $this->getMockForAbstractClass(AddableListenerProviderInterface::class);
     }
 
-    /**
-     * Ensure that the event manager implements EventDispatcherInterface
-     */
     public function testImplementsEventDispatcherInterface(): void
     {
-        $eventManager = new EventDispatcher($this->listenerProvider);
-
-        $this->assertInstanceOf(EventDispatcherInterface::class, $eventManager);
+        $this->assertInstanceOf(EventDispatcherInterface::class, new EventDispatcher($this->listenerProvider));
     }
 
-    /**
-     * Ensure that the event manager implements AddListenerAwareInterface
-     */
     public function testImplementsAddListenerAwareInterface(): void
     {
-        $eventManager = new EventDispatcher($this->listenerProvider);
-
-        $this->assertInstanceOf(AddListenerAwareInterface::class, $eventManager);
+        $this->assertInstanceOf(AddListenerAwareInterface::class, new EventDispatcher($this->listenerProvider));
     }
 
-    /**
-     * If we call dispatch with a StoppableEventInterface that already has propagation stopped, no event listeners
-     * should be triggered
-     */
     public function testDispatchWillPreventEventPropagationIfProvidedEventHasPropagationStopped(): void
     {
         $eventDispatcher = new EventDispatcher($this->listenerProvider);
@@ -76,11 +54,6 @@ final class EventDispatcherTest extends TestCase
     }
 
     /**
-     * Assert that the event propagation is stopped if we modify the StoppableEventInterface within an event.
-     *
-     * @param integer $listenerCount The number of event listeners attached to the dispatched event.
-     * @param integer $stopIndex     The index that the event listener should stop propagation.
-     *
      * @dataProvider getDispatchWillPreventEventPropagationIfItIsStoppedWithinAListenerData
      */
     public function testDispatchWillNotPropagationEventIfItIsStoppedWithinAListener(
@@ -138,15 +111,12 @@ final class EventDispatcherTest extends TestCase
     }
 
     /**
-     * Assert that dispatch() will invoke the require event listeners returned from the listener provider.
-     *
-     * @param object $event
-     * @param int    $numberOfListeners
-     *
      * @dataProvider getDispatchWillInvokeEventListenersForProvidedEventData
      */
-    public function testDispatchWillInvokeEventListenersForProvidedEvent(object $event, $numberOfListeners = 0): void
-    {
+    public function testDispatchWillInvokeEventListenersForProvidedEvent(
+        object $event,
+        int $numberOfListeners = 0
+    ): void {
         $eventDispatcher = new EventDispatcher($this->listenerProvider);
 
         $listeners = [];
@@ -187,8 +157,6 @@ final class EventDispatcherTest extends TestCase
     }
 
     /**
-     * Assert that calls to addListenerForEvent() proxies to the internal ListenerProvider
-     *
      * @throws EventListenerException
      */
     public function testAddListenerForEventWillProxyToInternalListenerProvider(): void
@@ -209,8 +177,6 @@ final class EventDispatcherTest extends TestCase
     }
 
     /**
-     * Assert that calls to addListenerForEvent() proxies to the internal ListenerProvider
-     *
      * @throws EventListenerException
      */
     public function testAddListenersForEventWillProxyToInternalListenerProvider(): void

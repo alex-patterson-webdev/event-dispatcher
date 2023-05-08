@@ -3,3 +3,10 @@ parameters:
   paths:
     - src/
     - test/
+  checkMissingIterableValueType: false
+  ignoreErrors:
+    - message: '#If condition is always false.#'
+      path: src/AbstractEventDispatcher.php
+includes:
+  - vendor/phpstan/phpstan-mockery/extension.neon
+

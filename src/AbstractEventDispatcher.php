@@ -8,25 +8,14 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package Arp\EventDispatcher
- */
 abstract class AbstractEventDispatcher implements EventDispatcherInterface
 {
-    /**
-     * @return ListenerProviderInterface
-     */
     abstract protected function getListenerProvider(): ListenerProviderInterface;
 
     /**
-     * Trigger the registered collection of events.
+     * @param object|StoppableEventInterface $event
      *
-     * @param object|StoppableEventInterface $event The event that should be triggered.
-     *
-     * @return object
-     *
-     * @throws \Throwable If an event listener throws an exception
+     * @throws \Throwable
      */
     public function dispatch(object $event): object
     {
@@ -37,7 +26,6 @@ abstract class AbstractEventDispatcher implements EventDispatcherInterface
         foreach ($this->getListenerProvider()->getListenersForEvent($event) as $listener) {
             $listener($event);
 
-            /** @phpstan-ignore-next-line isPropagationStopped() can be modified by reference */
             if ($this->isPropagationStopped($event)) {
                 break;
             }
@@ -47,11 +35,7 @@ abstract class AbstractEventDispatcher implements EventDispatcherInterface
     }
 
     /**
-     * Check if the event propagation has been stopped.
-     *
-     * @param object $event
-     *
-     * @return bool
+     * @param object|StoppableEventInterface $event
      */
     protected function isPropagationStopped(object $event): bool
     {

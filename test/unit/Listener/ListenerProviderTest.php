@@ -15,30 +15,15 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\ListenerProviderInterface;
 
-/**
- * @author  Alex Patterson <alex.patterson.webdev@gmail.com>
- * @package ArpTest\EventDispatcher\Listener
- */
 final class ListenerProviderTest extends TestCase
 {
-    /**
-     * @var EventNameResolverInterface&MockObject
-     */
-    private $eventNameResolver;
+    private EventNameResolverInterface&MockObject $eventNameResolver;
 
-    /**
-     * Prepare the test case dependencies.
-     *
-     * @return void
-     */
     public function setUp(): void
     {
         $this->eventNameResolver = $this->getMockForAbstractClass(EventNameResolverInterface::class);
     }
 
-    /**
-     * Assert that the listener provider implements ListenerProviderInterface
-     */
     public function testImplementsListenerProviderInterface(): void
     {
         $provider = new ListenerProvider();
@@ -46,9 +31,6 @@ final class ListenerProviderTest extends TestCase
         $this->assertInstanceOf(ListenerProviderInterface::class, $provider);
     }
 
-    /**
-     * Assert that the listener collection implements AddListenerAwareInterface
-     */
     public function testImplementsAddListenerAwareInterface(): void
     {
         $provider = new ListenerProvider();
@@ -58,9 +40,6 @@ final class ListenerProviderTest extends TestCase
 
 
     /**
-     * Assert that the listener provider will return a clone of the internal listener collection which contains
-     * the required event listeners in the correct priority order.
-     *
      * @param iterable|callable[] $listeners The collection of event listeners to test.
      *
      * @dataProvider getAddListenersForEventAndGetListenerForEventData
@@ -149,11 +128,6 @@ final class ListenerProviderTest extends TestCase
         ];
     }
 
-    /**
-     * Assert that a EventListenerException will be thrown if the provided event name cannot be resolved.
-     *
-     * @return void
-     */
     public function testGetListenersForEventWillThrowEventListenerExceptionIfTheEventNameCannotBeResolved(): void
     {
         $provider = new ListenerProvider($this->eventNameResolver);
@@ -175,13 +149,7 @@ final class ListenerProviderTest extends TestCase
     }
 
     /**
-     * Assert calls to addListenerForEvent() will fetch a listener collection and add the provided listener.
-     *
-     * @param callable $listener
-     * @param int      $priority
-     *
      * @dataProvider getAddListenerForEventData
-     * @return void
      */
     public function testAddListenerForEvent(callable $listener, int $priority = 1): void
     {
