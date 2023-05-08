@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Arp\EventDispatcher\Event\NamedEvent
+ * @covers \Arp\EventDispatcher\Event\AbstractEvent
  */
 final class NamedEventTest extends TestCase
 {

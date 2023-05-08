@@ -12,6 +12,7 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 
 /**
  * @covers \Arp\EventDispatcher\ImmutableEventDispatcher
+ * @covers \Arp\EventDispatcher\AbstractEventDispatcher
  */
 final class ImmutableEventDispatcherTest extends TestCase
 {

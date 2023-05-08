@@ -15,22 +15,13 @@ use PHPUnit\Framework\TestCase;
  */
 final class ImmutableParametersTest extends TestCase
 {
-    /**
-     * @var ParametersInterface&MockObject
-     */
-    private $parameters;
+    private ParametersInterface&MockObject $parameters;
 
-    /**
-     * Prepare the test case dependencies
-     */
     public function setUp(): void
     {
         $this->parameters = $this->createMock(ParametersInterface::class);
     }
 
-    /**
-     * Assert that the class implements the ParametersInterface
-     */
     public function testImplementsParametersInterface(): void
     {
         $params = new ImmutableParameters($this->parameters);
@@ -38,9 +29,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertInstanceOf(ParametersInterface::class, $params);
     }
 
-    /**
-     * Assert that the class implements \ArrayAccess
-     */
     public function testImplementsArrayAccess(): void
     {
         $params = new ImmutableParameters($this->parameters);
@@ -48,9 +36,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertInstanceOf(\ArrayAccess::class, $params);
     }
 
-    /**
-     * Assert that parameters can be fetched via getParams() but attempts to setParams() will be ignored
-     */
     public function testGetParameters(): void
     {
         $data = [
@@ -77,9 +62,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertEquals($data, $params->getParams());
     }
 
-    /**
-     * Assert that calls to count() will proxy to the internal parameters collection
-     */
     public function testCountWillReturnParameterCount(): void
     {
         $parameters = new ImmutableParameters($this->parameters);
@@ -91,9 +73,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertSame(5, $parameters->count());
     }
 
-    /**
-     * Assert that calls to isEmpty() will proxy to the internal parameters collection
-     */
     public function testIsEmptyWillProxyToInternalParametersCollection(): void
     {
         $immutableParameters = new ImmutableParameters(new Parameters([]));
@@ -111,9 +90,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertFalse($immutableParameters->isEmpty());
     }
 
-    /**
-     * Assert that calls to hasParam() will proxy to the internal parameters collection
-     */
     public function testHasParamWillProxyToInternalParametersCollection(): void
     {
         $immutableParameters = new ImmutableParameters(
@@ -130,9 +106,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertFalse($immutableParameters->hasParam('baz'));
     }
 
-    /**
-     * Assert that calls to getParam() will proxy to the internal parameters collection
-     */
     public function testGetParamWillProxyToInternalParametersCollection(): void
     {
         $immutableParameters = new ImmutableParameters(
@@ -152,9 +125,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertSame(123, $immutableParameters->getParam('test', 123));
     }
 
-    /**
-     * Assert that calls to removeParam() will NOT modify the internal parameters
-     */
     public function testRemoveParamWillReturnFalse(): void
     {
         $params = ['test' => 123];
@@ -165,9 +135,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertSame($params, $immutableParameters->getParams());
     }
 
-    /**
-     * Assert that calls to getKeys() will return the keys of the internal parameters collection
-     */
     public function testGetKeysWillProxyToInternalParametersCollection(): void
     {
         $params = [
@@ -181,9 +148,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertSame(array_keys($params), $immutableParameters->getKeys());
     }
 
-    /**
-     * Assert that calls to getValues() will return the values of the internal parameters collection
-     */
     public function testGetValuesWillProxyToInternalParametersCollection(): void
     {
         $params = [
@@ -197,9 +161,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertSame(array_values($params), $immutableParameters->getValues());
     }
 
-    /**
-     * Assert that calls to getValues() will return the values of the internal parameters collection
-     */
     public function testGetIteratorWillProxyToInternalParametersCollection(): void
     {
         $iterator = new \ArrayIterator(
@@ -219,9 +180,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertSame($iterator, $immutableParameters->getIterator());
     }
 
-    /**
-     * Assert that calls to offsetExists() will test the keys of the internal parameters collection
-     */
     public function testOffsetExistsWillProxyToInternalParametersCollection(): void
     {
         $params = [
@@ -237,9 +195,6 @@ final class ImmutableParametersTest extends TestCase
         $this->assertFalse(isset($immutableParameters['test']));
     }
 
-    /**
-     * Assert that calls to offsetExists() will test the keys of the internal parameters collection
-     */
     public function testOffsetGetWillProxyToInternalParametersCollection(): void
     {
         $params = [
@@ -254,5 +209,78 @@ final class ImmutableParametersTest extends TestCase
         $this->assertSame($params['bar'], $immutableParameters['bar']);
         $this->assertSame($params['baz'], $immutableParameters['baz']);
         $this->assertNull($immutableParameters['test']);
+    }
+
+    public function testSetParamPerformsNoModifications(): void
+    {
+        $data = [
+            'foo' => 123,
+            'bar' => 'test',
+        ];
+
+        $params = new ImmutableParameters(new Parameters($data));
+
+        $this->assertSame($data, $params->getParams());
+
+        $params->setParam('foo', true);
+        $params->setParam('baz', 'Testing setter');
+
+        $this->assertSame(123, $params->getParam('foo'));
+        $this->assertFalse($params->hasParam('baz'));
+        $this->assertSame($data, $params->getParams());
+    }
+
+    public function testOffsetSetParamPerformsNoModifications(): void
+    {
+        $data = [
+            'foo' => 456,
+            'bar' => 'test123',
+        ];
+
+        $params = new ImmutableParameters(new Parameters($data));
+
+        $this->assertSame($data, $params->getParams());
+
+        $params->offsetSet('foo', true);
+        $params->offsetSet('baz', 'Testing setter');
+
+        $this->assertSame(456, $params->getParam('foo'));
+        $this->assertFalse($params->hasParam('baz'));
+        $this->assertSame($data, $params->getParams());
+    }
+
+    public function testRemoveParamsWillPerformsNoModifications(): void
+    {
+        $data = [
+            'foo' => 123,
+            'bar' => 'test',
+            'baz' => true,
+        ];
+
+        $params = new ImmutableParameters(new Parameters($data));
+
+        $params->removeParams(['foo', 'baz']);
+        $params->removeParams(['baz']);
+
+        $this->assertTrue($params->hasParam('foo'));
+        $this->assertSame($data, $params->getParams());
+    }
+
+    public function testOffsetUnsetWillPerformsNoModifications(): void
+    {
+        $data = [
+            'foo' => 123,
+            'bar' => 'test',
+            'baz' => true,
+        ];
+
+        $params = new ImmutableParameters(new Parameters($data));
+
+        $params->offsetUnset('foo');
+        $params->offsetUnset('baz');
+
+        $this->assertTrue($params->hasParam('foo'));
+        $this->assertTrue($params->hasParam('baz'));
+        $this->assertSame($data, $params->getParams());
     }
 }

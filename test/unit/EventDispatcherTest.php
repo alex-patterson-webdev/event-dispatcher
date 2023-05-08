@@ -15,6 +15,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 
 /**
  * @covers \Arp\EventDispatcher\EventDispatcher
+ * @covers \Arp\EventDispatcher\AbstractEventDispatcher
  */
 final class EventDispatcherTest extends TestCase
 {
